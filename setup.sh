@@ -42,7 +42,7 @@ pip install --no-cache-dir -q "setuptools<70" "wheel" "packaging"
 # 4. Cài Python packages
 echo "[4/6] Installing Python packages..."
 pip install --no-cache-dir -q \
-    "pillow<=10.0.1" \
+    "pillow>=9.0,<10.0" \
     "opencv-python==4.8.1.78" \
     "pyyaml==6.0.1" \
     "json_tricks==3.17.3" \
@@ -73,6 +73,16 @@ pip install --no-cache-dir --no-build-isolation -q \
 
 pip install --no-cache-dir -q \
     git+https://github.com/openai/whisper.git
+
+# Patch detectron2: Image.LINEAR -> Image.BILINEAR (tránh lỗi với Pillow)
+python3 -c "
+import detectron2, os
+p = os.path.join(os.path.dirname(detectron2.__file__), 'data/transforms/transform.py')
+if os.path.exists(p):
+    with open(p, 'r') as f: s = f.read()
+    s = s.replace('Image.LINEAR', 'Image.BILINEAR')
+    with open(p, 'w') as f: f.write(s)
+" 2>/dev/null || true
 
 # 6. Tải checkpoints
 echo "[6/6] Downloading checkpoints..."
