@@ -15,33 +15,34 @@ echo "[1/6] Installing system packages..."
 apt-get update -y -q
 apt-get install -y ffmpeg git wget curl -q
 
-# 2. PyTorch — dùng phiên bản đã cài sẵn trên pod (KHÔNG reinstall)
-echo "[2/6] Checking existing PyTorch..."
+# 2. PyTorch — kiểm tra hoặc cài đặt torch compatible (khuyên dùng torch 2.1.2 cu121)
+echo "[2/6] Checking PyTorch..."
+PYTHON_VER=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+echo "  Python version: $PYTHON_VER"
+
+if [[ "$PYTHON_VER" == "3.12"* ]] || [[ "$PYTHON_VER" == "3.13"* ]]; then
+    echo "  [CẢNH BÁO] Bạn đang dùng Python $PYTHON_VER!"
+    echo "  SEEM và Detectron2 yêu cầu Python 3.9 hoặc 3.10."
+    echo "  Vui lòng dùng Conda Python 3.10 để tránh lỗi 'pkg_resources' và build C++."
+fi
+
 TORCH_OK=$(python3 -c "import torch; print(f'torch {torch.__version__}, CUDA {torch.version.cuda}, GPU: {torch.cuda.is_available()}')" 2>/dev/null || echo "NOT_FOUND")
 echo "  Found: $TORCH_OK"
 if [[ "$TORCH_OK" == "NOT_FOUND" ]]; then
-    echo "  [WARN] PyTorch not found — installing latest stable..."
-    CUDA_VER=$(nvidia-smi 2>/dev/null | grep -oP "CUDA Version: \K[\d.]+" | head -1 || echo "12.1")
-    echo "  CUDA: $CUDA_VER"
-    if [[ "$CUDA_VER" == 12.[5-9]* ]] || [[ "$CUDA_VER" == 12.[1-9][0-9]* ]]; then
-        pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cu124 -q
-    else
-        pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cu121 -q
-    fi
+    echo "  PyTorch not found — installing PyTorch 2.1.2 (cu121)..."
+    pip install --no-cache-dir torch==2.1.2 torchvision==0.16.2 --index-url https://download.pytorch.org/whl/cu121 -q
 else
-    echo "  OK — skipping torch install, using pre-installed version."
+    echo "  OK — using existing PyTorch ($TORCH_OK)"
 fi
 
-# 3. Fix setuptools / pkg_resources (Python 3.12+ không bundle setuptools nữa)
-echo "[3/6] Fixing setuptools for Python 3.12..."
-pip install --no-cache-dir -q "setuptools>=68" "wheel" "packaging"
+# 3. Đảm bảo setuptools tương thích
+echo "[3/6] Setting up setuptools & wheel..."
+pip install --no-cache-dir -q "setuptools<70" "wheel" "packaging"
 
 # 4. Cài Python packages
 echo "[4/6] Installing Python packages..."
-# Cài thủ công các packages cần cho demo (bỏ: torch, torchvision, deepspeed, mpi4py)
-# mpi4py hay lỗi trên Python 3.12 container và không cần cho demo
 pip install --no-cache-dir -q \
-    "pillow==9.4.0" \
+    "pillow<=10.0.1" \
     "opencv-python==4.8.1.78" \
     "pyyaml==6.0.1" \
     "json_tricks==3.17.3" \
@@ -58,7 +59,7 @@ pip install --no-cache-dir -q \
     "regex==2023.10.3" \
     "nltk==3.8.1" \
     "pycocotools==2.0.7" \
-    "shapely==1.8.0" \
+    "shapely" \
     "scikit-image==0.21.0" \
     "accelerate==0.23.0" \
     "kornia==0.7.0" \
@@ -66,15 +67,12 @@ pip install --no-cache-dir -q \
     "gradio==3.42.0"
 
 # 5. Cài custom packages
-echo "[5/6] Installing custom packages (detectron2, whisper, einops)..."
-pip install --no-cache-dir -q \
+echo "[5/6] Installing custom packages (detectron2, whisper)..."
+pip install --no-cache-dir --no-build-isolation -q \
     git+https://github.com/MaureenZOU/detectron2-xyz.git
 
 pip install --no-cache-dir -q \
     git+https://github.com/openai/whisper.git
-
-pip install --no-cache-dir -q \
-    git+https://github.com/arogozhnikov/einops.git
 
 # 6. Tải checkpoints
 echo "[6/6] Downloading checkpoints..."
