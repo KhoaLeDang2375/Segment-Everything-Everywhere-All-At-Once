@@ -66,8 +66,8 @@ pip install --no-cache-dir -q \
     "scikit-image==0.21.0" \
     "accelerate==0.23.0" \
     "kornia==0.7.0" \
-    "wandb==0.15.12" \
-    "gradio==3.42.0"
+    "wandb>=0.17.0" \
+    "gradio==3.50.2"
 
 # 5. Cài custom packages
 echo "[5/6] Installing custom packages (detectron2, whisper)..."
