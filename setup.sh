@@ -39,6 +39,9 @@ fi
 echo "[3/6] Setting up setuptools & wheel..."
 pip install --no-cache-dir -q "setuptools<70" "wheel" "packaging"
 
+# mpi4py (optional, cần cho multi-GPU MPI — skip nếu cài thất bại)
+pip install --no-cache-dir -q mpi4py || echo "  [WARN] mpi4py not available — OK for single-GPU demo"
+
 # 4. Cài Python packages
 echo "[4/6] Installing Python packages..."
 pip install --no-cache-dir -q \
