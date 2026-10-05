@@ -24,12 +24,15 @@ fi
 export PATH="/root/miniconda3/bin:$PATH"
 eval "$(/root/miniconda3/bin/conda shell.bash hook)"
 
-# 3. Tạo môi trường seem với Python 3.10
+# 3. Chấp nhận ToS và tạo môi trường seem với Python 3.10 (dùng conda-forge)
 echo "[2/3] Creating Conda env 'seem' with Python 3.10..."
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main 2>/dev/null || true
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r 2>/dev/null || true
+
 if conda env list | grep -q "seem"; then
     echo "  Env 'seem' already exists."
 else
-    conda create -n seem python=3.10 -y -q
+    conda create -n seem -c conda-forge python=3.10 -y -q
 fi
 
 # 4. Kích hoạt và chạy setup.sh
