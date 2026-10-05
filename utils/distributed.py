@@ -7,7 +7,9 @@ import subprocess
 try:
     from mpi4py import MPI
     _MPI_AVAILABLE = True
-except ImportError:
+except (ImportError, RuntimeError):
+    # ImportError  : mpi4py not installed
+    # RuntimeError : mpi4py installed but libmpi.so system library not found
     _MPI_AVAILABLE = False
 
 import torch.distributed as dist
