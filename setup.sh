@@ -15,18 +15,38 @@ echo "[1/6] Installing system packages..."
 apt-get update -y -q
 apt-get install -y ffmpeg git wget curl
 
-# 2. Cài PyTorch (đảm bảo đúng phiên bản)
-echo "[2/6] Installing PyTorch 2.1.0 (CUDA 12.1)..."
-pip install --no-cache-dir \
-    torch==2.1.0 \
-    torchvision==0.16.0 \
-    --index-url https://download.pytorch.org/whl/cu121 -q
+# 2. Cài PyTorch — tự động chọn phiên bản phù hợp với CUDA
+echo "[2/6] Installing PyTorch (auto-detect CUDA)..."
 
-# 3. Cài Python packages từ requirements.txt (bỏ deepspeed nếu lỗi)
+# Detect CUDA version
+CUDA_VER=$(nvcc --version 2>/dev/null | grep -oP "(?<=release )\d+\.\d+" | head -1)
+if [ -z "$CUDA_VER" ]; then
+    CUDA_VER=$(nvidia-smi 2>/dev/null | grep -oP "CUDA Version: \K[\d.]+" | head -1)
+fi
+echo "  Detected CUDA: ${CUDA_VER:-unknown}"
+
+# Chọn CUDA index URL
+if [[ "$CUDA_VER" == 12.4* ]] || [[ "$CUDA_VER" == 12.5* ]] || [[ "$CUDA_VER" == 12.6* ]] || [[ "$CUDA_VER" == 12.7* ]]; then
+    TORCH_INDEX="https://download.pytorch.org/whl/cu124"
+else
+    TORCH_INDEX="https://download.pytorch.org/whl/cu121"
+fi
+
+# torch 2.4.1 là phiên bản ổn định mới nhất có trên cả cu121 và cu124
+echo "  Using index: $TORCH_INDEX"
+pip install --no-cache-dir \
+    torch==2.4.1 \
+    torchvision==0.19.1 \
+    --index-url "$TORCH_INDEX" -q
+
+# 3. Cài Python packages từ requirements.txt
 echo "[3/6] Installing Python packages..."
-# Cài tất cả trừ deepspeed (không cần cho demo)
-grep -v "deepspeed" assets/requirements/requirements.txt > /tmp/req_nodeeospeed.txt || true
-pip install --no-cache-dir -r /tmp/req_nodeeospeed.txt -q
+# Lọc bỏ: deepspeed (không cần demo), torch/torchvision (đã cài ở bước 2)
+grep -vE "^(torch|torchvision|deepspeed)==" assets/requirements/requirements.txt \
+    > /tmp/req_demo.txt || true
+# Ghi đè numpy để tránh xung đột ABI với torch 2.4.x
+echo "numpy>=1.24,<2.0" >> /tmp/req_demo.txt
+pip install --no-cache-dir -r /tmp/req_demo.txt -q
 
 # 4. Cài custom packages
 echo "[4/6] Installing custom packages (detectron2, whisper, einops)..."
