@@ -13,55 +13,73 @@ echo "========================================"
 # 1. Cài system dependencies
 echo "[1/6] Installing system packages..."
 apt-get update -y -q
-apt-get install -y ffmpeg git wget curl
+apt-get install -y ffmpeg git wget curl -q
 
-# 2. Cài PyTorch — tự động chọn phiên bản phù hợp với CUDA
-echo "[2/6] Installing PyTorch (auto-detect CUDA)..."
-
-# Detect CUDA version
-CUDA_VER=$(nvcc --version 2>/dev/null | grep -oP "(?<=release )\d+\.\d+" | head -1)
-if [ -z "$CUDA_VER" ]; then
-    CUDA_VER=$(nvidia-smi 2>/dev/null | grep -oP "CUDA Version: \K[\d.]+" | head -1)
-fi
-echo "  Detected CUDA: ${CUDA_VER:-unknown}"
-
-# Chọn CUDA index URL
-if [[ "$CUDA_VER" == 12.4* ]] || [[ "$CUDA_VER" == 12.5* ]] || [[ "$CUDA_VER" == 12.6* ]] || [[ "$CUDA_VER" == 12.7* ]]; then
-    TORCH_INDEX="https://download.pytorch.org/whl/cu124"
+# 2. PyTorch — dùng phiên bản đã cài sẵn trên pod (KHÔNG reinstall)
+echo "[2/6] Checking existing PyTorch..."
+TORCH_OK=$(python3 -c "import torch; print(f'torch {torch.__version__}, CUDA {torch.version.cuda}, GPU: {torch.cuda.is_available()}')" 2>/dev/null || echo "NOT_FOUND")
+echo "  Found: $TORCH_OK"
+if [[ "$TORCH_OK" == "NOT_FOUND" ]]; then
+    echo "  [WARN] PyTorch not found — installing latest stable..."
+    CUDA_VER=$(nvidia-smi 2>/dev/null | grep -oP "CUDA Version: \K[\d.]+" | head -1 || echo "12.1")
+    echo "  CUDA: $CUDA_VER"
+    if [[ "$CUDA_VER" == 12.[5-9]* ]] || [[ "$CUDA_VER" == 12.[1-9][0-9]* ]]; then
+        pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cu124 -q
+    else
+        pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cu121 -q
+    fi
 else
-    TORCH_INDEX="https://download.pytorch.org/whl/cu121"
+    echo "  OK — skipping torch install, using pre-installed version."
 fi
 
-# torch 2.4.1 là phiên bản ổn định mới nhất có trên cả cu121 và cu124
-echo "  Using index: $TORCH_INDEX"
-pip install --no-cache-dir \
-    torch==2.4.1 \
-    torchvision==0.19.1 \
-    --index-url "$TORCH_INDEX" -q
+# 3. Fix setuptools / pkg_resources (Python 3.12+ không bundle setuptools nữa)
+echo "[3/6] Fixing setuptools for Python 3.12..."
+pip install --no-cache-dir -q "setuptools>=68" "wheel" "packaging"
 
-# 3. Cài Python packages từ requirements.txt
-echo "[3/6] Installing Python packages..."
-# Lọc bỏ: deepspeed (không cần demo), torch/torchvision (đã cài ở bước 2)
-grep -vE "^(torch|torchvision|deepspeed)==" assets/requirements/requirements.txt \
-    > /tmp/req_demo.txt || true
-# Ghi đè numpy để tránh xung đột ABI với torch 2.4.x
-echo "numpy>=1.24,<2.0" >> /tmp/req_demo.txt
-pip install --no-cache-dir -r /tmp/req_demo.txt -q
+# 4. Cài Python packages
+echo "[4/6] Installing Python packages..."
+# Cài thủ công các packages cần cho demo (bỏ: torch, torchvision, deepspeed, mpi4py)
+# mpi4py hay lỗi trên Python 3.12 container và không cần cho demo
+pip install --no-cache-dir -q \
+    "pillow==9.4.0" \
+    "opencv-python==4.8.1.78" \
+    "pyyaml==6.0.1" \
+    "json_tricks==3.17.3" \
+    "yacs==0.1.8" \
+    "scikit-learn==1.3.1" \
+    "pandas==2.0.3" \
+    "timm==0.4.12" \
+    "numpy>=1.24,<2.0" \
+    "einops==0.7.0" \
+    "fvcore==0.1.5.post20221221" \
+    "transformers==4.34.0" \
+    "sentencepiece==0.1.99" \
+    "ftfy==6.1.1" \
+    "regex==2023.10.3" \
+    "nltk==3.8.1" \
+    "pycocotools==2.0.7" \
+    "shapely==1.8.0" \
+    "scikit-image==0.21.0" \
+    "accelerate==0.23.0" \
+    "kornia==0.7.0" \
+    "wandb==0.15.12" \
+    "gradio==3.42.0"
 
-# 4. Cài custom packages
-echo "[4/6] Installing custom packages (detectron2, whisper, einops)..."
-pip install --no-cache-dir \
-    git+https://github.com/MaureenZOU/detectron2-xyz.git -q
-pip install --no-cache-dir \
-    git+https://github.com/openai/whisper.git -q
-pip install --no-cache-dir \
-    git+https://github.com/arogozhnikov/einops.git -q
+# 5. Cài custom packages
+echo "[5/6] Installing custom packages (detectron2, whisper, einops)..."
+pip install --no-cache-dir -q \
+    git+https://github.com/MaureenZOU/detectron2-xyz.git
 
-# 5. Tải checkpoints
-echo "[5/6] Downloading checkpoints..."
+pip install --no-cache-dir -q \
+    git+https://github.com/openai/whisper.git
+
+pip install --no-cache-dir -q \
+    git+https://github.com/arogozhnikov/einops.git
+
+# 6. Tải checkpoints
+echo "[6/6] Downloading checkpoints..."
 mkdir -p checkpoints
 
-# SAM ViT-L backbone weights
 if [ ! -f "checkpoints/sam_vit_l_0b3195.pth" ]; then
     echo "  -> Downloading SAM ViT-L weights (~2.6GB)..."
     wget -q --show-progress \
@@ -71,7 +89,6 @@ else
     echo "  -> sam_vit_l_0b3195.pth already exists, skipping."
 fi
 
-# SEEM_v1 checkpoint (SAM-ViT-L)
 if [ ! -f "checkpoints/seem_samvitl_v1.pt" ]; then
     echo "  -> Downloading SEEM_v1 SAM-ViT-L checkpoint (~1.2GB)..."
     wget -q --show-progress \
@@ -81,10 +98,9 @@ else
     echo "  -> seem_samvitl_v1.pt already exists, skipping."
 fi
 
-# 6. Patch config YAML - sửa đường dẫn pretrained
-echo "[6/6] Patching config files..."
+# 7. Patch config YAML - sửa đường dẫn pretrained nếu vẫn còn hardcoded
 CONFIG_FILE="configs/seem/samvitl_unicl_lang_v1.yaml"
-if grep -q "/nobackup3/" "$CONFIG_FILE"; then
+if grep -q "/nobackup3/" "$CONFIG_FILE" 2>/dev/null; then
     sed -i "s|PRETRAINED:.*|PRETRAINED: 'checkpoints/sam_vit_l_0b3195.pth'|g" "$CONFIG_FILE"
     echo "  -> Patched PRETRAINED path in $CONFIG_FILE"
 fi
@@ -92,6 +108,7 @@ fi
 echo ""
 echo "========================================"
 echo "  Setup Complete!"
+python3 -c "import torch; print(f'  PyTorch: {torch.__version__}  CUDA: {torch.version.cuda}  GPU OK: {torch.cuda.is_available()}')"
 echo "  Run: python demo_v1.py"
-echo "  Access: http://0.0.0.0:7860"
+echo "  URL: http://0.0.0.0:7860"
 echo "========================================"
