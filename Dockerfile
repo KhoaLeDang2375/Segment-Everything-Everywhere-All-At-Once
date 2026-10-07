@@ -70,8 +70,8 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=120s \
 # Default: download checkpoints if missing, then launch
 CMD bash -c "\
     if [ ! -f checkpoints/seem_samvitl_v1.pt ]; then \
-        echo 'Downloading checkpoints...'; \
-        wget -q -O checkpoints/sam_vit_l_0b3195.pth https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth; \
-        wget -q -O checkpoints/seem_samvitl_v1.pt https://huggingface.co/xdecoder/SEEM/resolve/main/seem_samvitl_v1.pt; \
+    echo 'Downloading checkpoints...'; \
+    wget -q -O checkpoints/sam_vit_l_0b3195.pth https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth; \
+    wget -q -O checkpoints/seem_samvitl_v1.pt https://huggingface.co/xdecoder/SEEM/resolve/main/seem_samvitl_v1.pt; \
     fi && \
     python demo_v1.py --server_name 0.0.0.0 --port 7860"

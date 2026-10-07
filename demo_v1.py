@@ -120,25 +120,52 @@ def build_gradio_ui(model, audio_model):
         if not tasks:
             tasks = ["Panoptic"]
 
+        # ImageMask trả về dict {'image': ndarray, 'mask': ndarray}
+        # khi tool=sketch. Cần convert sang PIL để model xử lý.
+        def to_pil_dict(x):
+            """Giữ nguyên dict format mà demo.seem.tasks kỳ vọng."""
+            if x is None:
+                return None
+            if isinstance(x, dict):
+                img = x.get('image')   # ndarray HxWx3
+                mask = x.get('mask')  # ndarray HxWx4 (RGBA scribble)
+                if img is None:
+                    return None
+                result = {'image': Image.fromarray(img)}
+                if mask is not None:
+                    result['mask'] = Image.fromarray(mask)
+                return result
+            # fallback: ảnh thuần (ndarray hoặc PIL)
+            if isinstance(x, np.ndarray):
+                return {'image': Image.fromarray(x), 'mask': None}
+            return {'image': x, 'mask': None}
+
+        image_dict = to_pil_dict(image)
+        ref_image_dict = to_pil_dict(ref_image)
+
         with torch.autocast(device_type='cuda', dtype=torch.float16):
             if 'Video' in tasks:
                 result = interactive_infer_video(
-                    model, audio_model, image, tasks,
-                    ref_image, ref_text, audio_path, video_path
+                    model, audio_model, image_dict, tasks,
+                    ref_image_dict, ref_text, audio_path, video_path
                 )
                 return None, result
             else:
                 result = interactive_infer_image(
-                    model, audio_model, image, tasks,
-                    ref_image, ref_text, audio_path, video_path
+                    model, audio_model, image_dict, tasks,
+                    ref_image_dict, ref_text, audio_path, video_path
                 )
                 return result, None
 
-    # Custom ImageMask component
+    # Custom ImageMask component — trả về dict {'image':..., 'mask':...}
+    # để inference handler nhận được cả ảnh gốc lẫn nét vẽ scribble
     class ImageMask(gr.components.Image):
         is_template = True
         def __init__(self, **kwargs):
-            super().__init__(source="upload", tool="sketch", interactive=True, **kwargs)
+            # type="numpy" để Gradio trả dict thay vì PIL thuần
+            kwargs.pop('type', None)
+            super().__init__(source="upload", tool="sketch",
+                             type="numpy", interactive=True, **kwargs)
 
     title = "SEEM_v1 — Segment Everything Everywhere All at Once"
     description = """
@@ -155,13 +182,13 @@ def build_gradio_ui(model, audio_model):
 """
 
     inputs = [
-        ImageMask(label="🖼️ [Stroke] Vẽ lên ảnh để khoanh vùng", type="pil"),
+        ImageMask(label="🖼️ Upload ảnh → Vẽ Scribble/Stroke lên vùng cần segment"),
         gr.CheckboxGroup(
             choices=["Stroke", "Example", "Text", "Audio", "Video", "Panoptic"],
             value=["Panoptic"],
             label="🎛️ Chế độ Interactive"
         ),
-        ImageMask(label="🔗 [Example] Referring Image (tham chiếu)", type="pil"),
+        ImageMask(label="🔗 [Example] Referring Image — vẽ lên vùng tham chiếu"),
         gr.Textbox(
             label="📝 [Text] Mô tả đối tượng cần segment",
             placeholder="VD: 'the dog', 'red car', 'person on the left'..."
