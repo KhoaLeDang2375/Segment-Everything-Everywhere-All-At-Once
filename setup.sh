@@ -87,8 +87,14 @@ if os.path.exists(p):
     with open(p, 'w') as f: f.write(s)
 " 2>/dev/null || true
 
-# 6. Tải checkpoints
-echo "[6/6] Downloading checkpoints..."
+# 6. Biên dịch C++ Extension (Bắt buộc cho Deformable Attention)
+echo "[6/7] Compiling Deformable Attention C++ Extension..."
+cd modeling/vision/encoder/ops
+python3 setup.py build install -q
+cd ../../../../
+
+# 7. Tải checkpoints
+echo "[7/7] Downloading checkpoints..."
 mkdir -p checkpoints
 
 if [ ! -f "checkpoints/sam_vit_l_0b3195.pth" ]; then
