@@ -55,13 +55,23 @@ class Controller:
         size = (image.shape[1], image.shape[0])
         if positive is not None:
             positive = resize_mask(positive, size)
-        if negative is not None:
-            if image_hash(uploaded_image(negative_canvas)) != image_hash(raw):
+        if negative is not None and negative.any():
+            negative_image = uploaded_image(negative_canvas)
+            # Gradio's browser canvas round trip can alter RGB values slightly.
+            # Compare content with a small tolerance, never accept another scene.
+            same = negative_image.shape == raw.shape
+            if same:
+                difference = np.abs(negative_image.astype(np.float32) - raw.astype(np.float32))
+                same = float(difference.mean()) <= 3 and float(np.percentile(difference, 99)) <= 20
+            if not same:
                 raise ValueError('Canvas negative scribble phải sử dụng cùng ảnh nguồn.')
             negative = resize_mask(negative, size)
+        else:
+            negative = None
         with self.gpu_lock:
             mask, mode = self.seem.segment(image, positive, negative, text)
         state = self.new_state(raw, image, mask, mode)
+        state['seem_metrics'] = getattr(self.seem, 'metrics', None)
         raw_positive = ink(canvas.get('mask')) if isinstance(canvas, dict) else None
         state['scribble_hash'] = image_hash(raw_positive if raw_positive is not None else np.zeros(raw.shape[:2], dtype=bool))
         if positive is not None:
@@ -121,19 +131,45 @@ class Controller:
         if target is None:
             raise ValueError('Chọn tâm đích trước.')
         rgb, alpha, _ = transform_foreground(state['image'], state['mask'], target, scale, allow_clipping)
-        return Image.fromarray(composite(state['image'], rgb, alpha)), Image.fromarray((alpha*255).astype(np.uint8))
+        background = state['image']
+        if state.get('removal'):
+            background = np.array(Image.open(Path(state['removal']['job']) / 'background.png').convert('RGB'))
+        return Image.fromarray(composite(background, rgb, alpha)), Image.fromarray((alpha*255).astype(np.uint8))
+
+    def remove(self, canvas, state, removal_margin):
+        """Preview/cache LaMa removal independently of target geometry/prompts."""
+        self.validate(canvas, state)
+        margin = int(removal_margin)
+        cached = state.get('removal')
+        if cached and cached['margin'] == margin and cached['checkpoint'] == self.settings.lama_checkpoint and Path(cached['job'], 'background.png').is_file():
+            return state, Image.open(Path(cached['job']) / 'background.png').copy()
+        job = Path(state['job']) / ('removal_' + uuid.uuid4().hex[:10])
+        job.mkdir()
+        import shutil
+        for name in ['source.png', 'source_mask.png']:
+            shutil.copy2(Path(state['job']) / name, job / name)
+        request = {'job_dir': str(job), 'checkpoint': self.settings.lama_checkpoint,
+                   'removal_margin': margin, 'max_side': self.settings.max_side}
+        with self.gpu_lock:
+            self.seem.release_gpu()
+            run_worker(self.settings, 'lama', request, job)
+        state = dict(state, removal={'job': str(job), 'margin': margin,
+                                   'checkpoint': self.settings.lama_checkpoint})
+        return state, Image.open(job / 'background.png').copy()
 
     def relocate(self, canvas, state, target, scale, text, background_prompt, target_prompt,
-                 negative_prompt, steps, guidance, conditioning, seed, removal_margin, target_margin, allow_clipping):
+                 negative_prompt, steps, guidance, conditioning, seed, removal_margin, target_margin, allow_clipping,
+                 mode='generate'):
         self.validate(canvas, state)
         if target is None:
             raise ValueError('Chọn tâm đích trước.')
         if not text.strip():
             raise ValueError('Nhập tên/mô tả vật thể để tạo prompt phù hợp.')
-        if not background_prompt.strip():
-            raise ValueError('Nhập mô tả nền cần khôi phục.')
+        if mode not in {'generate', 'preserve'}:
+            raise ValueError('Chọn chế độ sinh đích hợp lệ.')
         # Validate geometry before allocating/loading the diffusion model.
         transform_foreground(state['image'], state['mask'], target, scale, allow_clipping)
+        state, _ = self.remove(canvas, state, removal_margin)
         parent = Path(state['job'])
         job = parent / ('run_' + uuid.uuid4().hex[:10])
         job.mkdir()
@@ -141,16 +177,18 @@ class Controller:
             if (parent / name).is_file():
                 import shutil
                 shutil.copy2(parent / name, job / name)
+        import shutil
+        for name in ['background.png', 'removal_mask.png', 'removal_raw.png', 'lama_result.json', 'lama_request.json']:
+            shutil.copy2(Path(state['removal']['job']) / name, job / name)
         prompt = target_prompt.strip() or f'{text.strip()}, naturally integrated with the surrounding scene, coherent lighting and texture.'
-        removal_negative = ', '.join(filter(None, [negative_prompt.strip(), text.strip()]))
         request = {'job_dir': str(job), 'brushnet_repo': self.settings.brushnet_repo,
             'base_model': self.settings.base_model, 'brushnet_checkpoint': self.settings.brushnet_checkpoint,
             'target': list(target), 'scale': float(scale), 'allow_clipping': bool(allow_clipping),
-            'background_prompt': background_prompt.strip(), 'target_prompt': prompt,
-            'negative_prompt': negative_prompt.strip(), 'removal_negative': removal_negative,
+            'target_prompt': prompt,
+            'negative_prompt': negative_prompt.strip(),
             'steps': int(steps), 'guidance': float(guidance), 'conditioning': float(conditioning),
             'seed': int(seed), 'removal_margin': int(removal_margin), 'target_margin': int(target_margin),
-            'max_side': self.settings.max_side}
+            'max_side': self.settings.max_side, 'mode': mode}
         with self.gpu_lock:
             run_worker(self.settings, 'brushnet', request, job)
         result_info = json.loads((job / 'brushnet_result.json').read_text(encoding='utf-8'))
@@ -158,7 +196,9 @@ class Controller:
         metadata = {'created_at': datetime.now(timezone.utc).isoformat(),
             'seem_revision': repo_revision(REPO), 'settings': asdict(self.settings),
             'input_hash': state['image_hash'], 'segmentation_mode': state['segmentation_mode'],
-            'depth_estimate': depth_info, 'object_text': text, 'request': request, 'result': result_info}
+            'depth_estimate': depth_info, 'seem_metrics': state.get('seem_metrics'),
+            'removal': json.loads((job / 'lama_result.json').read_text(encoding='utf-8')),
+            'object_text': text, 'request': request, 'result': result_info}
         (job / 'metadata.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding='utf-8')
         archive = job / 'relocation.zip'
         with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as out:
@@ -168,5 +208,6 @@ class Controller:
         gallery = [(Image.open(job / name).copy(), caption) for name, caption in [
             ('source_mask.png', 'Mask nguồn'), ('removal_mask.png', 'Vùng xóa'),
             ('background.png', 'Nền sau xóa'), ('target_cutout.png', 'Cutout đích'),
-            ('pasted.png', 'Sau ghép'), ('harmonization_mask.png', 'Vùng hòa trộn')]]
+            ('pasted.png', 'Mốc so sánh cắt–dán'), ('target_mask.png', 'Mask đích'),
+            ('generation_mask.png', 'Vùng BrushNet sinh lại'), ('harmonization_raw.png', 'BrushNet raw')]]
         return Image.open(job / 'result.png').copy(), gallery, str(archive), str(job)

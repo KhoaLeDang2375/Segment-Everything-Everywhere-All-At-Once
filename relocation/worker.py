@@ -9,8 +9,62 @@ from .geometry import (mask_image, dilate, transform_foreground, composite,
                        harmonization_mask, blend_repair)
 
 
+def gpu_stats(torch):
+    torch.cuda.synchronize()
+    return {'peak_allocated_gib': torch.cuda.max_memory_allocated() / 1024**3,
+            'peak_reserved_gib': torch.cuda.max_memory_reserved() / 1024**3,
+            'gpu': torch.cuda.get_device_name()}
+
+
+def lama_job(request):
+    """Big-LaMa TorchScript protocol used by simple-lama-inpainting.
+
+    Avoid importing the training repo and its old Hydra/Lightning stack.
+    """
+    import torch
+    if not torch.cuda.is_available():
+        raise RuntimeError('LaMa worker cần CUDA.')
+    torch.cuda.reset_peak_memory_stats()
+    started = time.time()
+    job = Path(request['job_dir'])
+    checkpoint = Path(request['checkpoint'])
+    if not checkpoint.is_file():
+        raise FileNotFoundError(f'Thiếu Big-LaMa TorchScript: {checkpoint}. Chạy setup_relocation.sh --skip-seem.')
+    original = np.array(Image.open(job / 'source.png').convert('RGB'))
+    mask = np.array(Image.open(job / 'source_mask.png').convert('L')) > 127
+    region = dilate(mask, request['removal_margin'])
+    mask_image(region).save(job / 'removal_mask.png')
+    h, w = original.shape[:2]
+    factor = min(1, request['max_side'] / max(h, w))
+    size = (max(1, round(w*factor)), max(1, round(h*factor)))
+    image = np.array(Image.fromarray(original).resize(size, Image.Resampling.LANCZOS))
+    small_mask = np.array(mask_image(region).resize(size, Image.Resampling.NEAREST)) > 127
+    sh, sw = small_mask.shape
+    if not small_mask.any():
+        raise ValueError('Mask LaMa quá nhỏ sau resize; tăng inference size hoặc mask margin.')
+    padding = ((0, (-sh) % 8), (0, (-sw) % 8))
+    image = np.pad(image, padding + ((0, 0),), mode='symmetric')
+    small_mask = np.pad(small_mask, padding, mode='symmetric')
+    image_tensor = torch.from_numpy(image.transpose(2, 0, 1).astype(np.float32) / 255)[None].to('cuda')
+    mask_tensor = torch.from_numpy(small_mask.astype(np.float32))[None, None].to('cuda')
+    model = torch.jit.load(str(checkpoint), map_location='cuda').eval()
+    with torch.inference_mode():
+        output = model(image_tensor, mask_tensor)[0].permute(1, 2, 0).cpu().numpy()[:sh, :sw]
+    raw = Image.fromarray(np.clip(output*255, 0, 255).astype(np.uint8)).resize((w, h), Image.Resampling.LANCZOS)
+    raw.save(job / 'removal_raw.png')
+    background = blend_repair(original, np.array(raw), region, feather=2)
+    background[mask] = np.array(raw)[mask]
+    Image.fromarray(background).save(job / 'background.png')
+    metadata = dict(checkpoint=str(checkpoint), model='Big-LaMa TorchScript',
+                    seconds=time.time()-started, inference_size=list(size),
+                    torch_version=torch.__version__, **gpu_stats(torch))
+    (job / 'lama_result.json').write_text(json.dumps(metadata, indent=2), encoding='utf-8')
+
+
 def depth_job(request):
     import torch
+    torch.cuda.reset_peak_memory_stats()
+    started = time.time()
     from transformers import AutoImageProcessor, AutoModelForDepthEstimation
     model_id = request['model']
     print(f'Loading depth: {model_id}', flush=True)
@@ -25,7 +79,8 @@ def depth_job(request):
     np.save(request['output'], raw)
     metric = getattr(model.config, 'depth_estimation_type', 'relative') == 'metric'
     Path(request['metadata']).write_text(json.dumps({'model': model_id,
-        'metric': metric, 'dtype': 'float32', 'shape': list(raw.shape)}, indent=2), encoding='utf-8')
+        'metric': metric, 'dtype': 'float32', 'shape': list(raw.shape),
+        'seconds': time.time()-started, **gpu_stats(torch)}, indent=2), encoding='utf-8')
 
 
 def brushnet_job(request):
@@ -38,16 +93,25 @@ def brushnet_job(request):
         raise RuntimeError(f'Diffusers không phải bản BrushNet tại {expected}: {diffusers.__file__}. Cài lại bằng setup_relocation.sh.')
     if not torch.cuda.is_available():
         raise RuntimeError('BrushNet worker cần CUDA.')
+    torch.cuda.reset_peak_memory_stats()
+    torch.manual_seed(int(request['seed']))
+    torch.cuda.manual_seed_all(int(request['seed']))
     started = time.time()
     job = Path(request['job_dir'])
     image = np.array(Image.open(job / 'source.png').convert('RGB'))
     mask = np.array(Image.open(job / 'source_mask.png').convert('L')) > 127
     rgb, alpha, transform = transform_foreground(image, mask, request['target'],
         request['scale'], request['allow_clipping'])
-    repair_source = dilate(mask, request['removal_margin'])
-    repair_target, protected_core = harmonization_mask(alpha, request['target_margin'])
-    mask_image(repair_source).save(job / 'removal_mask.png')
+    mode = request.get('mode', 'generate')
+    if mode == 'generate':
+        repair_target = dilate(alpha > .01, request['target_margin'])
+        protected_core = np.zeros(mask.shape, dtype=bool)
+    elif mode == 'preserve':
+        repair_target, protected_core = harmonization_mask(alpha, request['target_margin'])
+    else:
+        raise ValueError(f'Unknown target mode: {mode}')
     mask_image(repair_target).save(job / 'harmonization_mask.png')
+    mask_image(repair_target).save(job / 'generation_mask.png')
     Image.fromarray((alpha * 255).astype(np.uint8)).save(job / 'target_mask.png')
     cutout = np.dstack([image, mask.astype(np.uint8) * 255])
     Image.fromarray(cutout).save(job / 'source_cutout.png')
@@ -80,35 +144,33 @@ def brushnet_job(request):
             brushnet_conditioning_scale=float(request['conditioning'])).images[0]
         return np.array(out.resize((w, h), Image.Resampling.LANCZOS))
 
-    print('BrushNet pass 1: removal', flush=True)
-    raw_removed = inpaint(image, repair_source, request['background_prompt'],
-        request['removal_negative'], request['seed'])
-    Image.fromarray(raw_removed).save(job / 'removal_raw.png')
-    # Source object must be fully removed even when feathering the region edges.
-    background = blend_repair(image, raw_removed, repair_source, feather=2)
-    background[mask] = raw_removed[mask]
-    Image.fromarray(background).save(job / 'background.png')
+    background = np.array(Image.open(job / 'background.png').convert('RGB'))
+    if background.shape != image.shape:
+        raise ValueError('Nền LaMa phải cùng kích thước với ảnh nguồn.')
     pasted = composite(background, rgb, alpha)
     Image.fromarray(pasted).save(job / 'pasted.png')
-    print('BrushNet pass 2: boundary harmonization', flush=True)
-    raw_final = inpaint(pasted, repair_target, request['target_prompt'],
-        request['negative_prompt'], request['seed'] + 1)
+    print(f'BrushNet target pass: {mode}', flush=True)
+    raw_final = inpaint(background if mode == 'generate' else pasted, repair_target, request['target_prompt'],
+        request['negative_prompt'], request['seed'])
     Image.fromarray(raw_final).save(job / 'harmonization_raw.png')
-    final = blend_repair(pasted, raw_final, repair_target, feather=1)
-    final[protected_core] = pasted[protected_core]
+    final = blend_repair(background if mode == 'generate' else pasted, raw_final, repair_target, feather=1)
+    if mode == 'generate':
+        final[alpha > .95] = raw_final[alpha > .95]
+    else:
+        final[protected_core] = pasted[protected_core]
     Image.fromarray(final).save(job / 'result.png')
     transform.update(seconds=time.time()-started, inference_size=list(work_size),
         brushnet_revision=repo_revision(request['brushnet_repo']),
         torch_version=torch.__version__, diffusers_version=diffusers.__version__,
-        gpu=torch.cuda.get_device_name(), mode='preserve RGB core; inpaint boundary ring')
+        mode=mode, **gpu_stats(torch))
     (job / 'brushnet_result.json').write_text(json.dumps(transform, ensure_ascii=False, indent=2), encoding='utf-8')
 
 
 def main():
-    if len(sys.argv) != 3 or sys.argv[1] not in {'depth', 'brushnet'}:
-        raise SystemExit('Usage: python -m relocation.worker {depth|brushnet} request.json')
+    if len(sys.argv) != 3 or sys.argv[1] not in {'depth', 'lama', 'brushnet'}:
+        raise SystemExit('Usage: python -m relocation.worker {depth|lama|brushnet} request.json')
     request = json.loads(Path(sys.argv[2]).read_text(encoding='utf-8'))
-    (depth_job if sys.argv[1] == 'depth' else brushnet_job)(request)
+    {'depth': depth_job, 'lama': lama_job, 'brushnet': brushnet_job}[sys.argv[1]](request)
 
 
 if __name__ == '__main__':

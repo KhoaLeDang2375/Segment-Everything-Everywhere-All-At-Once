@@ -71,12 +71,18 @@ class ControllerTests(unittest.TestCase):
         calls = []
 
         def worker(settings, mode, request, job):
+            if mode == 'lama':
+                for name in ['background.png', 'removal_mask.png', 'removal_raw.png']:
+                    Image.fromarray(self.image).save(Path(job) / name)
+                (Path(job) / 'lama_result.json').write_text(json.dumps({'model': 'mock LaMa'}))
+                (Path(job) / 'lama_request.json').write_text(json.dumps(request))
+                return
             calls.append(request)
-            for name in ['result.png', 'removal_mask.png', 'harmonization_mask.png', 'background.png', 'target_cutout.png', 'pasted.png']:
+            for name in ['result.png', 'harmonization_mask.png', 'target_cutout.png', 'pasted.png', 'target_mask.png', 'generation_mask.png', 'harmonization_raw.png']:
                 Image.fromarray(self.image).save(Path(job) / name)
             (Path(job) / 'brushnet_result.json').write_text(json.dumps({'scale': request['scale']}))
 
-        with patch('relocation.controller.run_worker', side_effect=worker):
+        with patch('relocation.controller.run_worker', side_effect=worker), patch.object(self.controller.seem, 'release_gpu'):
             parameters = (self.canvas, self.state, (80, 50), 1, 'red apple', 'wooden tabletop', '',
                 'artifacts', 30, 7.5, 1, 1234, 12, 12, False)
             _, _, archive, first = self.controller.relocate(*parameters)

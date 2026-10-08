@@ -103,6 +103,7 @@ train_seem.sh
 relocation_outputs/
 checkpoints/
 .ui-validation/
+.venv-lama/
 train_seem_v0.sh
 
 draws/

@@ -1,138 +1,154 @@
-# SEEM v1 + BrushNet relocation demo
+# SEEM + LaMa + BrushNet relocation
 
-Gradio 3.50.2, one uploaded image and one selected object per run. The target
-point is the center of the mask. The object retains its orientation. Source RGB
-and alpha are transformed together; BrushNet fills the source region, then
-inpaints a boundary ring at the destination while preserving the pasted RGB core.
+Default pipeline: SEEM source segmentation → optional metric depth scale →
+Big-LaMa source removal → transformed target mask → BrushNet target generation.
+Gradio remains pinned to 3.50.2 to reuse the working SEEM environment.
 
-## RunPod setup
+## Upgrade an existing RunPod
 
-Use the same Python environment that successfully ran `demo_v1.py` (recommended
-Python 3.10, CUDA). Keep BrushNet beside this repository, or set `BRUSHNET_REPO`.
-Stop a running `demo_v1.py` before launching relocation so its GPU allocations
-and port 7860 are released.
+Stop the previous demo with Ctrl+C. Activate the same Python environment used
+for demo_v1.py (Python 3.10 recommended).
 
 ```bash
 cd /workspace/Segment-Everything-Everywhere-All-At-Once
+git pull --ff-only origin exp_v1
 export BRUSHNET_REPO=/workspace/BrushNet
-# Optional: point HF_HOME and RELOCATION_OUTPUT_DIR at a persistent volume.
 export HF_HOME=/workspace/hf-cache
 export RELOCATION_OUTPUT_DIR=/workspace/relocation_outputs
-bash setup_relocation.sh --skip-seem
-python demo_relocation.py --preflight
-python demo_relocation.py --port 7860
+bash setup_relocation.sh --only-lama
+python3 demo_relocation.py --preflight
+python3 demo_relocation.py --server-name 0.0.0.0 --port 7860 --max-side 512
 ```
 
-On a fresh pod, omit `--skip-seem` to reuse the existing `setup.sh` first. To reuse
-downloaded weights, add `--skip-download` and pass existing paths:
+Expose HTTP port 7860 in RunPod. Hard refresh the browser after restarting.
+Existing SEEM/BrushNet/depth weights are reused; --only-lama installs only the
+LaMa worker and downloads its checkpoint.
+
+## Fresh RunPod
+
+Use Python 3.10, Ubuntu 22.04, a CUDA devel image for SEEM extension compilation,
+one GPU, at least 32 GB host RAM, persistent /workspace storage. Start at 512.
 
 ```bash
-python demo_relocation.py \
-  --base-model /workspace/models/realisticVisionV60B1_v51VAE \
-  --brushnet-checkpoint /workspace/models/segmentation_mask_brushnet_ckpt \
-  --max-side 512 --port 7860
+cd /workspace
+git clone --branch exp_v1 https://github.com/KhoaLeDang2375/Segment-Everything-Everywhere-All-At-Once.git
+git clone https://github.com/TencentARC/BrushNet.git
+cd Segment-Everything-Everywhere-All-At-Once
+export BRUSHNET_REPO=/workspace/BrushNet
+export HF_HOME=/workspace/hf-cache
+export RELOCATION_OUTPUT_DIR=/workspace/relocation_outputs
+python3 -m pip install 'numpy<2' 'setuptools<70'
+python3 -m pip install torch==2.1.2 torchvision==0.16.2 --index-url https://download.pytorch.org/whl/cu121
+bash setup_relocation.sh
+python3 demo_relocation.py --preflight
+python3 demo_relocation.py --port 7860 --max-side 512
 ```
 
-The base model must be SD 1.5 compatible and saved in Diffusers directory format;
-the BrushNet checkpoint must match SD 1.5. SDXL is not used by this entry point.
-Weights default to the official TencentARC BrushNet Space, using the same base
-and BrushNet checkpoints as the repository's working inference example:
-https://huggingface.co/spaces/TencentARC/BrushNet/tree/main/data/ckpt
+Use --skip-seem when SEEM is already installed, --skip-download to use existing
+weights. CLI path overrides include --lama-checkpoint and --lama-python.
+LAMA_CHECKPOINT/LAMA_PYTHON environment variables are also supported.
 
-RunPod should expose HTTP port 7860. `--share` additionally creates a Gradio share
-link only when requested. All jobs/images remain in `RELOCATION_OUTPUT_DIR` until
-you remove them; ZIP downloads contain source, masks, intermediate images and
-metadata. Code/checkpoints/outputs should live on persistent storage if needed
-after a pod is stopped.
+## Model isolation and memory
 
-## Dependency isolation and VRAM
+* Main environment reuses setup.sh and demo_v1.load_model: SEEM v1 + Gradio.
+* .venv-lama: Torch 2.1.2/cu121, NumPy 1.26.4, Pillow 9.5.0. Big-LaMa is loaded
+  as TorchScript; the old training repo/Hydra/Lightning dependencies are omitted.
+* .venv-depth: Transformers 4.46.3 and Depth Anything V2.
+* .venv-brushnet: custom Diffusers from the sibling BrushNet repo,
+  Transformers 4.38.2, Hub 0.25.2. SD 1.5 checkpoints only, not SDXL.
 
-* Main environment: reuse `setup.sh` / `demo_v1.py` with SEEM's Transformers 4.34
-  and Gradio 3.50.2.
-* `.venv-brushnet`: local BrushNet fork of Diffusers, Transformers 4.38.2, Hub
-  0.25.2 (the fork still imports `cached_download`). Stock PyPI Diffusers is rejected.
-* `.venv-depth`: Transformers 4.46.3, providing Depth Anything V2.
-* Each worker exits after inference, releasing its CUDA context. SEEM is moved to
-  CPU after mask prediction. GPU tasks use a shared lock; Gradio queues one event
-  at a time. SEEM stays in CPU RAM for later segmentation.
-* Worker torch/torchvision are pinned to 2.1.2/0.16.2 cu121. Worker locks are recorded
-  as `.venv-*/installed.txt` after setup. Packages are isolated from the main environment.
+GPU operations are serialized. SEEM and its language embedding cache are moved
+back to CPU after segmentation. Workers exit before the next GPU task.
+BrushNet uses FP16, model CPU offload and VAE slicing. 16 GB is a candidate for
+512 inference, not a measured guarantee. Adequate CPU RAM is needed for offload.
+LaMa/depth/BrushNet report peak allocated/reserved GiB and timings; these are
+PyTorch process measurements, not total nvidia-smi device usage.
 
-Default diffusion long side is 512, selectable via `--max-side 768` or `1024`.
-CPU offload is enabled for BrushNet. Plan on adequate CPU RAM for resident SEEM
-weights and diffusion offload (prefer a pod with at least 32 GB system RAM).
-A4500 has 20 GB VRAM, A5000 has 24 GB. Actual CUDA memory/latency must be measured
-on your pod; no GPU inference is claimed by the local CPU checks.
+Big-LaMa export source and protocol:
+https://github.com/enesmsahin/simple-lama-inpainting
+Setup downloads the project's v0.1.0 big-lama.pt TorchScript release, verifies
+it can load and records a local SHA256. It does not claim publisher checksum
+verification. Supply a compatible trusted TorchScript export if overriding it.
 
-## User workflow
+## Workflow and prompts
 
-1. Upload an image. A working copy is capped at 2048 pixels on its longest side;
-   masks, coordinates and exported results use that working image.
-2. Draw a positive stroke **inside** the object. Optionally draw negative strokes
-   on the second canvas to exclude unwanted regions, and segment again.
-   SEEM inputs are letterboxed to 512×512, then predicted masks are unpadded and
-   restored to working-image coordinates; panoramic uploads cannot expand the
-   SEEM input to an arbitrarily large long side.
-3. Enter an English object description. With a scribble, SEEM v1 uses the spatial
-   route; text is used in BrushNet prompts. Without a scribble, text grounding
-   selects the source mask. The updated SEEM v1 spatial decoder takes precedence
-   over text; this demo does not claim simultaneous spatial/text fusion.
-4. Check the red mask overlay. A corrected black/white mask can be uploaded
-   instead. A closed outline around empty background is not the same prompt as
-   a stroke on the object: fill/draw inside the object for spatial segmentation.
-5. Click the target preview. The generated arrow points from source mask centroid
-   to target centroid. Arrow pixels never enter SEEM's scribble prompt.
-6. Optionally estimate depth scale, then adjust the scale slider and preview.
-7. Describe the background to restore, adjust the target prompt if necessary,
-   and run relocation. The second pass edits only the boundary ring, not the
-   entire target object interior.
+1. Upload an image. Working dimensions are capped at 2048 on the longest side.
+2. Draw inside the source object, or enter an English description for text-only
+   grounding. With strokes, SEEM uses spatial prompting. Optional negative
+   scribbles exclude pixels; they are distinct from BrushNet negative text.
+3. Segment; inspect the source mask or upload a corrected white-object mask.
+4. Click LaMa removal. Default source dilation is 8 working-image pixels.
+   Inspect background.png; adjust margin and rerun if object edges remain.
+5. Click the target image to place the mask centroid. Orientation stays fixed.
+6. Select Indoor/Outdoor depth correctly (Outdoor is the default), or manually
+   choose scale. Inspect the transformed mask/geometry preview.
+7. Choose generate (default) or preserve for comparison. Inspect actual prompts.
+8. Run and inspect the intermediate images and ZIP metadata.
 
-The legacy VIBE notebook's combined red-outline/arrow PNG parser is not reused
-for live annotations: direct click coordinates are explicit and avoid skeleton
-endpoint ambiguity. Uploaded source images, manually corrected masks and the
-depth logic are supported; VIBE dataset batch loading is a later extension.
+LaMa uses image + removal mask; it has no positive/negative text prompt.
+Generate uses the cleaned background and the ENTIRE transformed mask (plus
+small default dilation of 3 px). Masked RGB is zeroed before BrushNet. This is
+new synthesis: source appearance/identity and exact silhouette are not guaranteed.
+The source RGB cutout/pasted.png are diagnostic comparisons, not conditioning
+for generate. Reference-image conditioning is deferred.
 
-## Depth and geometry
+Preserve retains the previous RGB cut-and-paste plus ring repair mode for
+comparison. It still erodes the protected core slightly; use a narrow margin.
+No diffusion pixels escape the recorded generation mask in either mode.
 
-Metric indoor/outdoor checkpoints return raw floating point distance estimates.
-Source depth is the median inside an eroded object mask; destination depth is
-the median of a small patch around the target, excluding pixels covered by the
-source object. If no visible background remains in that patch, scale defaults
-to 1.0 and should be adjusted manually. Scale is `Z_source / Z_target`,
-limited to 0.5–2 for automatic proposals. Invalid/heterogeneous regional depth
-falls back to 1.0. The slider also permits 0.2–3.0 with explicit user control.
+Positive example: A sheep standing naturally on green grass.
+Negative example: frame, cage, basket, rope, duplicate objects, artifacts.
+Do not enter the desired result in the negative field. The default positive
+fallback uses the object description plus coherent lighting/texture wording.
+Masks define writable areas, not semantic guarantees.
 
-Relative depth is saved and visualized but never used as a physically meaningful
-ratio. Display normalization is only for the PNG preview; raw depth remains in
-`depth.npy`. A regional MAD check detects some depth variation; it is not a model
-confidence guarantee or a metric-depth accuracy estimate.
+## Geometry and depth limits
 
-RGB is warped in premultiplied alpha space to avoid dark fringes. The actual
-transformed silhouette is clipped by the image canvas, never by clamping every
-contour vertex. Clipping requires the user checkbox. Inpainting output is pasted
-only in its recorded repair region; protected object interior and other pixels
-are retained. Source mask margin can remove some old shadow, but automatic
-shadow segmentation, new shadow generation, depth-aware occlusion, physical
-surface contact and relighting are not guaranteed. This is a 2D relocation baseline.
+RGB/alpha are transformed together in premultiplied alpha space for previews
+and preserve mode. The target is the mask centroid, not the foot contact point.
+Clipping requires explicit opt-in. Shadows, occlusion and 3D orientation are
+not automatically solved by the 2D transform.
 
-## Codebase index and checks
+Depth is saved as raw float32 NPY. Scale proposal is median source depth divided
+by a visible-background depth patch around target, bounded to 0.5–2.0; relative
+models only provide previews. Invalid/heterogeneous depth falls back to 1.
+Destination background depth is not necessarily the relocated object's center
+depth. MAD checks do not measure model confidence. Review scale manually.
+
+## Two reported Gradio failures
+
+* mask=None before the first stroke: SketchImage supplies a blank mask BEFORE
+  Gradio Image.preprocess decodes it, fixing None.rsplit for both canvases.
+  It retains the image frontend component name for Gradio 3.
+* Negative-canvas image mismatch: untouched/empty negative masks are ignored.
+  When strokes exist, dimensions and RGB content are checked with small canvas
+  round-trip tolerance (mean difference <=3, 99th percentile <=20). Different
+  scenes are still rejected; re-upload source if the negative canvas is stale.
+* Static-image target clicks: target uses interactive editor because Gradio
+  3.50.2 static image binds to a button and sends null coordinates. Coordinates
+  are checked for finite values/bounds before conversion.
+
+The Gradio upgrade notice and share=True message are informational. Upgrading
+to Gradio 4 would require migrating sketch APIs; no upgrade is needed here.
+
+## Artifacts, validation and codebase index
+
+Each attempt keeps requests, logs, raw results, masks and metadata. LaMa removal
+previews are cached per source session and margin/checkpoint, then copied into
+independent result jobs. Images/JSON/NPY are included in the downloadable ZIP.
+Failed workers preserve requests/logs for diagnosis. Outputs require manual
+cleanup and persistent storage if they must survive Pod replacement.
+
+RunPod validation remains necessary: source deletion, generate vs preserve,
+identity scale, shrink/enlarge, source-target overlap, edge/clipping, empty
+strokes, text-only segmentation and repeated runs on 16 GB.
+The existing CPU tests describe the initial version; model quality and current
+GPU behavior are not established by those checks.
 
 ```bash
 python -m relocation.index_codebase
-python -m unittest relocation.test_geometry -v
-python -m unittest relocation.test_controller -v
 ```
 
-`graphify-out/relocation-index.json` stores file hashes, symbol lines, imports and
-reviewed integration links. `graphify-out/graph.json` is incrementally extended
-with AST nodes for this app. The earlier semantic graph provenance is retained;
-`graph.html` displays the same added integration community while keeping its
-existing viewer and earlier graph data. No Graphify executable
-is installed locally, so the update is a deterministic AST supplement, not a
-claim that Graphify's semantic analyzer was rerun.
-
-`--preflight` checks checkpoint paths, imports and CUDA availability. To validate
-real inference on RunPod, use one source object and test identity scale, shrinking,
-enlarging, source/target overlap and an edge target. Inspect all intermediate
-images and `metadata.json`, not only the final image. Each attempt has a separate
-directory; failed worker logs/requests remain there for diagnosis.
+This refreshes the existing Graphify JSON/HTML with AST symbols/imports and
+reviewed integration links. It preserves prior semantic graph provenance;
+no Graphify semantic analyzer is installed/run in this workspace.

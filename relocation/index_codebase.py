@@ -79,7 +79,7 @@ def main():
             ['relocation/adapters.py', 'demo/seem/tasks/interactive.py', 'calls interactive_infer_image(return_masks=True)'],
             ['demo/seem/tasks/interactive.py', 'modeling/architectures/seem_model_v1.py', 'evaluate_demo -> prev_mask; negative_stroke'],
             ['relocation/controller.py', 'relocation/worker.py', 'isolated process; request JSON and PNG/NPY artifacts'],
-            ['relocation/worker.py', '../BrushNet/src/diffusers/pipelines/brushnet/pipeline_brushnet.py', 'two inpainting calls'],
+            ['relocation/worker.py', '../BrushNet/src/diffusers/pipelines/brushnet/pipeline_brushnet.py', 'one target generation or boundary repair call after LaMa'],
             ['setup_relocation.sh', 'setup.sh', 'reuses working SEEM setup'],
         ]}
     for file in sources:

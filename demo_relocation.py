@@ -10,7 +10,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='SEEM v1 + BrushNet relocation')
     defaults = Settings()
     for name in ['seem_config', 'seem_checkpoint', 'sam_checkpoint', 'brushnet_repo',
-                 'brushnet_python', 'depth_python', 'base_model', 'brushnet_checkpoint', 'output_dir']:
+                 'brushnet_python', 'depth_python', 'lama_python', 'lama_checkpoint', 'base_model', 'brushnet_checkpoint', 'output_dir']:
         parser.add_argument('--' + name.replace('_', '-'), default=getattr(defaults, name))
     parser.add_argument('--max-side', type=int, choices=[512, 768, 1024], default=512)
     parser.add_argument('--worker-timeout', type=int, default=1800)
@@ -26,6 +26,7 @@ def preflight(settings):
     import sys
     failures = []
     for label, path in [('SEEM checkpoint', settings.seem_checkpoint), ('SAM weights', settings.sam_checkpoint),
+                        ('LaMa checkpoint', settings.lama_checkpoint),
                         ('Base model', settings.base_model), ('BrushNet checkpoint', settings.brushnet_checkpoint),
                         ('BrushNet source', Path(settings.brushnet_repo) / 'src/diffusers')]:
         if not Path(path).exists():
@@ -34,6 +35,7 @@ def preflight(settings):
         ('SEEM', sys.executable, "import torch,gradio,detectron2; assert torch.cuda.is_available(); print('torch',torch.__version__,'gradio',gradio.__version__); print(torch.cuda.get_device_name())"),
         ('BrushNet', settings.brushnet_python, "import diffusers,torch; from diffusers import BrushNetModel,StableDiffusionBrushNetPipeline; print(diffusers.__file__); assert torch.cuda.is_available()"),
         ('Depth', settings.depth_python, "import torch,transformers; from transformers import AutoModelForDepthEstimation; print(transformers.__version__); assert torch.cuda.is_available()"),
+        ('LaMa', settings.lama_python, "import torch,numpy,PIL; assert torch.cuda.is_available(); print(torch.__version__)"),
     ]
     for label, python, code in checks:
         if not Path(python).is_file():

@@ -15,6 +15,8 @@ class Settings:
     brushnet_repo: str = os.getenv('BRUSHNET_REPO', str(REPO.parent / 'BrushNet'))
     brushnet_python: str = os.getenv('BRUSHNET_PYTHON', str(REPO / '.venv-brushnet/bin/python'))
     depth_python: str = os.getenv('DEPTH_PYTHON', str(REPO / '.venv-depth/bin/python'))
+    lama_python: str = os.getenv('LAMA_PYTHON', str(REPO / '.venv-lama/bin/python'))
+    lama_checkpoint: str = os.getenv('LAMA_CHECKPOINT', str(REPO / 'checkpoints/lama/big-lama.pt'))
     base_model: str = os.getenv('BRUSHNET_BASE_MODEL', str(MODEL_DIR / 'realisticVisionV60B1_v51VAE'))
     brushnet_checkpoint: str = os.getenv('BRUSHNET_CHECKPOINT', str(MODEL_DIR / 'segmentation_mask_brushnet_ckpt'))
     output_dir: str = os.getenv('RELOCATION_OUTPUT_DIR', str(REPO / 'relocation_outputs'))

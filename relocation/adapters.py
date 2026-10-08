@@ -5,6 +5,7 @@ import gc
 import json
 import os
 import subprocess
+import time
 import numpy as np
 from PIL import Image
 from .config import REPO
@@ -25,6 +26,8 @@ class SeemAdapter:
         from demo.seem.tasks.interactive import interactive_infer_image
         if not torch.cuda.is_available():
             raise RuntimeError('SEEM demo cần CUDA. Chạy trên RunPod với GPU được bật.')
+        started = time.time()
+        torch.cuda.reset_peak_memory_stats()
         if self.model is None:
             for path in [self.settings.seem_checkpoint, self.settings.sam_checkpoint]:
                 if not Path(path).is_file():
@@ -37,6 +40,7 @@ class SeemAdapter:
                 raise
         else:
             self.model.cuda()
+            self.move_language_cache('cuda')
         # The legacy demo resizes the short side to 512, which can explode the
         # long side on panoramic uploads. Letterbox first and invert the padding.
         factor = 512 / max(image.shape[:2])
@@ -73,18 +77,41 @@ class SeemAdapter:
             mode = 'Stroke (text dùng cho BrushNet)' if has_stroke else 'Text grounding'
             return mask, mode
         finally:
+            torch.cuda.synchronize()
+            self.metrics = {'seconds': time.time()-started,
+                'peak_allocated_gib': torch.cuda.max_memory_allocated()/1024**3,
+                'peak_reserved_gib': torch.cuda.max_memory_reserved()/1024**3,
+                'gpu': torch.cuda.get_device_name()}
             self.release_gpu()
+
+    def move_language_cache(self, device):
+        # SEEM stores text/token embeddings via setattr, not registered buffers.
+        import torch
+        if self.model is None:
+            return
+        encoder = self.model.model.sem_seg_head.predictor.lang_encoder
+        def move(value):
+            if isinstance(value, torch.Tensor):
+                return value.to(device)
+            if isinstance(value, dict):
+                return {key: move(item) for key, item in value.items()}
+            return value
+        for name, value in list(vars(encoder).items()):
+            if name.endswith('_embeddings'):
+                setattr(encoder, name, move(value))
 
     def release_gpu(self):
         import torch
         if self.model is not None:
             self.model.cpu()
+            self.move_language_cache('cpu')
         gc.collect()
         torch.cuda.empty_cache()
 
 
 def run_worker(settings, mode, request, job_dir):
-    python = settings.depth_python if mode == 'depth' else settings.brushnet_python
+    python = {'depth': settings.depth_python, 'lama': settings.lama_python,
+              'brushnet': settings.brushnet_python}[mode]
     if not Path(python).is_file():
         raise FileNotFoundError(f'Thiếu Python worker: {python}. Chạy bash setup_relocation.sh --skip-seem.')
     request_file = Path(job_dir) / f'{mode}_request.json'

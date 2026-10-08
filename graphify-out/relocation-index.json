@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-10-08T23:30:22.884759+00:00",
-  "seem_revision": "ea2bce44911683c9ee24e0a4711b0854a50cbb9e",
+  "generated_at": "2026-10-08T23:58:24.542837+00:00",
+  "seem_revision": "1a50b1a883ebff3ef23735c5829f41bf9a54f759",
   "brushnet_revision": "0f9d9e54ca85c40a11a8f0504b4b5b2e7e8fd14d",
   "provenance": "AST declarations/imports + explicit reviewed integration links; existing Graphify semantic graph retained",
   "files": {
     "demo_relocation.py": {
-      "sha256": "6dbfff8aad9b77e6310d0c3751d8375f6bb81181be6ea57141a5fd1e0612793f",
+      "sha256": "66bc60084db7b2918324fa244b2f30d4dea8c68eec4bf588799f19219c1cfea5",
       "symbols": [
         {
           "name": "parse_args",
@@ -19,7 +19,7 @@
         },
         {
           "name": "main",
-          "line": 51,
+          "line": 53,
           "kind": "FunctionDef"
         }
       ],
@@ -269,41 +269,51 @@
       "imports": []
     },
     "relocation/adapters.py": {
-      "sha256": "870d2f695f1c160899a2a24e70159e2db1605dff717696be27fb7fcaf01be80d",
+      "sha256": "08e8b7a0e80445d3fdf7b83e8b0d01c2e933a11b91ece4b1ab0fa80b8c22847c",
       "symbols": [
         {
           "name": "SeemAdapter",
-          "line": 14,
+          "line": 15,
           "kind": "ClassDef"
         },
         {
           "name": "SeemAdapter.__init__",
-          "line": 15,
+          "line": 16,
           "kind": "FunctionDef"
         },
         {
           "name": "SeemAdapter.segment",
-          "line": 19,
+          "line": 20,
           "kind": "FunctionDef"
         },
         {
           "name": "SeemAdapter.segment.fit_mask",
-          "line": 50,
+          "line": 54,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "SeemAdapter.move_language_cache",
+          "line": 87,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "SeemAdapter.move_language_cache.move",
+          "line": 93,
           "kind": "FunctionDef"
         },
         {
           "name": "SeemAdapter.release_gpu",
-          "line": 78,
+          "line": 103,
           "kind": "FunctionDef"
         },
         {
           "name": "run_worker",
-          "line": 86,
+          "line": 112,
           "kind": "FunctionDef"
         },
         {
           "name": "repo_revision",
-          "line": 110,
+          "line": 137,
           "kind": "FunctionDef"
         }
       ],
@@ -320,11 +330,12 @@
         "os",
         "pathlib",
         "subprocess",
+        "time",
         "torch"
       ]
     },
     "relocation/config.py": {
-      "sha256": "3eafa31f8d34287ec690db253b3f0d84cfe2a6e1db6a2453716273f68c1b6c24",
+      "sha256": "5ae1d43d46a2d5ad8e54db736b1c6d3d810ae98ec0c194e0248d48dc231f8b49",
       "symbols": [
         {
           "name": "Settings",
@@ -339,7 +350,7 @@
       ]
     },
     "relocation/controller.py": {
-      "sha256": "485f9d922aa28fd8bba3b612bed47d96f7c7e21d3729058d38a8e2bbf50d5f9e",
+      "sha256": "014a48d7665e4fd7cd8bc8e28f8f35188a9cd08a16bacbc4f29a9595453e729c",
       "symbols": [
         {
           "name": "uploaded_image",
@@ -373,27 +384,32 @@
         },
         {
           "name": "Controller.new_state",
-          "line": 73,
+          "line": 83,
           "kind": "FunctionDef"
         },
         {
           "name": "Controller.import_mask",
-          "line": 82,
-          "kind": "FunctionDef"
-        },
-        {
-          "name": "Controller.estimate",
           "line": 92,
           "kind": "FunctionDef"
         },
         {
+          "name": "Controller.estimate",
+          "line": 102,
+          "kind": "FunctionDef"
+        },
+        {
           "name": "Controller.preview",
-          "line": 119,
+          "line": 129,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "Controller.remove",
+          "line": 139,
           "kind": "FunctionDef"
         },
         {
           "name": "Controller.relocate",
-          "line": 126,
+          "line": 160,
           "kind": "FunctionDef"
         }
       ],
@@ -504,7 +520,7 @@
       ]
     },
     "relocation/index_codebase.py": {
-      "sha256": "0f1ab07076aca8587a0b2497c0f0ff91c914368c39dfd86e41550c2b8dac7275",
+      "sha256": "be184290aa68ca1c4c691237a914f6fc8daaee2c7baf5cc40cb09523ef6d2cdd",
       "symbols": [
         {
           "name": "extend_html",
@@ -539,7 +555,7 @@
       ]
     },
     "relocation/test_controller.py": {
-      "sha256": "f78c7149929b174190335c163bc1175f94cf07e612fca1a2c383059058e48acb",
+      "sha256": "ed7b380dcc44b8a759c820862e30b7d901954ab14774471ef0e9b75b8267104b",
       "symbols": [
         {
           "name": "ControllerTests",
@@ -667,51 +683,76 @@
       ]
     },
     "relocation/ui.py": {
-      "sha256": "99490dbb01c0d281e1c0e6d7747aa20c6bb4806a617beea56d4850e0df22fdba",
+      "sha256": "b0aa64840001db74558f70490155a7340d079d1c3f6dca39b02a00455ecb910a",
       "symbols": [
         {
-          "name": "target_point",
+          "name": "SketchImage",
           "line": 11,
+          "kind": "ClassDef"
+        },
+        {
+          "name": "SketchImage.get_block_name",
+          "line": 13,
           "kind": "FunctionDef"
         },
         {
-          "name": "build_ui",
-          "line": 25,
+          "name": "SketchImage.preprocess",
+          "line": 16,
           "kind": "FunctionDef"
         },
         {
-          "name": "build_ui.reset",
+          "name": "target_point",
           "line": 28,
           "kind": "FunctionDef"
         },
         {
+          "name": "build_ui",
+          "line": 42,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.reset",
+          "line": 45,
+          "kind": "FunctionDef"
+        },
+        {
           "name": "build_ui.segment",
-          "line": 34,
-          "kind": "FunctionDef"
-        },
-        {
-          "name": "build_ui.import_mask",
-          "line": 44,
-          "kind": "FunctionDef"
-        },
-        {
-          "name": "build_ui.choose_target",
           "line": 51,
           "kind": "FunctionDef"
         },
         {
-          "name": "build_ui.estimate",
-          "line": 60,
+          "name": "build_ui.import_mask",
+          "line": 61,
           "kind": "FunctionDef"
         },
         {
-          "name": "build_ui.preview",
+          "name": "build_ui.choose_target",
           "line": 68,
           "kind": "FunctionDef"
         },
         {
+          "name": "build_ui.estimate",
+          "line": 77,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.preview",
+          "line": 85,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.remove",
+          "line": 91,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.prompts",
+          "line": 99,
+          "kind": "FunctionDef"
+        },
+        {
           "name": "build_ui.run",
-          "line": 74,
+          "line": 103,
           "kind": "FunctionDef"
         }
       ],
@@ -726,26 +767,36 @@
       ]
     },
     "relocation/worker.py": {
-      "sha256": "1dd37b997436cb514cb62d0e6c940f60794445630b96bae3b551b98ca6baf32d",
+      "sha256": "3ca05dd8a8b414e3555276b1a7a3be89899a42dd0b913c1aa506918e73be7c40",
       "symbols": [
         {
-          "name": "depth_job",
+          "name": "gpu_stats",
           "line": 12,
           "kind": "FunctionDef"
         },
         {
+          "name": "lama_job",
+          "line": 19,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "depth_job",
+          "line": 64,
+          "kind": "FunctionDef"
+        },
+        {
           "name": "brushnet_job",
-          "line": 31,
+          "line": 86,
           "kind": "FunctionDef"
         },
         {
           "name": "brushnet_job.inpaint",
-          "line": 66,
+          "line": 130,
           "kind": "FunctionDef"
         },
         {
           "name": "main",
-          "line": 107,
+          "line": 169,
           "kind": "FunctionDef"
         }
       ],
@@ -788,7 +839,7 @@
     [
       "relocation/worker.py",
       "../BrushNet/src/diffusers/pipelines/brushnet/pipeline_brushnet.py",
-      "two inpainting calls"
+      "one target generation or boundary repair call after LaMa"
     ],
     [
       "setup_relocation.sh",
