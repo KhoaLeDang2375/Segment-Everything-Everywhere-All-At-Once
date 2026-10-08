@@ -32,6 +32,24 @@ metadata = MetadataCatalog.get('coco_2017_train_panoptic')
 all_classes = [name.replace('-other','').replace('-merged','') for name in COCO_PANOPTIC_CLASSES] + ["others"]
 colors_list = [(np.array(color['color'])/255).tolist() for color in COCO_CATEGORIES] + [[1, 1, 1]]
 
+def _stroke_hw1(mask_ori):
+    """Reduce a Gradio sketch mask to one ink channel, shape HxWx1.
+
+    Sketch canvases often store a black brush in the alpha channel, so the
+    red channel is empty even when the user drew a stroke.
+    """
+    mask_np = np.asarray(mask_ori)
+    if mask_np.ndim == 2:
+        return mask_np[:, :, None]
+    if mask_np.shape[-1] == 1:
+        return mask_np
+    rgb = mask_np[..., :3].max(axis=-1)
+    if mask_np.shape[-1] >= 4:
+        alpha = mask_np[..., 3]
+        if alpha.min() != alpha.max() or (rgb.max() == 0 and alpha.max() > 0):
+            return alpha[:, :, None]
+    return rgb[:, :, None]
+
 def interactive_infer_image(model, audio_model, image, tasks, refimg=None, reftxt=None, audio_pth=None, video_pth=None):
     image_ori = transform(image['image'])
     mask_ori = image['mask']
@@ -83,9 +101,12 @@ def interactive_infer_image(model, audio_model, image, tasks, refimg=None, reftx
     stroke = None
     if 'Stroke' in tasks:
         model.model.task_switch['spatial'] = True
-        mask_ori = np.asarray(mask_ori)[:,:,0:1].copy()
-        mask_ori = torch.from_numpy(mask_ori).permute(2,0,1)[None,]
+        if mask_ori is None:
+            raise ValueError("Stroke mode needs a scribble on the image before Submit.")
+        mask_ori = torch.from_numpy(np.ascontiguousarray(_stroke_hw1(mask_ori))).permute(2, 0, 1)[None,].float()
         mask_ori = (F.interpolate(mask_ori, (height, width), mode='bilinear') > 0)
+        if not bool(mask_ori.any()):
+            raise ValueError("The scribble mask is empty. Draw on the object, then Submit.")
         data['stroke'] = mask_ori
 
         # overlay = mask_ori[0,0].float().numpy()[:,:,None] * np.array([0,255,0])
@@ -117,7 +138,12 @@ def interactive_infer_image(model, audio_model, image, tasks, refimg=None, reftx
         results,image_size,extra = model.model.evaluate_demo(batch_inputs)
 
     # If contians spatial use spatial:
-    if 'Stroke' in tasks:
+    # SEEM v1 already matches the stroke inside the spatial decoder.
+    stroke_from_spatial = 'Stroke' in tasks and isinstance(results, dict) and 'prev_mask' in results
+    if stroke_from_spatial:
+        pred_masks_pos = results['prev_mask'][0]
+        pred_class = torch.zeros(pred_masks_pos.shape[0], dtype=torch.long)
+    elif 'Stroke' in tasks:
         v_emb = results['pred_maskembs']
         s_emb = results['pred_pspatials']
         pred_masks = results['pred_masks']
@@ -173,7 +199,10 @@ def interactive_infer_image(model, audio_model, image, tasks, refimg=None, reftx
 
     # interpolate mask to ori size
     pred_masks_pos = (F.interpolate(pred_masks_pos[None,], image_size[-2:], mode='bilinear')[0,:,:data['height'],:data['width']] > 0.0).float().cpu().numpy()
-    texts = [all_classes[pred_class[0]]]
+    if stroke_from_spatial:
+        texts = ["object"] * len(pred_masks_pos)
+    else:
+        texts = [all_classes[pred_class[0]]]
 
     for idx, mask in enumerate(pred_masks_pos):
         # color = random_color(rgb=True, maximum=1).astype(np.int32).tolist()

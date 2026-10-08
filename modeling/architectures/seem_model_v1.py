@@ -375,6 +375,94 @@ class GeneralizedSEEM(nn.Module):
         del outputs
         return losses
 
+    def evaluate_demo(self, batched_inputs):
+        """Interactive prompts for the Gradio demo.
+
+        SEEM v1 has no ``task='demo'`` decoder. A stroke is a spatial query and
+        the matched mask is returned as ``prev_mask``. Text and audio prompts
+        are grounding queries, remapped to the ``pred_masks`` / ``pred_captions``
+        keys that ``demo/seem/tasks/interactive.py`` already post-processes.
+        """
+        assert len(batched_inputs) == 1, "only support batch size equal to 1"
+        images = [x["image"].to(self.device) for x in batched_inputs]
+        images = [(x - self.pixel_mean) / self.pixel_std for x in images]
+        images = ImageList.from_tensors(images, self.size_divisibility)
+
+        features = self.backbone(images.tensor)
+        mask_features, _, multi_scale_features = self.sem_seg_head.pixel_decoder.forward_features(features)
+
+        extra = {}
+        sample = batched_inputs[0]
+        has_stroke = 'stroke' in sample
+        has_text = 'text' in sample
+        has_audio = 'audio' in sample
+        if 'visual' in sample and not (has_stroke or has_text or has_audio):
+            raise NotImplementedError(
+                "Example and Video prompts use the SEEM demo decoder and are not "
+                "supported by SEEM v1. Use Stroke, Text, or Panoptic."
+            )
+
+        if has_stroke:
+            # Same dict the decoder captured at init, so this enables spatial queries.
+            self.task_switch['spatial'] = True
+            stroke = sample['stroke'].to(self.device)
+            pos_masks = stroke.unbind(0)
+            pos_masks = ImageList.from_tensors(pos_masks, self.size_divisibility).tensor.unbind(0)
+            neg_masks = (stroke & False).unbind(0)
+            neg_masks = ImageList.from_tensors(neg_masks, self.size_divisibility).tensor.unbind(0)
+            extra.update({
+                'spatial_query_pos_mask': pos_masks,
+                'spatial_query_neg_mask': neg_masks,
+            })
+            outputs = self.sem_seg_head.predictor(
+                multi_scale_features, mask_features, extra=extra, task='spatial'
+            )
+            if 'prev_mask' not in outputs:
+                raise RuntimeError("SEEM v1 spatial decoder did not return prev_mask.")
+            return outputs, images.tensor.shape, extra
+
+        prompt_texts = None
+        class_key = None
+        if has_text:
+            prompt_texts = sample['text']
+            class_key = 'grounding_class'
+        elif has_audio:
+            prompt_texts = sample['audio']
+            class_key = 'audio_class'
+
+        if prompt_texts is not None:
+            self.task_switch['grounding'] = True
+            gtext = self.sem_seg_head.predictor.lang_encoder.get_text_token_embeddings(
+                prompt_texts, name='grounding', token=False, norm=False
+            )
+            token_emb = gtext['token_emb']
+            tokens = gtext['tokens']
+            query_emb = token_emb[tokens['attention_mask'].bool()]
+            non_zero_query_mask = torch.zeros(
+                query_emb[:, None].shape[:-1], dtype=torch.bool, device=query_emb.device
+            )
+            extra['grounding_tokens'] = query_emb[:, None]
+            extra['grounding_nonzero_mask'] = non_zero_query_mask.t()
+            extra[class_key] = gtext['class_emb']
+
+            outputs = self.sem_seg_head.predictor(
+                multi_scale_features, mask_features, extra=extra, task='grounding_eval'
+            )
+            if 'pred_gmasks' not in outputs or 'pred_gtexts' not in outputs:
+                raise RuntimeError("SEEM v1 grounding decoder did not return grounding masks.")
+            gmasks = outputs['pred_gmasks']
+            remapped = {
+                'pred_masks': gmasks,
+                'pred_captions': outputs['pred_gtexts'],
+                'pred_logits': gmasks.new_zeros(gmasks.shape[0], gmasks.shape[1], 1),
+            }
+            return remapped, images.tensor.shape, extra
+
+        outputs = self.sem_seg_head.predictor(
+            multi_scale_features, mask_features, extra=extra, task='seg'
+        )
+        return outputs, images.tensor.shape, extra
+
     def evaluate(self, batched_inputs):
         images = [x["image"].to(self.device) for x in batched_inputs]
         images = [(x - self.pixel_mean) / self.pixel_std for x in images]
