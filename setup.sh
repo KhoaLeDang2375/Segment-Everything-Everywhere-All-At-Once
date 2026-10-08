@@ -67,7 +67,9 @@ pip install --no-cache-dir -q \
     "accelerate==0.23.0" \
     "kornia==0.7.0" \
     "wandb>=0.17.0" \
-    "gradio==3.50.2"
+    "gradio==3.50.2" \
+    "fastapi==0.104.1" \
+    "typing_extensions==4.8.0"
 
 # 5. Cài custom packages
 echo "[5/6] Installing custom packages (detectron2, whisper)..."
