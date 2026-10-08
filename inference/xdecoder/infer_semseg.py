@@ -53,7 +53,7 @@ def main(args=None):
     transform = transforms.Compose(t)
 
     stuff_classes = ['zebra','antelope','giraffe','ostrich','sky','water','grass','sand','tree']
-    stuff_colors = [random_color(rgb=True, maximum=255).astype(np.int).tolist() for _ in range(len(stuff_classes))]
+    stuff_colors = [random_color(rgb=True, maximum=255).astype(np.int_).tolist() for _ in range(len(stuff_classes))]
     stuff_dataset_id_to_contiguous_id = {x:x for x in range(len(stuff_classes))}
 
     MetadataCatalog.get("demo").set(

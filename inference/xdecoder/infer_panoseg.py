@@ -55,8 +55,8 @@ def main(args=None):
 
     thing_classes = ['car','person','traffic light', 'truck', 'motorcycle']
     stuff_classes = ['building','sky','street','tree','rock','sidewalk']
-    thing_colors = [random_color(rgb=True, maximum=255).astype(np.int).tolist() for _ in range(len(thing_classes))]
-    stuff_colors = [random_color(rgb=True, maximum=255).astype(np.int).tolist() for _ in range(len(stuff_classes))]
+    thing_colors = [random_color(rgb=True, maximum=255).astype(np.int_).tolist() for _ in range(len(thing_classes))]
+    stuff_colors = [random_color(rgb=True, maximum=255).astype(np.int_).tolist() for _ in range(len(stuff_classes))]
     thing_dataset_id_to_contiguous_id = {x:x for x in range(len(thing_classes))}
     stuff_dataset_id_to_contiguous_id = {x+len(thing_classes):x for x in range(len(stuff_classes))}
 

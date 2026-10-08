@@ -32,7 +32,7 @@ def load_pascalvoc_instances(name: str, dirname: str, mode: str, split: str):
         class_names: list or tuple of class names
     """
     with PathManager.open(os.path.join(dirname, 'ImageSets', 'Segmentation', split + ".txt")) as f:
-        fileids = np.loadtxt(f, dtype=np.str)
+        fileids = np.loadtxt(f, dtype=np.str_)
 
     dicts = []
     for field in fileids:

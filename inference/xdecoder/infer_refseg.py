@@ -77,7 +77,7 @@ def main(args=None):
 
         grd_mask = (outputs[0]['grounding_mask'] > 0).float().cpu().numpy()
         for idx, mask in enumerate(grd_mask):
-            demo = visual.draw_binary_mask(mask, color=random_color(rgb=True, maximum=1).astype(np.int).tolist(), text=text[idx], alpha=0.3)
+            demo = visual.draw_binary_mask(mask, color=random_color(rgb=True, maximum=1).astype(np.int_).tolist(), text=text[idx], alpha=0.3)
 
         output_folder = os.path.join(os.path.join(output_root))
         if not os.path.exists(output_folder):

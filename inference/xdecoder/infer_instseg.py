@@ -55,7 +55,7 @@ def main(args=None):
     transform = transforms.Compose(t)
 
     thing_classes = ["owl"]
-    thing_colors = [random_color(rgb=True, maximum=255).astype(np.int).tolist() for _ in range(len(thing_classes))]
+    thing_colors = [random_color(rgb=True, maximum=255).astype(np.int_).tolist() for _ in range(len(thing_classes))]
     thing_dataset_id_to_contiguous_id = {x:x for x in range(len(thing_classes))}
 
     MetadataCatalog.get("demo").set(
