@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-08T14:24:12.038057+00:00",
-  "seem_revision": "069cc4f24d06f9680206729ff351bf99fdcb2a3a",
+  "generated_at": "2026-10-08T23:30:22.884759+00:00",
+  "seem_revision": "ea2bce44911683c9ee24e0a4711b0854a50cbb9e",
   "brushnet_revision": "0f9d9e54ca85c40a11a8f0504b4b5b2e7e8fd14d",
   "provenance": "AST declarations/imports + explicit reviewed integration links; existing Graphify semantic graph retained",
   "files": {
@@ -667,46 +667,51 @@
       ]
     },
     "relocation/ui.py": {
-      "sha256": "3f30df2cbda6148000ac19f3802d25e0f9b5ab6188f4b86e5b4aba175fb0859d",
+      "sha256": "99490dbb01c0d281e1c0e6d7747aa20c6bb4806a617beea56d4850e0df22fdba",
       "symbols": [
         {
-          "name": "build_ui",
+          "name": "target_point",
           "line": 11,
           "kind": "FunctionDef"
         },
         {
+          "name": "build_ui",
+          "line": 25,
+          "kind": "FunctionDef"
+        },
+        {
           "name": "build_ui.reset",
-          "line": 14,
+          "line": 28,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.segment",
-          "line": 20,
+          "line": 34,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.import_mask",
-          "line": 30,
+          "line": 44,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.choose_target",
-          "line": 37,
+          "line": 51,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.estimate",
-          "line": 48,
+          "line": 60,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.preview",
-          "line": 56,
+          "line": 68,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.run",
-          "line": 62,
+          "line": 74,
           "kind": "FunctionDef"
         }
       ],

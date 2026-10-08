@@ -8,6 +8,20 @@ from .geometry import overlay, arrow_preview, centroid
 from .config import DEPTH_MODELS
 
 
+def target_point(index, image):
+    """Reject missing/NaN browser coordinates before converting them to pixels."""
+    try:
+        coordinates = np.asarray(index, dtype=float)
+    except (TypeError, ValueError):
+        coordinates = np.array([])
+    if coordinates.shape != (2,) or not np.isfinite(coordinates).all():
+        raise ValueError('Chưa nhận được tọa độ click. Chờ ảnh tải xong rồi bấm trực tiếp lên ảnh đích; nếu vẫn lỗi, tải lại trang bằng Ctrl+Shift+R.')
+    x, y = coordinates
+    if not (0 <= x < image.shape[1] and 0 <= y < image.shape[0]):
+        raise ValueError('Điểm chọn nằm ngoài ảnh.')
+    return int(x), int(y)
+
+
 def build_ui(settings):
     control = Controller(settings)
 
@@ -37,9 +51,7 @@ def build_ui(settings):
     def choose_target(canvas, state, event: gr.SelectData):
         try:
             _, image = working_image(canvas)
-            point = (int(event.index[0]), int(event.index[1]))
-            if not (0 <= point[0] < image.shape[1] and 0 <= point[1] < image.shape[0]):
-                raise ValueError('Điểm chọn nằm ngoài ảnh.')
+            point = target_point(getattr(event, 'index', None), image)
             preview = arrow_preview(state['image'], state['mask'], point) if state else Image.fromarray(image)
             return point, preview, '', f'Tâm đích: ({point[0]}, {point[1]}). Nếu cần scale tự động, ước lượng depth lại cho điểm này.'
         except Exception as error:
@@ -78,7 +90,11 @@ def build_ui(settings):
         with gr.Row():
             canvas = gr.Image(source='upload', tool='sketch', type='numpy',
                 label='Ảnh nguồn · vẽ nét bên trong vật thể (không vẽ mũi tên ở canvas này)', interactive=True)
-            target_view = gr.Image(type='numpy', label='Chọn tâm đích · bấm lên ảnh', interactive=False)
+            # Gradio 3.50.2's static image binds click to a wrapping button;
+            # its coordinate helper reads naturalWidth from that button and
+            # emits [null, null]. The interactive editor binds click to img.
+            target_view = gr.Image(source='upload', tool='editor', type='numpy',
+                label='Chọn tâm đích · bấm lên ảnh (không thay ảnh hoặc dùng crop)', interactive=True)
         text = gr.Textbox(label='Mô tả vật thể (English)', placeholder='the red apple, the glasses, the person on the left...')
         gr.Markdown('Có scribble: SEEM dùng spatial prompt; text dùng cho BrushNet. Không có scribble: SEEM dùng text grounding. Mũi tên được tạo từ tâm mask đến điểm bạn bấm.')
         with gr.Accordion('Sửa vùng chọn / dùng mask có sẵn', open=False):
