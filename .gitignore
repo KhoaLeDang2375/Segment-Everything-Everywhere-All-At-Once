@@ -98,6 +98,11 @@ MODELS/*
 
 eval_seem.sh
 train_seem.sh
+.venv-brushnet/
+.venv-depth/
+relocation_outputs/
+checkpoints/
+.ui-validation/
 train_seem_v0.sh
 
 draws/

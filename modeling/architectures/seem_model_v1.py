@@ -408,7 +408,7 @@ class GeneralizedSEEM(nn.Module):
             stroke = sample['stroke'].to(self.device)
             pos_masks = stroke.unbind(0)
             pos_masks = ImageList.from_tensors(pos_masks, self.size_divisibility).tensor.unbind(0)
-            neg_masks = (stroke & False).unbind(0)
+            neg_masks = sample.get('negative_stroke', stroke & False).to(self.device).unbind(0)
             neg_masks = ImageList.from_tensors(neg_masks, self.size_divisibility).tensor.unbind(0)
             extra.update({
                 'spatial_query_pos_mask': pos_masks,

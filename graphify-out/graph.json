@@ -1,7 +1,10 @@
 {
   "directed": false,
   "multigraph": false,
-  "graph": {},
+  "graph": {
+    "relocation_index": "relocation-index.json",
+    "relocation_indexed_at": "2026-10-08T14:24:12.038057+00:00"
+  },
   "nodes": [
     {
       "id": "modeling_vision_encoder_transformer_blocks_transformer",
@@ -11643,7 +11646,7 @@
     },
     {
       "id": "datasets_registration_register_ade20k_panoptic_rationale_274",
-      "label": "Register a \"standard\" version of ADE20k panoptic segmentation dataset named\u2026",
+      "label": "Register a \"standard\" version of ADE20k panoptic segmentation dataset named…",
       "_origin": "ast",
       "community": 0,
       "file_type": "rationale",
@@ -11653,7 +11656,7 @@
     },
     {
       "id": "datasets_registration_register_vlp_datasets_rationale_40",
-      "label": "Args: image_dir (str): path to the raw dataset. e.g., \"~/coco/train2017\".\u2026",
+      "label": "Args: image_dir (str): path to the raw dataset. e.g., \"~/coco/train2017\".…",
       "_origin": "ast",
       "community": 0,
       "file_type": "rationale",
@@ -11703,7 +11706,7 @@
     },
     {
       "id": "modeling_body_xdecoder_head_rationale_35",
-      "label": "NOTE: this interface is experimental. Args: input_shape: shapes (channels and\u2026",
+      "label": "NOTE: this interface is experimental. Args: input_shape: shapes (channels and…",
       "_origin": "ast",
       "community": 1,
       "file_type": "rationale",
@@ -11783,7 +11786,7 @@
     },
     {
       "id": "modeling_modules_criterion_rationale_647",
-      "label": "Compute the losses related to the bounding boxes, the L1 regression loss and\u2026",
+      "label": "Compute the losses related to the bounding boxes, the L1 regression loss and…",
       "_origin": "ast",
       "community": 10,
       "file_type": "rationale",
@@ -11793,7 +11796,7 @@
     },
     {
       "id": "modeling_utils_misc_rationale_11",
-      "label": "Misc functions, including distributed helpers. Mostly copy-paste from\u2026",
+      "label": "Misc functions, including distributed helpers. Mostly copy-paste from…",
       "_origin": "ast",
       "community": 10,
       "file_type": "rationale",
@@ -11813,7 +11816,7 @@
     },
     {
       "id": "modeling_utils_misc_rationale_223",
-      "label": "Structure that holds a list of images (of possibly varying sizes) as a single\u2026",
+      "label": "Structure that holds a list of images (of possibly varying sizes) as a single…",
       "_origin": "ast",
       "community": 10,
       "file_type": "rationale",
@@ -11823,7 +11826,7 @@
     },
     {
       "id": "modeling_utils_misc_rationale_235",
-      "label": "Arguments: tensor (Tensor): of shape (N, H, W) or (N, C_1, ..., C_K, H, W)\u2026",
+      "label": "Arguments: tensor (Tensor): of shape (N, H, W) or (N, C_1, ..., C_K, H, W)…",
       "_origin": "ast",
       "community": 10,
       "file_type": "rationale",
@@ -11833,7 +11836,7 @@
     },
     {
       "id": "modeling_utils_misc_rationale_248",
-      "label": "Access the individual image in its original size. Args: idx: int or slice\u2026",
+      "label": "Access the individual image in its original size. Args: idx: int or slice…",
       "_origin": "ast",
       "community": 10,
       "file_type": "rationale",
@@ -11843,7 +11846,7 @@
     },
     {
       "id": "modeling_utils_misc_rationale_273",
-      "label": "Args: tensors: a tuple or list of `torch.Tensor`, each of shape (Hi, Wi) or\u2026",
+      "label": "Args: tensors: a tuple or list of `torch.Tensor`, each of shape (Hi, Wi) or…",
       "_origin": "ast",
       "community": 10,
       "file_type": "rationale",
@@ -12063,7 +12066,7 @@
     },
     {
       "id": "trainer_utils_misc_rationale_104",
-      "label": "r''' Applies exponential smoothing on a model's parameters, updating them in\u2026",
+      "label": "r''' Applies exponential smoothing on a model's parameters, updating them in…",
       "_origin": "ast",
       "community": 12,
       "file_type": "rationale",
@@ -12073,7 +12076,7 @@
     },
     {
       "id": "trainer_utils_misc_rationale_41",
-      "label": "Move the batch to the device. It should be called before feeding the batch to\u2026",
+      "label": "Move the batch to the device. It should be called before feeding the batch to…",
       "_origin": "ast",
       "community": 12,
       "file_type": "rationale",
@@ -12083,7 +12086,7 @@
     },
     {
       "id": "trainer_utils_misc_rationale_69",
-      "label": "Cast the float32 tensors in a batch to float16. It should be called before\u2026",
+      "label": "Cast the float32 tensors in a batch to float16. It should be called before…",
       "_origin": "ast",
       "community": 12,
       "file_type": "rationale",
@@ -12693,7 +12696,7 @@
     },
     {
       "id": "modeling_modules_postprocessing_rationale_12",
-      "label": "Resize the output instances. The input images are often resized when entering\u2026",
+      "label": "Resize the output instances. The input images are often resized when entering…",
       "_origin": "ast",
       "community": 17,
       "file_type": "rationale",
@@ -12703,7 +12706,7 @@
     },
     {
       "id": "modeling_vision_encoder_transformer_blocks_rationale_3",
-      "label": "Transformer class. Copy-paste from torch.nn.Transformer with modifications: *\u2026",
+      "label": "Transformer class. Copy-paste from torch.nn.Transformer with modifications: *…",
       "_origin": "ast",
       "community": 17,
       "file_type": "rationale",
@@ -12823,7 +12826,7 @@
     },
     {
       "id": "modeling_modules_point_features_rationale_122",
-      "label": "Find `num_points` most uncertain points from `uncertainty_map` grid. Args:\u2026",
+      "label": "Find `num_points` most uncertain points from `uncertainty_map` grid. Args:…",
       "_origin": "ast",
       "community": 18,
       "file_type": "rationale",
@@ -12833,7 +12836,7 @@
     },
     {
       "id": "modeling_modules_point_features_rationale_48",
-      "label": "Generate regular square grid of points in [0, 1] x [0, 1] coordinate space.\u2026",
+      "label": "Generate regular square grid of points in [0, 1] x [0, 1] coordinate space.…",
       "_origin": "ast",
       "community": 18,
       "file_type": "rationale",
@@ -12963,7 +12966,7 @@
     },
     {
       "id": "modeling_vision_backbone_vit_rationale_129",
-      "label": "Transformer blocks with support of window attention and residual propagation\u2026",
+      "label": "Transformer blocks with support of window attention and residual propagation…",
       "_origin": "ast",
       "community": 2,
       "file_type": "rationale",
@@ -12973,7 +12976,7 @@
     },
     {
       "id": "modeling_vision_backbone_vit_rationale_144",
-      "label": "Args: dim (int): Number of input channels. num_heads (int): Number of attention\u2026",
+      "label": "Args: dim (int): Number of input channels. num_heads (int): Number of attention…",
       "_origin": "ast",
       "community": 2,
       "file_type": "rationale",
@@ -12993,7 +12996,7 @@
     },
     {
       "id": "modeling_vision_backbone_vit_rationale_253",
-      "label": "Partition into non-overlapping windows with padding if needed. Args: x\u2026",
+      "label": "Partition into non-overlapping windows with padding if needed. Args: x…",
       "_origin": "ast",
       "community": 2,
       "file_type": "rationale",
@@ -13003,7 +13006,7 @@
     },
     {
       "id": "modeling_vision_backbone_vit_rationale_279",
-      "label": "Window unpartition into original sequences and removing padding. Args: windows\u2026",
+      "label": "Window unpartition into original sequences and removing padding. Args: windows…",
       "_origin": "ast",
       "community": 2,
       "file_type": "rationale",
@@ -13013,7 +13016,7 @@
     },
     {
       "id": "modeling_vision_backbone_vit_rationale_302",
-      "label": "Get relative positional embeddings according to the relative positions of query\u2026",
+      "label": "Get relative positional embeddings according to the relative positions of query…",
       "_origin": "ast",
       "community": 2,
       "file_type": "rationale",
@@ -13023,7 +13026,7 @@
     },
     {
       "id": "modeling_vision_backbone_vit_rationale_342",
-      "label": "Calculate decomposed Relative Positional Embeddings from :paper:`mvitv2`.\u2026",
+      "label": "Calculate decomposed Relative Positional Embeddings from :paper:`mvitv2`.…",
       "_origin": "ast",
       "community": 2,
       "file_type": "rationale",
@@ -13043,7 +13046,7 @@
     },
     {
       "id": "modeling_vision_backbone_vit_rationale_386",
-      "label": "Args: kernel_size (Tuple): kernel size of the projection layer. stride (Tuple):\u2026",
+      "label": "Args: kernel_size (Tuple): kernel size of the projection layer. stride (Tuple):…",
       "_origin": "ast",
       "community": 2,
       "file_type": "rationale",
@@ -13053,7 +13056,7 @@
     },
     {
       "id": "modeling_vision_backbone_vit_rationale_46",
-      "label": "Args: img_size (int): Input image size. patch_size (int): Patch size. in_chans\u2026",
+      "label": "Args: img_size (int): Input image size. patch_size (int): Patch size. in_chans…",
       "_origin": "ast",
       "community": 2,
       "file_type": "rationale",
@@ -13113,7 +13116,7 @@
     },
     {
       "id": "trainer_utils_hook_rationale_39",
-      "label": "Add a global hook function that captures all unhandled exceptions. The function\u2026",
+      "label": "Add a global hook function that captures all unhandled exceptions. The function…",
       "_origin": "ast",
       "community": 20,
       "file_type": "rationale",
@@ -13133,7 +13136,7 @@
     },
     {
       "id": "trainer_utils_mpi_adapter_rationale_12",
-      "label": "MPIAdapter automatically detects and analyzes the training environment for\u2026",
+      "label": "MPIAdapter automatically detects and analyzes the training environment for…",
       "_origin": "ast",
       "community": 20,
       "file_type": "rationale",
@@ -13153,7 +13156,7 @@
     },
     {
       "id": "trainer_utils_mpi_adapter_rationale_134",
-      "label": "Sets environment variables for world size, rank, local rank, master addr, and\u2026",
+      "label": "Sets environment variables for world size, rank, local rank, master addr, and…",
       "_origin": "ast",
       "community": 20,
       "file_type": "rationale",
@@ -13223,7 +13226,7 @@
     },
     {
       "id": "modeling_vision_encoder_ops_modules_ms_deform_attn_rationale_36",
-      "label": "Multi-Scale Deformable Attention Module :param d_model hidden dimension :param\u2026",
+      "label": "Multi-Scale Deformable Attention Module :param d_model hidden dimension :param…",
       "_origin": "ast",
       "community": 21,
       "file_type": "rationale",
@@ -13233,7 +13236,7 @@
     },
     {
       "id": "modeling_vision_encoder_ops_modules_ms_deform_attn_rationale_83",
-      "label": ":param query (N, Length_{query}, C) :param reference_points (N, Length_{query},\u2026",
+      "label": ":param query (N, Length_{query}, C) :param reference_points (N, Length_{query},…",
       "_origin": "ast",
       "community": 21,
       "file_type": "rationale",
@@ -13253,7 +13256,7 @@
     },
     {
       "id": "modeling_modules_postprocessing_rationale_100",
-      "label": "Return semantic segmentation predictions in the original resolution. The input\u2026",
+      "label": "Return semantic segmentation predictions in the original resolution. The input…",
       "_origin": "ast",
       "community": 22,
       "file_type": "rationale",
@@ -13343,7 +13346,7 @@
     },
     {
       "id": "modeling_utils_attention_rationale_330",
-      "label": "r\"\"\"Allows the model to jointly attend to information from different\u2026",
+      "label": "r\"\"\"Allows the model to jointly attend to information from different…",
       "_origin": "ast",
       "community": 24,
       "file_type": "rationale",
@@ -13353,7 +13356,7 @@
     },
     {
       "id": "modeling_utils_attention_rationale_45",
-      "label": "r\"\"\" Args: query, key, value: map a query and a set of key-value pairs to an\u2026",
+      "label": "r\"\"\" Args: query, key, value: map a query and a set of key-value pairs to an…",
       "_origin": "ast",
       "community": 24,
       "file_type": "rationale",
@@ -13373,7 +13376,7 @@
     },
     {
       "id": "modeling_architectures_seem_model_v0_rationale_267",
-      "label": "Args: batched_inputs: a list, batched outputs of :class:`DatasetMapper`. Each\u2026",
+      "label": "Args: batched_inputs: a list, batched outputs of :class:`DatasetMapper`. Each…",
       "_origin": "ast",
       "community": 25,
       "file_type": "rationale",
@@ -13413,7 +13416,7 @@
     },
     {
       "id": "datasets_build_rationale_108",
-      "label": "Load and prepare dataset dicts for instance detection/segmentation and semantic\u2026",
+      "label": "Load and prepare dataset dicts for instance detection/segmentation and semantic…",
       "_origin": "ast",
       "community": 26,
       "file_type": "rationale",
@@ -13423,7 +13426,7 @@
     },
     {
       "id": "datasets_build_rationale_147",
-      "label": "Uses the given `dataset_name` argument (instead of the names in cfg), because\u2026",
+      "label": "Uses the given `dataset_name` argument (instead of the names in cfg), because…",
       "_origin": "ast",
       "community": 26,
       "file_type": "rationale",
@@ -13433,7 +13436,7 @@
     },
     {
       "id": "datasets_build_rationale_70",
-      "label": "Filter out images with none annotations or only crowd annotations (i.e., images\u2026",
+      "label": "Filter out images with none annotations or only crowd annotations (i.e., images…",
       "_origin": "ast",
       "community": 26,
       "file_type": "rationale",
@@ -13443,7 +13446,7 @@
     },
     {
       "id": "utils_config_rationale_5",
-      "label": "The same as `fvcore.common.config.CfgNode`, but different in: 1. Use unsafe\u2026",
+      "label": "The same as `fvcore.common.config.CfgNode`, but different in: 1. Use unsafe…",
       "_origin": "ast",
       "community": 26,
       "file_type": "rationale",
@@ -13473,7 +13476,7 @@
     },
     {
       "id": "modeling_language_loss_rationale_120",
-      "label": "Run all_gather on arbitrary picklable data (not necessarily tensors) Args:\u2026",
+      "label": "Run all_gather on arbitrary picklable data (not necessarily tensors) Args:…",
       "_origin": "ast",
       "community": 27,
       "file_type": "rationale",
@@ -13483,7 +13486,7 @@
     },
     {
       "id": "modeling_language_loss_rationale_42",
-      "label": "Args: image_feat (torch.Tensor): shape [B, L1, C] # B: batch_size, L1: 1, C:\u2026",
+      "label": "Args: image_feat (torch.Tensor): shape [B, L1, C] # B: batch_size, L1: 1, C:…",
       "_origin": "ast",
       "community": 27,
       "file_type": "rationale",
@@ -13573,7 +13576,7 @@
     },
     {
       "id": "modeling_interface_seem_v0_rationale_50",
-      "label": "NOTE: this interface is experimental. Args: in_channels: channels of the input\u2026",
+      "label": "NOTE: this interface is experimental. Args: in_channels: channels of the input…",
       "_origin": "ast",
       "community": 28,
       "file_type": "rationale",
@@ -13583,7 +13586,7 @@
     },
     {
       "id": "modeling_modules_position_encoding_rationale_13",
-      "label": "This is a more standard version of the position embedding, very similar to the\u2026",
+      "label": "This is a more standard version of the position embedding, very similar to the…",
       "_origin": "ast",
       "community": 28,
       "file_type": "rationale",
@@ -13883,7 +13886,7 @@
     },
     {
       "id": "modeling_modules_matcher_rationale_561",
-      "label": "Performs the matching Params: outputs: This is a dict that contains at least\u2026",
+      "label": "Performs the matching Params: outputs: This is a dict that contains at least…",
       "_origin": "ast",
       "community": 31,
       "file_type": "rationale",
@@ -13893,7 +13896,7 @@
     },
     {
       "id": "modeling_modules_matcher_rationale_79",
-      "label": "This class computes an assignment between the targets and the predictions of\u2026",
+      "label": "This class computes an assignment between the targets and the predictions of…",
       "_origin": "ast",
       "community": 31,
       "file_type": "rationale",
@@ -13903,7 +13906,7 @@
     },
     {
       "id": "modeling_modules_point_features_rationale_22",
-      "label": "A wrapper around :function:`torch.nn.functional.grid_sample` to support 3D\u2026",
+      "label": "A wrapper around :function:`torch.nn.functional.grid_sample` to support 3D…",
       "_origin": "ast",
       "community": 31,
       "file_type": "rationale",
@@ -13913,7 +13916,7 @@
     },
     {
       "id": "modeling_modules_point_features_rationale_222",
-      "label": "Sample point labels from ground truth mask given point_coords. Args: instances\u2026",
+      "label": "Sample point labels from ground truth mask given point_coords. Args: instances…",
       "_origin": "ast",
       "community": 31,
       "file_type": "rationale",
@@ -13923,7 +13926,7 @@
     },
     {
       "id": "datasets_dataset_mappers_vlp_dataset_mapper_rationale_49",
-      "label": "A callable which takes a dataset dict in Detectron2 Dataset format, and map it\u2026",
+      "label": "A callable which takes a dataset dict in Detectron2 Dataset format, and map it…",
       "_origin": "ast",
       "community": 32,
       "file_type": "rationale",
@@ -13933,7 +13936,7 @@
     },
     {
       "id": "datasets_dataset_mappers_vlp_dataset_mapper_rationale_75",
-      "label": "NOTE: this interface is experimental. Args: is_train: for training or inference\u2026",
+      "label": "NOTE: this interface is experimental. Args: is_train: for training or inference…",
       "_origin": "ast",
       "community": 32,
       "file_type": "rationale",
@@ -14023,7 +14026,7 @@
     },
     {
       "id": "modeling_modules_criterion_rationale_103",
-      "label": "This class computes the loss for DETR. The process happens in two steps: 1) we\u2026",
+      "label": "This class computes the loss for DETR. The process happens in two steps: 1) we…",
       "_origin": "ast",
       "community": 36,
       "file_type": "rationale",
@@ -14033,7 +14036,7 @@
     },
     {
       "id": "modeling_modules_criterion_rationale_111",
-      "label": "Create the criterion. Parameters: num_classes: number of object categories,\u2026",
+      "label": "Create the criterion. Parameters: num_classes: number of object categories,…",
       "_origin": "ast",
       "community": 36,
       "file_type": "rationale",
@@ -14043,7 +14046,7 @@
     },
     {
       "id": "modeling_modules_criterion_rationale_139",
-      "label": "Classification loss (NLL) targets dicts must contain the key \"labels\"\u2026",
+      "label": "Classification loss (NLL) targets dicts must contain the key \"labels\"…",
       "_origin": "ast",
       "community": 36,
       "file_type": "rationale",
@@ -14053,7 +14056,7 @@
     },
     {
       "id": "modeling_modules_criterion_rationale_721",
-      "label": "This performs the loss computation. Parameters: outputs: dict of tensors, see\u2026",
+      "label": "This performs the loss computation. Parameters: outputs: dict of tensors, see…",
       "_origin": "ast",
       "community": 36,
       "file_type": "rationale",
@@ -14083,7 +14086,7 @@
     },
     {
       "id": "datasets_evaluation_segmentation_evaluation_rationale_116",
-      "label": "Evaluates standard semantic segmentation metrics\u2026",
+      "label": "Evaluates standard semantic segmentation metrics…",
       "_origin": "ast",
       "community": 37,
       "file_type": "rationale",
@@ -14093,7 +14096,7 @@
     },
     {
       "id": "utils_distributed_rationale_88",
-      "label": "Helper function to synchronize (barrier) among all processes when using\u2026",
+      "label": "Helper function to synchronize (barrier) among all processes when using…",
       "_origin": "ast",
       "community": 37,
       "file_type": "rationale",
@@ -14173,7 +14176,7 @@
     },
     {
       "id": "modeling_vision_backbone_focal_rationale_512",
-      "label": "# NOTE: different from interpolation used in self-attention, we use padding or\u2026",
+      "label": "# NOTE: different from interpolation used in self-attention, we use padding or…",
       "_origin": "ast",
       "community": 39,
       "file_type": "rationale",
@@ -14193,7 +14196,7 @@
     },
     {
       "id": "modeling_vision_backbone_davit_rationale_321",
-      "label": "DaViT: Dual-Attention Transformer Args: img_size (int): Image size, Default:\u2026",
+      "label": "DaViT: Dual-Attention Transformer Args: img_size (int): Image size, Default:…",
       "_origin": "ast",
       "community": 4,
       "file_type": "rationale",
@@ -14233,7 +14236,7 @@
     },
     {
       "id": "datasets_build_rationale_274",
-      "label": "Build a dataloader for object detection with some default features. This\u2026",
+      "label": "Build a dataloader for object detection with some default features. This…",
       "_origin": "ast",
       "community": 40,
       "file_type": "rationale",
@@ -14243,7 +14246,7 @@
     },
     {
       "id": "datasets_dataset_mappers_vlp_dataset_mapper_rationale_29",
-      "label": "Create a list of default :class:`Augmentation` from config. Now it includes\u2026",
+      "label": "Create a list of default :class:`Augmentation` from config. Now it includes…",
       "_origin": "ast",
       "community": 41,
       "file_type": "rationale",
@@ -14323,7 +14326,7 @@
     },
     {
       "id": "modeling_vision_backbone_backbone_rationale_23",
-      "label": "Subclasses must override this method, but adhere to the same return type.\u2026",
+      "label": "Subclasses must override this method, but adhere to the same return type.…",
       "_origin": "ast",
       "community": 43,
       "file_type": "rationale",
@@ -14333,7 +14336,7 @@
     },
     {
       "id": "modeling_vision_backbone_backbone_rationale_33",
-      "label": "Some backbones require the input height and width to be divisible by a specific\u2026",
+      "label": "Some backbones require the input height and width to be divisible by a specific…",
       "_origin": "ast",
       "community": 43,
       "file_type": "rationale",
@@ -14353,7 +14356,7 @@
     },
     {
       "id": "modeling_vision_backbone_focal_rationale_119",
-      "label": "Focal Modulation Block. Args: dim (int): Number of input channels. mlp_ratio\u2026",
+      "label": "Focal Modulation Block. Args: dim (int): Number of input channels. mlp_ratio…",
       "_origin": "ast",
       "community": 44,
       "file_type": "rationale",
@@ -14363,7 +14366,7 @@
     },
     {
       "id": "modeling_vision_backbone_focal_rationale_167",
-      "label": "Forward function. Args: x: Input feature, tensor size (B, H*W, C). H, W:\u2026",
+      "label": "Forward function. Args: x: Input feature, tensor size (B, H*W, C). H, W:…",
       "_origin": "ast",
       "community": 44,
       "file_type": "rationale",
@@ -14373,7 +14376,7 @@
     },
     {
       "id": "modeling_vision_backbone_focal_rationale_198",
-      "label": "A basic focal modulation layer for one stage. Args: dim (int): Number of\u2026",
+      "label": "A basic focal modulation layer for one stage. Args: dim (int): Number of…",
       "_origin": "ast",
       "community": 44,
       "file_type": "rationale",
@@ -14383,7 +14386,7 @@
     },
     {
       "id": "modeling_vision_backbone_focal_rationale_288",
-      "label": "Image to Patch Embedding Args: patch_size (int): Patch token size. Default: 4.\u2026",
+      "label": "Image to Patch Embedding Args: patch_size (int): Patch token size. Default: 4.…",
       "_origin": "ast",
       "community": 45,
       "file_type": "rationale",
@@ -14393,7 +14396,7 @@
     },
     {
       "id": "modeling_vision_backbone_focal_rationale_341",
-      "label": "FocalNet backbone. Args: pretrain_img_size (int): Input image size for training\u2026",
+      "label": "FocalNet backbone. Args: pretrain_img_size (int): Input image size for training…",
       "_origin": "ast",
       "community": 45,
       "file_type": "rationale",
@@ -14403,7 +14406,7 @@
     },
     {
       "id": "utils_visualizer_rationale_259",
-      "label": "Args: img (ndarray): an RGB image of shape (H, W, 3) in range [0, 255]. scale\u2026",
+      "label": "Args: img (ndarray): an RGB image of shape (H, W, 3) in range [0, 255]. scale…",
       "_origin": "ast",
       "community": 46,
       "file_type": "rationale",
@@ -14413,7 +14416,7 @@
     },
     {
       "id": "utils_visualizer_rationale_270",
-      "label": "Args: Same as in :meth:`__init__()`. Returns: fig (matplotlib.pyplot.figure):\u2026",
+      "label": "Args: Same as in :meth:`__init__()`. Returns: fig (matplotlib.pyplot.figure):…",
       "_origin": "ast",
       "community": 46,
       "file_type": "rationale",
@@ -14433,7 +14436,7 @@
     },
     {
       "id": "utils_visualizer_rationale_303",
-      "label": "Args: filepath (str): a string that contains the absolute path, including the\u2026",
+      "label": "Args: filepath (str): a string that contains the absolute path, including the…",
       "_origin": "ast",
       "community": 46,
       "file_type": "rationale",
@@ -14443,7 +14446,7 @@
     },
     {
       "id": "utils_visualizer_rationale_311",
-      "label": "Returns: ndarray: the visualized image of shape (H, W, 3) (RGB) in uint8 type.\u2026",
+      "label": "Returns: ndarray: the visualized image of shape (H, W, 3) (RGB) in uint8 type.…",
       "_origin": "ast",
       "community": 46,
       "file_type": "rationale",
@@ -14453,7 +14456,7 @@
     },
     {
       "id": "utils_visualizer_rationale_358",
-      "label": "Args: img_rgb: a numpy array of shape (H, W, C), where H and W correspond to\u2026",
+      "label": "Args: img_rgb: a numpy array of shape (H, W, C), where H and W correspond to…",
       "_origin": "ast",
       "community": 46,
       "file_type": "rationale",
@@ -14473,7 +14476,7 @@
     },
     {
       "id": "modeling_utils_config_rationale_111",
-      "label": "Use `from_config` to obtain explicit arguments. Returns: dict: arguments to be\u2026",
+      "label": "Use `from_config` to obtain explicit arguments. Returns: dict: arguments to be…",
       "_origin": "ast",
       "community": 47,
       "file_type": "rationale",
@@ -14483,7 +14486,7 @@
     },
     {
       "id": "modeling_utils_config_rationale_8",
-      "label": "Decorate a function or a class's __init__ method so that it can be called with\u2026",
+      "label": "Decorate a function or a class's __init__ method so that it can be called with…",
       "_origin": "ast",
       "community": 47,
       "file_type": "rationale",
@@ -14493,7 +14496,7 @@
     },
     {
       "id": "modeling_utils_config_rationale_95",
-      "label": "Returns: bool: whether the arguments contain CfgNode and should be considered\u2026",
+      "label": "Returns: bool: whether the arguments contain CfgNode and should be considered…",
       "_origin": "ast",
       "community": 47,
       "file_type": "rationale",
@@ -14503,7 +14506,7 @@
     },
     {
       "id": "modeling_interface_prototype_attention_data_struct_seemv0_rationale_43",
-      "label": "Store dataset structure for cross/self attention task_switch: switch for\u2026",
+      "label": "Store dataset structure for cross/self attention task_switch: switch for…",
       "_origin": "ast",
       "community": 48,
       "file_type": "rationale",
@@ -14513,7 +14516,7 @@
     },
     {
       "id": "datasets_visual_sampler_polygon_rationale_54",
-      "label": "given an array of points *a*, create a curve through those points. *rad* is a\u2026",
+      "label": "given an array of points *a*, create a curve through those points. *rad* is a…",
       "_origin": "ast",
       "community": 5,
       "file_type": "rationale",
@@ -14523,7 +14526,7 @@
     },
     {
       "id": "utils_visualizer_rationale_1162",
-      "label": "Randomly modifies given color to produce a slightly different color than the\u2026",
+      "label": "Randomly modifies given color to produce a slightly different color than the…",
       "_origin": "ast",
       "community": 50,
       "file_type": "rationale",
@@ -14533,7 +14536,7 @@
     },
     {
       "id": "utils_visualizer_rationale_1182",
-      "label": "Create a grayscale version of the original image. The colors in masked area, if\u2026",
+      "label": "Create a grayscale version of the original image. The colors in masked area, if…",
       "_origin": "ast",
       "community": 50,
       "file_type": "rationale",
@@ -14543,7 +14546,7 @@
     },
     {
       "id": "utils_visualizer_rationale_231",
-      "label": "Args: classes (list[int] or None): scores (list[float] or None): class_names\u2026",
+      "label": "Args: classes (list[int] or None): scores (list[float] or None): class_names…",
       "_origin": "ast",
       "community": 50,
       "file_type": "rationale",
@@ -14553,7 +14556,7 @@
     },
     {
       "id": "utils_visualizer_rationale_385",
-      "label": "Draw instance-level prediction results on an image. Args: predictions\u2026",
+      "label": "Draw instance-level prediction results on an image. Args: predictions…",
       "_origin": "ast",
       "community": 50,
       "file_type": "rationale",
@@ -14563,7 +14566,7 @@
     },
     {
       "id": "utils_visualizer_rationale_484",
-      "label": "Draw panoptic prediction annotations or results. Args: panoptic_seg (Tensor):\u2026",
+      "label": "Draw panoptic prediction annotations or results. Args: panoptic_seg (Tensor):…",
       "_origin": "ast",
       "community": 50,
       "file_type": "rationale",
@@ -14573,7 +14576,7 @@
     },
     {
       "id": "utils_visualizer_rationale_550",
-      "label": "Draw annotations/segmentaions in Detectron2 Dataset format. Args: dic (dict):\u2026",
+      "label": "Draw annotations/segmentaions in Detectron2 Dataset format. Args: dic (dict):…",
       "_origin": "ast",
       "community": 50,
       "file_type": "rationale",
@@ -14593,7 +14596,7 @@
     },
     {
       "id": "datasets_evaluation_captioning_evaluation_rationale_97",
-      "label": "Args: img_ids: a list of image IDs to evaluate on. Default to None for the\u2026",
+      "label": "Args: img_ids: a list of image IDs to evaluate on. Default to None for the…",
       "_origin": "ast",
       "community": 51,
       "file_type": "rationale",
@@ -14613,7 +14616,7 @@
     },
     {
       "id": "datasets_evaluation_segmentation_evaluation_rationale_176",
-      "label": "Convert semantic segmentation to COCO stuff format with segments encoded as\u2026",
+      "label": "Convert semantic segmentation to COCO stuff format with segments encoded as…",
       "_origin": "ast",
       "community": 52,
       "file_type": "rationale",
@@ -14633,7 +14636,7 @@
     },
     {
       "id": "datasets_evaluation_segmentation_evaluation_rationale_35",
-      "label": "Args: dataset_name (str): name of the dataset to be evaluated. distributed\u2026",
+      "label": "Args: dataset_name (str): name of the dataset to be evaluated. distributed…",
       "_origin": "ast",
       "community": 52,
       "file_type": "rationale",
@@ -14643,7 +14646,7 @@
     },
     {
       "id": "datasets_evaluation_segmentation_evaluation_rationale_84",
-      "label": "Args: inputs: the inputs to a model. It is a list of dicts. Each dict\u2026",
+      "label": "Args: inputs: the inputs to a model. It is a list of dicts. Each dict…",
       "_origin": "ast",
       "community": 52,
       "file_type": "rationale",
@@ -14673,7 +14676,7 @@
     },
     {
       "id": "modeling_interface_prototype_attention_data_struct_seemv0_rationale_20",
-      "label": "Store dataset variable for attention output: embedding that accumuates during\u2026",
+      "label": "Store dataset variable for attention output: embedding that accumuates during…",
       "_origin": "ast",
       "community": 54,
       "file_type": "rationale",
@@ -14683,7 +14686,7 @@
     },
     {
       "id": "modeling_modules_criterion_rationale_296",
-      "label": "Compute the losses related to the masks: the focal loss and the dice loss.\u2026",
+      "label": "Compute the losses related to the masks: the focal loss and the dice loss.…",
       "_origin": "ast",
       "community": 55,
       "file_type": "rationale",
@@ -14693,7 +14696,7 @@
     },
     {
       "id": "modeling_modules_criterion_rationale_86",
-      "label": "We estimate uncerainty as L1 distance between 0.0 and the logit prediction in\u2026",
+      "label": "We estimate uncerainty as L1 distance between 0.0 and the logit prediction in…",
       "_origin": "ast",
       "community": 55,
       "file_type": "rationale",
@@ -14703,7 +14706,7 @@
     },
     {
       "id": "modeling_modules_point_features_rationale_68",
-      "label": "Sample points in [0, 1] x [0, 1] coordinate space based on their uncertainty.\u2026",
+      "label": "Sample points in [0, 1] x [0, 1] coordinate space based on their uncertainty.…",
       "_origin": "ast",
       "community": 55,
       "file_type": "rationale",
@@ -14733,7 +14736,7 @@
     },
     {
       "id": "modeling_utils_box_ops_rationale_46",
-      "label": "Generalized IoU from https://giou.stanford.edu/ The boxes should be in [x0, y0,\u2026",
+      "label": "Generalized IoU from https://giou.stanford.edu/ The boxes should be in [x0, y0,…",
       "_origin": "ast",
       "community": 56,
       "file_type": "rationale",
@@ -14743,7 +14746,7 @@
     },
     {
       "id": "modeling_utils_box_ops_rationale_70",
-      "label": "Compute the bounding boxes around the provided masks The masks should be in\u2026",
+      "label": "Compute the bounding boxes around the provided masks The masks should be in…",
       "_origin": "ast",
       "community": 56,
       "file_type": "rationale",
@@ -14773,7 +14776,7 @@
     },
     {
       "id": "datasets_dataset_mappers_vlp_dataset_mapper_rationale_126",
-      "label": "Args: dataset_dict (dict): Metadata of one image, in Detectron2 Dataset format.\u2026",
+      "label": "Args: dataset_dict (dict): Metadata of one image, in Detectron2 Dataset format.…",
       "_origin": "ast",
       "community": 58,
       "file_type": "rationale",
@@ -14833,7 +14836,7 @@
     },
     {
       "id": "utils_visualizer_rationale_1016",
-      "label": "Args: x_data (list[int]): a list containing x values of all the points being\u2026",
+      "label": "Args: x_data (list[int]): a list containing x values of all the points being…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14843,7 +14846,7 @@
     },
     {
       "id": "utils_visualizer_rationale_1049",
-      "label": "Args: binary_mask (ndarray): numpy array of shape (H, W), where H is the image\u2026",
+      "label": "Args: binary_mask (ndarray): numpy array of shape (H, W), where H is the image…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14853,7 +14856,7 @@
     },
     {
       "id": "utils_visualizer_rationale_1098",
-      "label": "Args: soft_mask (ndarray): float array of shape (H, W), each value in [0, 1].\u2026",
+      "label": "Args: soft_mask (ndarray): float array of shape (H, W), each value in [0, 1].…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14863,7 +14866,7 @@
     },
     {
       "id": "utils_visualizer_rationale_1126",
-      "label": "Args: segment: numpy array of shape Nx2, containing all the points in the\u2026",
+      "label": "Args: segment: numpy array of shape Nx2, containing all the points in the…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14873,7 +14876,7 @@
     },
     {
       "id": "utils_visualizer_rationale_1193",
-      "label": "Depending on the brightness_factor, gives a lighter or darker color i.e. a\u2026",
+      "label": "Depending on the brightness_factor, gives a lighter or darker color i.e. a…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14883,7 +14886,7 @@
     },
     {
       "id": "utils_visualizer_rationale_1218",
-      "label": "Convert different format of boxes to an NxB array, where B = 4 or 5 is the box\u2026",
+      "label": "Convert different format of boxes to an NxB array, where B = 4 or 5 is the box…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14893,7 +14896,7 @@
     },
     {
       "id": "utils_visualizer_rationale_1227",
-      "label": "Convert different format of masks or polygons to a tuple of masks and polygons.\u2026",
+      "label": "Convert different format of masks or polygons to a tuple of masks and polygons.…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14913,7 +14916,7 @@
     },
     {
       "id": "utils_visualizer_rationale_1274",
-      "label": "Returns: output (VisImage): the image output containing the visualizations\u2026",
+      "label": "Returns: output (VisImage): the image output containing the visualizations…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14923,7 +14926,7 @@
     },
     {
       "id": "utils_visualizer_rationale_332",
-      "label": "Visualizer that draws data about detection/segmentation on images. It contains\u2026",
+      "label": "Visualizer that draws data about detection/segmentation on images. It contains…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14933,7 +14936,7 @@
     },
     {
       "id": "utils_visualizer_rationale_448",
-      "label": "Draw semantic segmentation predictions/labels. Args: sem_seg (Tensor or\u2026",
+      "label": "Draw semantic segmentation predictions/labels. Args: sem_seg (Tensor or…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14943,7 +14946,7 @@
     },
     {
       "id": "utils_visualizer_rationale_628",
-      "label": "Args: boxes (Boxes, RotatedBoxes or ndarray): either a :class:`Boxes`, or an\u2026",
+      "label": "Args: boxes (Boxes, RotatedBoxes or ndarray): either a :class:`Boxes`, or an…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14953,7 +14956,7 @@
     },
     {
       "id": "utils_visualizer_rationale_761",
-      "label": "Args: boxes (ndarray): an Nx5 numpy array of (x_center, y_center, width,\u2026",
+      "label": "Args: boxes (ndarray): an Nx5 numpy array of (x_center, y_center, width,…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14963,7 +14966,7 @@
     },
     {
       "id": "utils_visualizer_rationale_799",
-      "label": "Draws keypoints of an instance and follows the rules for keypoint connections\u2026",
+      "label": "Draws keypoints of an instance and follows the rules for keypoint connections…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14973,7 +14976,7 @@
     },
     {
       "id": "utils_visualizer_rationale_871",
-      "label": "Args: text (str): class label position (tuple): a tuple of the x and y\u2026",
+      "label": "Args: text (str): class label position (tuple): a tuple of the x and y…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14983,7 +14986,7 @@
     },
     {
       "id": "utils_visualizer_rationale_909",
-      "label": "Args: box_coord (tuple): a tuple containing x0, y0, x1, y1 coordinates, where\u2026",
+      "label": "Args: box_coord (tuple): a tuple containing x0, y0, x1, y1 coordinates, where…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -14993,7 +14996,7 @@
     },
     {
       "id": "utils_visualizer_rationale_945",
-      "label": "Draw a rotated box with label on its top-left corner. Args: rotated_box\u2026",
+      "label": "Draw a rotated box with label on its top-left corner. Args: rotated_box…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -15003,7 +15006,7 @@
     },
     {
       "id": "utils_visualizer_rationale_998",
-      "label": "Args: circle_coord (list(int) or tuple(int)): contains the x and y coordinates\u2026",
+      "label": "Args: circle_coord (list(int) or tuple(int)): contains the x and y coordinates…",
       "_origin": "ast",
       "community": 6,
       "file_type": "rationale",
@@ -15023,7 +15026,7 @@
     },
     {
       "id": "datasets_evaluation_panoptic_evaluation_rationale_25",
-      "label": "Evaluate Panoptic Quality metrics on COCO using PanopticAPI. It saves panoptic\u2026",
+      "label": "Evaluate Panoptic Quality metrics on COCO using PanopticAPI. It saves panoptic…",
       "_origin": "ast",
       "community": 60,
       "file_type": "rationale",
@@ -15033,7 +15036,7 @@
     },
     {
       "id": "datasets_evaluation_panoptic_evaluation_rationale_33",
-      "label": "Args: dataset_name: name of the dataset output_dir: output directory to save\u2026",
+      "label": "Args: dataset_name: name of the dataset output_dir: output directory to save…",
       "_origin": "ast",
       "community": 60,
       "file_type": "rationale",
@@ -15093,7 +15096,7 @@
     },
     {
       "id": "modeling_architectures_seem_model_v0_rationale_63",
-      "label": "Args: backbone: a backbone module, must follow detectron2's backbone interface\u2026",
+      "label": "Args: backbone: a backbone module, must follow detectron2's backbone interface…",
       "_origin": "ast",
       "community": 61,
       "file_type": "rationale",
@@ -15103,7 +15106,7 @@
     },
     {
       "id": "utils_visualizer_rationale_60",
-      "label": "Attribute: polygons (list[ndarray]): list[ndarray]: polygons for this mask.\u2026",
+      "label": "Attribute: polygons (list[ndarray]): list[ndarray]: polygons for this mask.…",
       "_origin": "ast",
       "community": 62,
       "file_type": "rationale",
@@ -15123,7 +15126,7 @@
     },
     {
       "id": "utils_arguments_rationale_10",
-      "label": "Load the key, value pairs from config_dict to opt, overriding existing values\u2026",
+      "label": "Load the key, value pairs from config_dict to opt, overriding existing values…",
       "_origin": "ast",
       "community": 63,
       "file_type": "rationale",
@@ -15133,7 +15136,7 @@
     },
     {
       "id": "utils_arguments_rationale_31",
-      "label": "Load opt from the config files, settings in later files can override those in\u2026",
+      "label": "Load opt from the config files, settings in later files can override those in…",
       "_origin": "ast",
       "community": 63,
       "file_type": "rationale",
@@ -15143,7 +15146,7 @@
     },
     {
       "id": "datasets_dataset_mappers_pascalvoc_dataset_mapper_ix_rationale_118",
-      "label": "Encode segmentation label images as pascal classes Args: mask (np.ndarray): raw\u2026",
+      "label": "Encode segmentation label images as pascal classes Args: mask (np.ndarray): raw…",
       "_origin": "ast",
       "community": 64,
       "file_type": "rationale",
@@ -15153,7 +15156,7 @@
     },
     {
       "id": "datasets_dataset_mappers_pascalvoc_dataset_mapper_ix_rationale_87",
-      "label": "Load the mapping that associates pascal classes with label colors Returns:\u2026",
+      "label": "Load the mapping that associates pascal classes with label colors Returns:…",
       "_origin": "ast",
       "community": 64,
       "file_type": "rationale",
@@ -15173,7 +15176,7 @@
     },
     {
       "id": "datasets_evaluation_retrieval_evaluation_rationale_42",
-      "label": "Args: dataset_name (str): name of the dataset to be evaluated. It must have\u2026",
+      "label": "Args: dataset_name (str): name of the dataset to be evaluated. It must have…",
       "_origin": "ast",
       "community": 65,
       "file_type": "rationale",
@@ -15183,7 +15186,7 @@
     },
     {
       "id": "datasets_evaluation_retrieval_evaluation_rationale_98",
-      "label": "Args: inputs: the inputs to a COCO model (e.g., GeneralizedRCNN). It is a list\u2026",
+      "label": "Args: inputs: the inputs to a COCO model (e.g., GeneralizedRCNN). It is a list…",
       "_origin": "ast",
       "community": 65,
       "file_type": "rationale",
@@ -15223,7 +15226,7 @@
     },
     {
       "id": "modeling_modules_matcher_rationale_24",
-      "label": "Compute the DICE loss, similar to generalized IOU for masks Args: inputs: A\u2026",
+      "label": "Compute the DICE loss, similar to generalized IOU for masks Args: inputs: A…",
       "_origin": "ast",
       "community": 68,
       "file_type": "rationale",
@@ -15233,7 +15236,7 @@
     },
     {
       "id": "modeling_modules_matcher_rationale_47",
-      "label": "Args: inputs: A float tensor of arbitrary shape. The predictions for each\u2026",
+      "label": "Args: inputs: A float tensor of arbitrary shape. The predictions for each…",
       "_origin": "ast",
       "community": 68,
       "file_type": "rationale",
@@ -15243,7 +15246,7 @@
     },
     {
       "id": "modeling_vision_backbone_vit_rationale_525",
-      "label": "Args: x: Tensor of shape (N,C,H,W). H, W must be a multiple of\u2026",
+      "label": "Args: x: Tensor of shape (N,C,H,W). H, W must be a multiple of…",
       "_origin": "ast",
       "community": 69,
       "file_type": "rationale",
@@ -15323,7 +15326,7 @@
     },
     {
       "id": "modeling_vision_backbone_focal_rationale_45",
-      "label": "Focal Modulation Args: dim (int): Number of input channels. proj_drop (float,\u2026",
+      "label": "Focal Modulation Args: dim (int): Number of input channels. proj_drop (float,…",
       "_origin": "ast",
       "community": 70,
       "file_type": "rationale",
@@ -15353,7 +15356,7 @@
     },
     {
       "id": "datasets_build_rationale_472",
-      "label": "Create evaluator(s) for a given dataset. This uses the special metadata\u2026",
+      "label": "Create evaluator(s) for a given dataset. This uses the special metadata…",
       "_origin": "ast",
       "community": 72,
       "file_type": "rationale",
@@ -15363,7 +15366,7 @@
     },
     {
       "id": "datasets_evaluation_instance_evaluation_rationale_31",
-      "label": "Evaluate AR for object proposals, AP for instance detection/segmentation, AP\u2026",
+      "label": "Evaluate AR for object proposals, AP for instance detection/segmentation, AP…",
       "_origin": "ast",
       "community": 72,
       "file_type": "rationale",
@@ -15473,7 +15476,7 @@
     },
     {
       "id": "datasets_build_rationale_184",
-      "label": "Similar to `build_detection_train_loader`, with default batch size = 1, and\u2026",
+      "label": "Similar to `build_detection_train_loader`, with default batch size = 1, and…",
       "_origin": "ast",
       "community": 77,
       "file_type": "rationale",
@@ -15483,7 +15486,7 @@
     },
     {
       "id": "modeling_vision_backbone_focal_rationale_453",
-      "label": "Initialize the weights in backbone. Args: pretrained (str, optional): Path to\u2026",
+      "label": "Initialize the weights in backbone. Args: pretrained (str, optional): Path to…",
       "_origin": "ast",
       "community": 79,
       "file_type": "rationale",
@@ -15513,7 +15516,7 @@
     },
     {
       "id": "datasets_visual_sampler_mask_generators_rationale_12",
-      "label": "Get video masks by random strokes which move randomly between each frame,\u2026",
+      "label": "Get video masks by random strokes which move randomly between each frame,…",
       "_origin": "ast",
       "community": 8,
       "file_type": "rationale",
@@ -15523,7 +15526,7 @@
     },
     {
       "id": "datasets_visual_sampler_mask_generators_rationale_129",
-      "label": "Implementation the free-form training masks generating algorithm proposed by\u2026",
+      "label": "Implementation the free-form training masks generating algorithm proposed by…",
       "_origin": "ast",
       "community": 8,
       "file_type": "rationale",
@@ -15533,7 +15536,7 @@
     },
     {
       "id": "datasets_visual_sampler_mask_generators_rationale_209",
-      "label": "Calculate the masked ratio. mask: Expected a binary PIL image, where 0 and 1\u2026",
+      "label": "Calculate the masked ratio. mask: Expected a binary PIL image, where 0 and 1…",
       "_origin": "ast",
       "community": 8,
       "file_type": "rationale",
@@ -15553,7 +15556,7 @@
     },
     {
       "id": "trainer_xdecoder_trainer_rationale_38",
-      "label": "Set up self.optimizers and self.lr_schedulers This method initializes\u2026",
+      "label": "Set up self.optimizers and self.lr_schedulers This method initializes…",
       "_origin": "ast",
       "community": 80,
       "file_type": "rationale",
@@ -15573,7 +15576,7 @@
     },
     {
       "id": "entry_rationale_38",
-      "label": "[Main function for the entry point] 1. Set environment variables for\u2026",
+      "label": "[Main function for the entry point] 1. Set environment variables for…",
       "_origin": "ast",
       "community": 84,
       "file_type": "rationale",
@@ -15603,7 +15606,7 @@
     },
     {
       "id": "modeling_modules_point_features_rationale_149",
-      "label": "Get features from feature maps in `features_list` that correspond to specific\u2026",
+      "label": "Get features from feature maps in `features_list` that correspond to specific…",
       "_origin": "ast",
       "community": 87,
       "file_type": "rationale",
@@ -15613,7 +15616,7 @@
     },
     {
       "id": "modeling_modules_point_features_rationale_195",
-      "label": "Convert box-normalized [0, 1] x [0, 1] point cooordinates to image-level\u2026",
+      "label": "Convert box-normalized [0, 1] x [0, 1] point cooordinates to image-level…",
       "_origin": "ast",
       "community": 87,
       "file_type": "rationale",
@@ -15731,7 +15734,7 @@
     },
     {
       "id": "datasets_registration_register_bdd100k_semseg_rationale_22",
-      "label": "Load BDD annotations to Detectron2 format. Args: dirname: Contain\u2026",
+      "label": "Load BDD annotations to Detectron2 format. Args: dirname: Contain…",
       "_origin": "ast",
       "community": 9,
       "file_type": "rationale",
@@ -15741,7 +15744,7 @@
     },
     {
       "id": "datasets_registration_register_imagenet_cls_rationale_22",
-      "label": "Load ImageNet annotations to Detectron2 format. Args: dirname: Contain\u2026",
+      "label": "Load ImageNet annotations to Detectron2 format. Args: dirname: Contain…",
       "_origin": "ast",
       "community": 9,
       "file_type": "rationale",
@@ -15751,7 +15754,7 @@
     },
     {
       "id": "datasets_registration_register_pascalvoc_eval_rationale_26",
-      "label": "Load Pascal VOC detection annotations to Detectron2 format. Args: dirname:\u2026",
+      "label": "Load Pascal VOC detection annotations to Detectron2 format. Args: dirname:…",
       "_origin": "ast",
       "community": 9,
       "file_type": "rationale",
@@ -15761,7 +15764,7 @@
     },
     {
       "id": "datasets_registration_register_scannet_semseg_rationale_30",
-      "label": "Load ScanNet annotations to Detectron2 format. Args: dirname: Contain\u2026",
+      "label": "Load ScanNet annotations to Detectron2 format. Args: dirname: Contain…",
       "_origin": "ast",
       "community": 9,
       "file_type": "rationale",
@@ -15771,7 +15774,7 @@
     },
     {
       "id": "datasets_registration_register_sunrgbd_semseg_rationale_22",
-      "label": "Load SUN-RGBD detection annotations to Detectron2 format. Args: dirname:\u2026",
+      "label": "Load SUN-RGBD detection annotations to Detectron2 format. Args: dirname:…",
       "_origin": "ast",
       "community": 9,
       "file_type": "rationale",
@@ -15781,7 +15784,7 @@
     },
     {
       "id": "modeling_modules_matcher_rationale_87",
-      "label": "Creates the matcher Params: cost_class: This is the relative weight of the\u2026",
+      "label": "Creates the matcher Params: cost_class: This is the relative weight of the…",
       "_origin": "ast",
       "community": 90,
       "file_type": "rationale",
@@ -17189,6 +17192,1216 @@
       "norm_label": "xml_etree_elementtree",
       "source_file": "",
       "type": "external"
+    },
+    {
+      "id": "relocation-index:demo_relocation.py",
+      "label": "demo_relocation.py",
+      "source_file": "demo_relocation.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo_relocation.py:parse_args",
+      "label": "parse_args",
+      "source_file": "demo_relocation.py",
+      "source_location": "L9",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo_relocation.py:preflight",
+      "label": "preflight",
+      "source_file": "demo_relocation.py",
+      "source_location": "L24",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo_relocation.py:main",
+      "label": "main",
+      "source_file": "demo_relocation.py",
+      "source_location": "L51",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo_v1.py",
+      "label": "demo_v1.py",
+      "source_file": "demo_v1.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo_v1.py:parse_args",
+      "label": "parse_args",
+      "source_file": "demo_v1.py",
+      "source_location": "L29",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo_v1.py:validate_checkpoints",
+      "label": "validate_checkpoints",
+      "source_file": "demo_v1.py",
+      "source_location": "L67",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo_v1.py:load_model",
+      "label": "load_model",
+      "source_file": "demo_v1.py",
+      "source_location": "L82",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo_v1.py:build_gradio_ui",
+      "label": "build_gradio_ui",
+      "source_file": "demo_v1.py",
+      "source_location": "L113",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo_v1.py:build_gradio_ui.inference",
+      "label": "build_gradio_ui.inference",
+      "source_file": "demo_v1.py",
+      "source_location": "L118",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo_v1.py:build_gradio_ui.inference.to_pil_dict",
+      "label": "build_gradio_ui.inference.to_pil_dict",
+      "source_file": "demo_v1.py",
+      "source_location": "L125",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo_v1.py:build_gradio_ui.ImageMask",
+      "label": "build_gradio_ui.ImageMask",
+      "source_file": "demo_v1.py",
+      "source_location": "L160",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo_v1.py:main",
+      "label": "main",
+      "source_file": "demo_v1.py",
+      "source_location": "L228",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo/seem/tasks/interactive.py",
+      "label": "demo/seem/tasks/interactive.py",
+      "source_file": "demo/seem/tasks/interactive.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo/seem/tasks/interactive.py:_stroke_hw1",
+      "label": "_stroke_hw1",
+      "source_file": "demo/seem/tasks/interactive.py",
+      "source_location": "L35",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo/seem/tasks/interactive.py:interactive_infer_image",
+      "label": "interactive_infer_image",
+      "source_file": "demo/seem/tasks/interactive.py",
+      "source_location": "L53",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:demo/seem/tasks/interactive.py:interactive_infer_video",
+      "label": "interactive_infer_video",
+      "source_file": "demo/seem/tasks/interactive.py",
+      "source_location": "L219",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "label": "modeling/architectures/seem_model_v1.py",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM",
+      "label": "GeneralizedSEEM",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L32",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.__init__",
+      "label": "GeneralizedSEEM.__init__",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L35",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.from_config",
+      "label": "GeneralizedSEEM.from_config",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L125",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.device",
+      "label": "GeneralizedSEEM.device",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L263",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.forward",
+      "label": "GeneralizedSEEM.forward",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L266",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.forward_seg",
+      "label": "GeneralizedSEEM.forward_seg",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L321",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_demo",
+      "label": "GeneralizedSEEM.evaluate_demo",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L378",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate",
+      "label": "GeneralizedSEEM.evaluate",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L466",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_interactive",
+      "label": "GeneralizedSEEM.evaluate_interactive",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L527",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_interactive_single",
+      "label": "GeneralizedSEEM.evaluate_interactive_single",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L603",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_interactive_grounding",
+      "label": "GeneralizedSEEM.evaluate_interactive_grounding",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L637",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_referring_image",
+      "label": "GeneralizedSEEM.evaluate_referring_image",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L751",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_grounding",
+      "label": "GeneralizedSEEM.evaluate_grounding",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L782",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_grounding_sptial",
+      "label": "GeneralizedSEEM.evaluate_grounding_sptial",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L879",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.prepare_targets",
+      "label": "GeneralizedSEEM.prepare_targets",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L985",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.prepare_next_spaital_mask",
+      "label": "GeneralizedSEEM.prepare_next_spaital_mask",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L1051",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.semantic_inference",
+      "label": "GeneralizedSEEM.semantic_inference",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L1102",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.panoptic_inference",
+      "label": "GeneralizedSEEM.panoptic_inference",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L1108",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.instance_inference",
+      "label": "GeneralizedSEEM.instance_inference",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L1166",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.prepare_targets4query",
+      "label": "GeneralizedSEEM.prepare_targets4query",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L1214",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:modeling/architectures/seem_model_v1.py:get_seem_model",
+      "label": "get_seem_model",
+      "source_file": "modeling/architectures/seem_model_v1.py",
+      "source_location": "L1249",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/__init__.py",
+      "label": "relocation/__init__.py",
+      "source_file": "relocation/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/adapters.py",
+      "label": "relocation/adapters.py",
+      "source_file": "relocation/adapters.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/adapters.py:SeemAdapter",
+      "label": "SeemAdapter",
+      "source_file": "relocation/adapters.py",
+      "source_location": "L14",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/adapters.py:SeemAdapter.__init__",
+      "label": "SeemAdapter.__init__",
+      "source_file": "relocation/adapters.py",
+      "source_location": "L15",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/adapters.py:SeemAdapter.segment",
+      "label": "SeemAdapter.segment",
+      "source_file": "relocation/adapters.py",
+      "source_location": "L19",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/adapters.py:SeemAdapter.segment.fit_mask",
+      "label": "SeemAdapter.segment.fit_mask",
+      "source_file": "relocation/adapters.py",
+      "source_location": "L50",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/adapters.py:SeemAdapter.release_gpu",
+      "label": "SeemAdapter.release_gpu",
+      "source_file": "relocation/adapters.py",
+      "source_location": "L78",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/adapters.py:run_worker",
+      "label": "run_worker",
+      "source_file": "relocation/adapters.py",
+      "source_location": "L86",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/adapters.py:repo_revision",
+      "label": "repo_revision",
+      "source_file": "relocation/adapters.py",
+      "source_location": "L110",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/config.py",
+      "label": "relocation/config.py",
+      "source_file": "relocation/config.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/config.py:Settings",
+      "label": "Settings",
+      "source_file": "relocation/config.py",
+      "source_location": "L11",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/controller.py",
+      "label": "relocation/controller.py",
+      "source_file": "relocation/controller.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/controller.py:uploaded_image",
+      "label": "uploaded_image",
+      "source_file": "relocation/controller.py",
+      "source_location": "L17",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/controller.py:working_image",
+      "label": "working_image",
+      "source_file": "relocation/controller.py",
+      "source_location": "L26",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/controller.py:Controller",
+      "label": "Controller",
+      "source_file": "relocation/controller.py",
+      "source_location": "L33",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/controller.py:Controller.__init__",
+      "label": "Controller.__init__",
+      "source_file": "relocation/controller.py",
+      "source_location": "L34",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/controller.py:Controller.validate",
+      "label": "Controller.validate",
+      "source_file": "relocation/controller.py",
+      "source_location": "L39",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/controller.py:Controller.segment",
+      "label": "Controller.segment",
+      "source_file": "relocation/controller.py",
+      "source_location": "L51",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/controller.py:Controller.new_state",
+      "label": "Controller.new_state",
+      "source_file": "relocation/controller.py",
+      "source_location": "L73",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/controller.py:Controller.import_mask",
+      "label": "Controller.import_mask",
+      "source_file": "relocation/controller.py",
+      "source_location": "L82",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/controller.py:Controller.estimate",
+      "label": "Controller.estimate",
+      "source_file": "relocation/controller.py",
+      "source_location": "L92",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/controller.py:Controller.preview",
+      "label": "Controller.preview",
+      "source_file": "relocation/controller.py",
+      "source_location": "L119",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/controller.py:Controller.relocate",
+      "label": "Controller.relocate",
+      "source_file": "relocation/controller.py",
+      "source_location": "L126",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py",
+      "label": "relocation/geometry.py",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:image_hash",
+      "label": "image_hash",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L7",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:ink",
+      "label": "ink",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L12",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:mask_image",
+      "label": "mask_image",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L27",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:resize_mask",
+      "label": "resize_mask",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L31",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:centroid",
+      "label": "centroid",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L35",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:dilate",
+      "label": "dilate",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L42",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:erode",
+      "label": "erode",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L52",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:overlay",
+      "label": "overlay",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L56",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:arrow_preview",
+      "label": "arrow_preview",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L63",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:transform_foreground",
+      "label": "transform_foreground",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L83",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:transform_foreground.warp",
+      "label": "transform_foreground.warp",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L99",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:composite",
+      "label": "composite",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L119",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:harmonization_mask",
+      "label": "harmonization_mask",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L124",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:blend_repair",
+      "label": "blend_repair",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L136",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:suggest_scale",
+      "label": "suggest_scale",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L148",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/geometry.py:suggest_scale.stats",
+      "label": "suggest_scale.stats",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L170",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/index_codebase.py",
+      "label": "relocation/index_codebase.py",
+      "source_file": "relocation/index_codebase.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/index_codebase.py:extend_html",
+      "label": "extend_html",
+      "source_file": "relocation/index_codebase.py",
+      "source_location": "L17",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/index_codebase.py:extend_html.array",
+      "label": "extend_html.array",
+      "source_file": "relocation/index_codebase.py",
+      "source_location": "L23",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/index_codebase.py:main",
+      "label": "main",
+      "source_file": "relocation/index_codebase.py",
+      "source_location": "L67",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/index_codebase.py:main.visit",
+      "label": "main.visit",
+      "source_file": "relocation/index_codebase.py",
+      "source_location": "L90",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_controller.py",
+      "label": "relocation/test_controller.py",
+      "source_file": "relocation/test_controller.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_controller.py:ControllerTests",
+      "label": "ControllerTests",
+      "source_file": "relocation/test_controller.py",
+      "source_location": "L15",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_controller.py:ControllerTests.setUp",
+      "label": "ControllerTests.setUp",
+      "source_file": "relocation/test_controller.py",
+      "source_location": "L16",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_controller.py:ControllerTests.test_source_swap_is_rejected",
+      "label": "ControllerTests.test_source_swap_is_rejected",
+      "source_file": "relocation/test_controller.py",
+      "source_location": "L26",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_controller.py:ControllerTests.test_empty_prompt_fails_before_loading_gpu_libraries",
+      "label": "ControllerTests.test_empty_prompt_fails_before_loading_gpu_libraries",
+      "source_file": "relocation/test_controller.py",
+      "source_location": "L32",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_controller.py:ControllerTests.test_changed_scribble_is_rejected",
+      "label": "ControllerTests.test_changed_scribble_is_rejected",
+      "source_file": "relocation/test_controller.py",
+      "source_location": "L37",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_controller.py:ControllerTests.test_large_upload_is_capped_and_mask_aligns",
+      "label": "ControllerTests.test_large_upload_is_capped_and_mask_aligns",
+      "source_file": "relocation/test_controller.py",
+      "source_location": "L43",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_controller.py:ControllerTests.test_depth_cache_uses_raw_metric_values_and_recomputes_target_stats",
+      "label": "ControllerTests.test_depth_cache_uses_raw_metric_values_and_recomputes_target_stats",
+      "source_file": "relocation/test_controller.py",
+      "source_location": "L53",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_controller.py:ControllerTests.test_depth_cache_uses_raw_metric_values_and_recomputes_target_stats.worker",
+      "label": "ControllerTests.test_depth_cache_uses_raw_metric_values_and_recomputes_target_stats.worker",
+      "source_file": "relocation/test_controller.py",
+      "source_location": "L56",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_controller.py:ControllerTests.test_relocation_exports_complete_archive_and_separate_attempts",
+      "label": "ControllerTests.test_relocation_exports_complete_archive_and_separate_attempts",
+      "source_file": "relocation/test_controller.py",
+      "source_location": "L70",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_controller.py:ControllerTests.test_relocation_exports_complete_archive_and_separate_attempts.worker",
+      "label": "ControllerTests.test_relocation_exports_complete_archive_and_separate_attempts.worker",
+      "source_file": "relocation/test_controller.py",
+      "source_location": "L73",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_geometry.py",
+      "label": "relocation/test_geometry.py",
+      "source_file": "relocation/test_geometry.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests",
+      "label": "RelocationGeometryTests",
+      "source_file": "relocation/test_geometry.py",
+      "source_location": "L8",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.setUp",
+      "label": "RelocationGeometryTests.setUp",
+      "source_file": "relocation/test_geometry.py",
+      "source_location": "L9",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_translation_preserves_rgb_and_maps_center",
+      "label": "RelocationGeometryTests.test_translation_preserves_rgb_and_maps_center",
+      "source_file": "relocation/test_geometry.py",
+      "source_location": "L15",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_scale_changes_area_and_keeps_color_at_alpha_edges",
+      "label": "RelocationGeometryTests.test_scale_changes_area_and_keeps_color_at_alpha_edges",
+      "source_file": "relocation/test_geometry.py",
+      "source_location": "L24",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_clipping_requires_explicit_choice",
+      "label": "RelocationGeometryTests.test_clipping_requires_explicit_choice",
+      "source_file": "relocation/test_geometry.py",
+      "source_location": "L32",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_repair_preserves_outside_pixels_and_object_core",
+      "label": "RelocationGeometryTests.test_repair_preserves_outside_pixels_and_object_core",
+      "source_file": "relocation/test_geometry.py",
+      "source_location": "L39",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_metric_ratio_and_relative_map_fallback",
+      "label": "RelocationGeometryTests.test_metric_ratio_and_relative_map_fallback",
+      "source_file": "relocation/test_geometry.py",
+      "source_location": "L49",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_invalid_depth_and_heterogeneous_target_fall_back",
+      "label": "RelocationGeometryTests.test_invalid_depth_and_heterogeneous_target_fall_back",
+      "source_file": "relocation/test_geometry.py",
+      "source_location": "L56",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_black_alpha_scribble_is_not_empty",
+      "label": "RelocationGeometryTests.test_black_alpha_scribble_is_not_empty",
+      "source_file": "relocation/test_geometry.py",
+      "source_location": "L66",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_empty_mask_rejected",
+      "label": "RelocationGeometryTests.test_empty_mask_rejected",
+      "source_file": "relocation/test_geometry.py",
+      "source_location": "L71",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/ui.py",
+      "label": "relocation/ui.py",
+      "source_file": "relocation/ui.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/ui.py:build_ui",
+      "label": "build_ui",
+      "source_file": "relocation/ui.py",
+      "source_location": "L11",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/ui.py:build_ui.reset",
+      "label": "build_ui.reset",
+      "source_file": "relocation/ui.py",
+      "source_location": "L14",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/ui.py:build_ui.segment",
+      "label": "build_ui.segment",
+      "source_file": "relocation/ui.py",
+      "source_location": "L20",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/ui.py:build_ui.import_mask",
+      "label": "build_ui.import_mask",
+      "source_file": "relocation/ui.py",
+      "source_location": "L30",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/ui.py:build_ui.choose_target",
+      "label": "build_ui.choose_target",
+      "source_file": "relocation/ui.py",
+      "source_location": "L37",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/ui.py:build_ui.estimate",
+      "label": "build_ui.estimate",
+      "source_file": "relocation/ui.py",
+      "source_location": "L48",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/ui.py:build_ui.preview",
+      "label": "build_ui.preview",
+      "source_file": "relocation/ui.py",
+      "source_location": "L56",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/ui.py:build_ui.run",
+      "label": "build_ui.run",
+      "source_file": "relocation/ui.py",
+      "source_location": "L62",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/worker.py",
+      "label": "relocation/worker.py",
+      "source_file": "relocation/worker.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/worker.py:depth_job",
+      "label": "depth_job",
+      "source_file": "relocation/worker.py",
+      "source_location": "L12",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/worker.py:brushnet_job",
+      "label": "brushnet_job",
+      "source_file": "relocation/worker.py",
+      "source_location": "L31",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/worker.py:brushnet_job.inpaint",
+      "label": "brushnet_job.inpaint",
+      "source_file": "relocation/worker.py",
+      "source_location": "L66",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/worker.py:main",
+      "label": "main",
+      "source_file": "relocation/worker.py",
+      "source_location": "L107",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:../BrushNet/src/diffusers/pipelines/brushnet/pipeline_brushnet.py",
+      "label": "../BrushNet/src/diffusers/pipelines/brushnet/pipeline_brushnet.py",
+      "source_file": "../BrushNet/src/diffusers/pipelines/brushnet/pipeline_brushnet.py",
+      "file_type": "code",
+      "community": 100,
+      "_origin": "reviewed integration"
+    },
+    {
+      "id": "relocation-index:setup_relocation.sh",
+      "label": "setup_relocation.sh",
+      "source_file": "setup_relocation.sh",
+      "file_type": "code",
+      "community": 100,
+      "_origin": "reviewed integration"
+    },
+    {
+      "id": "relocation-index:setup.sh",
+      "label": "setup.sh",
+      "source_file": "setup.sh",
+      "file_type": "code",
+      "community": 100,
+      "_origin": "reviewed integration"
     }
   ],
   "links": [
@@ -60978,6 +62191,790 @@
       "source_file": "trainer/utils_trainer.py",
       "source_location": "L152",
       "weight": 0.8
+    },
+    {
+      "source": "relocation-index:demo_relocation.py",
+      "target": "relocation-index:demo_relocation.py:parse_args",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo_relocation.py",
+      "target": "relocation-index:demo_relocation.py:preflight",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo_relocation.py",
+      "target": "relocation-index:demo_relocation.py:main",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo_v1.py",
+      "target": "relocation-index:demo_v1.py:parse_args",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo_v1.py",
+      "target": "relocation-index:demo_v1.py:validate_checkpoints",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo_v1.py",
+      "target": "relocation-index:demo_v1.py:load_model",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo_v1.py",
+      "target": "relocation-index:demo_v1.py:build_gradio_ui",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo_v1.py",
+      "target": "relocation-index:demo_v1.py:build_gradio_ui.inference",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo_v1.py",
+      "target": "relocation-index:demo_v1.py:build_gradio_ui.inference.to_pil_dict",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo_v1.py",
+      "target": "relocation-index:demo_v1.py:build_gradio_ui.ImageMask",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo_v1.py",
+      "target": "relocation-index:demo_v1.py:main",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo/seem/tasks/interactive.py",
+      "target": "relocation-index:demo/seem/tasks/interactive.py:_stroke_hw1",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo/seem/tasks/interactive.py",
+      "target": "relocation-index:demo/seem/tasks/interactive.py:interactive_infer_image",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:demo/seem/tasks/interactive.py",
+      "target": "relocation-index:demo/seem/tasks/interactive.py:interactive_infer_video",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.__init__",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.from_config",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.device",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.forward",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.forward_seg",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_demo",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_interactive",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_interactive_single",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_interactive_grounding",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_referring_image",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_grounding",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.evaluate_grounding_sptial",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.prepare_targets",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.prepare_next_spaital_mask",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.semantic_inference",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.panoptic_inference",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.instance_inference",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:GeneralizedSEEM.prepare_targets4query",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py:get_seem_model",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/adapters.py",
+      "target": "relocation-index:relocation/adapters.py:SeemAdapter",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/adapters.py",
+      "target": "relocation-index:relocation/adapters.py:SeemAdapter.__init__",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/adapters.py",
+      "target": "relocation-index:relocation/adapters.py:SeemAdapter.segment",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/adapters.py",
+      "target": "relocation-index:relocation/adapters.py:SeemAdapter.segment.fit_mask",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/adapters.py",
+      "target": "relocation-index:relocation/adapters.py:SeemAdapter.release_gpu",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/adapters.py",
+      "target": "relocation-index:relocation/adapters.py:run_worker",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/adapters.py",
+      "target": "relocation-index:relocation/adapters.py:repo_revision",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/config.py",
+      "target": "relocation-index:relocation/config.py:Settings",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/controller.py",
+      "target": "relocation-index:relocation/controller.py:uploaded_image",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/controller.py",
+      "target": "relocation-index:relocation/controller.py:working_image",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/controller.py",
+      "target": "relocation-index:relocation/controller.py:Controller",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/controller.py",
+      "target": "relocation-index:relocation/controller.py:Controller.__init__",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/controller.py",
+      "target": "relocation-index:relocation/controller.py:Controller.validate",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/controller.py",
+      "target": "relocation-index:relocation/controller.py:Controller.segment",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/controller.py",
+      "target": "relocation-index:relocation/controller.py:Controller.new_state",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/controller.py",
+      "target": "relocation-index:relocation/controller.py:Controller.import_mask",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/controller.py",
+      "target": "relocation-index:relocation/controller.py:Controller.estimate",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/controller.py",
+      "target": "relocation-index:relocation/controller.py:Controller.preview",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/controller.py",
+      "target": "relocation-index:relocation/controller.py:Controller.relocate",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:image_hash",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:ink",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:mask_image",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:resize_mask",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:centroid",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:dilate",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:erode",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:overlay",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:arrow_preview",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:transform_foreground",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:transform_foreground.warp",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:composite",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:harmonization_mask",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:blend_repair",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:suggest_scale",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:suggest_scale.stats",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/index_codebase.py",
+      "target": "relocation-index:relocation/index_codebase.py:extend_html",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/index_codebase.py",
+      "target": "relocation-index:relocation/index_codebase.py:extend_html.array",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/index_codebase.py",
+      "target": "relocation-index:relocation/index_codebase.py:main",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/index_codebase.py",
+      "target": "relocation-index:relocation/index_codebase.py:main.visit",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_controller.py",
+      "target": "relocation-index:relocation/test_controller.py:ControllerTests",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_controller.py",
+      "target": "relocation-index:relocation/test_controller.py:ControllerTests.setUp",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_controller.py",
+      "target": "relocation-index:relocation/test_controller.py:ControllerTests.test_source_swap_is_rejected",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_controller.py",
+      "target": "relocation-index:relocation/test_controller.py:ControllerTests.test_empty_prompt_fails_before_loading_gpu_libraries",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_controller.py",
+      "target": "relocation-index:relocation/test_controller.py:ControllerTests.test_changed_scribble_is_rejected",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_controller.py",
+      "target": "relocation-index:relocation/test_controller.py:ControllerTests.test_large_upload_is_capped_and_mask_aligns",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_controller.py",
+      "target": "relocation-index:relocation/test_controller.py:ControllerTests.test_depth_cache_uses_raw_metric_values_and_recomputes_target_stats",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_controller.py",
+      "target": "relocation-index:relocation/test_controller.py:ControllerTests.test_depth_cache_uses_raw_metric_values_and_recomputes_target_stats.worker",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_controller.py",
+      "target": "relocation-index:relocation/test_controller.py:ControllerTests.test_relocation_exports_complete_archive_and_separate_attempts",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_controller.py",
+      "target": "relocation-index:relocation/test_controller.py:ControllerTests.test_relocation_exports_complete_archive_and_separate_attempts.worker",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_geometry.py",
+      "target": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_geometry.py",
+      "target": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.setUp",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_geometry.py",
+      "target": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_translation_preserves_rgb_and_maps_center",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_geometry.py",
+      "target": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_scale_changes_area_and_keeps_color_at_alpha_edges",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_geometry.py",
+      "target": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_clipping_requires_explicit_choice",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_geometry.py",
+      "target": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_repair_preserves_outside_pixels_and_object_core",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_geometry.py",
+      "target": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_metric_ratio_and_relative_map_fallback",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_geometry.py",
+      "target": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_invalid_depth_and_heterogeneous_target_fall_back",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_geometry.py",
+      "target": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_black_alpha_scribble_is_not_empty",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/test_geometry.py",
+      "target": "relocation-index:relocation/test_geometry.py:RelocationGeometryTests.test_empty_mask_rejected",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/ui.py",
+      "target": "relocation-index:relocation/ui.py:build_ui",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/ui.py",
+      "target": "relocation-index:relocation/ui.py:build_ui.reset",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/ui.py",
+      "target": "relocation-index:relocation/ui.py:build_ui.segment",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/ui.py",
+      "target": "relocation-index:relocation/ui.py:build_ui.import_mask",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/ui.py",
+      "target": "relocation-index:relocation/ui.py:build_ui.choose_target",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/ui.py",
+      "target": "relocation-index:relocation/ui.py:build_ui.estimate",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/ui.py",
+      "target": "relocation-index:relocation/ui.py:build_ui.preview",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/ui.py",
+      "target": "relocation-index:relocation/ui.py:build_ui.run",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/worker.py",
+      "target": "relocation-index:relocation/worker.py:depth_job",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/worker.py",
+      "target": "relocation-index:relocation/worker.py:brushnet_job",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/worker.py",
+      "target": "relocation-index:relocation/worker.py:brushnet_job.inpaint",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/worker.py",
+      "target": "relocation-index:relocation/worker.py:main",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/adapters.py",
+      "target": "relocation-index:demo_v1.py",
+      "relation": "reuses load_model",
+      "weight": 1,
+      "_origin": "reviewed integration"
+    },
+    {
+      "source": "relocation-index:relocation/adapters.py",
+      "target": "relocation-index:demo/seem/tasks/interactive.py",
+      "relation": "calls interactive_infer_image(return_masks=True)",
+      "weight": 1,
+      "_origin": "reviewed integration"
+    },
+    {
+      "source": "relocation-index:demo/seem/tasks/interactive.py",
+      "target": "relocation-index:modeling/architectures/seem_model_v1.py",
+      "relation": "evaluate_demo -> prev_mask; negative_stroke",
+      "weight": 1,
+      "_origin": "reviewed integration"
+    },
+    {
+      "source": "relocation-index:relocation/controller.py",
+      "target": "relocation-index:relocation/worker.py",
+      "relation": "isolated process; request JSON and PNG/NPY artifacts",
+      "weight": 1,
+      "_origin": "reviewed integration"
+    },
+    {
+      "source": "relocation-index:relocation/worker.py",
+      "target": "relocation-index:../BrushNet/src/diffusers/pipelines/brushnet/pipeline_brushnet.py",
+      "relation": "two inpainting calls",
+      "weight": 1,
+      "_origin": "reviewed integration"
+    },
+    {
+      "source": "relocation-index:setup_relocation.sh",
+      "target": "relocation-index:setup.sh",
+      "relation": "reuses working SEEM setup",
+      "weight": 1,
+      "_origin": "reviewed integration"
     }
   ],
   "hyperedges": [],

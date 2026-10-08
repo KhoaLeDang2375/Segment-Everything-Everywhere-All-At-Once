@@ -50,7 +50,7 @@ def _stroke_hw1(mask_ori):
             return alpha[:, :, None]
     return rgb[:, :, None]
 
-def interactive_infer_image(model, audio_model, image, tasks, refimg=None, reftxt=None, audio_pth=None, video_pth=None):
+def interactive_infer_image(model, audio_model, image, tasks, refimg=None, reftxt=None, audio_pth=None, video_pth=None, return_masks=False):
     image_ori = transform(image['image'])
     mask_ori = image['mask']
     width = image_ori.size[0]
@@ -108,6 +108,9 @@ def interactive_infer_image(model, audio_model, image, tasks, refimg=None, reftx
         if not bool(mask_ori.any()):
             raise ValueError("The scribble mask is empty. Draw on the object, then Submit.")
         data['stroke'] = mask_ori
+        if image.get('negative_mask') is not None:
+            negative = torch.from_numpy(np.ascontiguousarray(_stroke_hw1(image['negative_mask']))).permute(2, 0, 1)[None,].float()
+            data['negative_stroke'] = F.interpolate(negative, (height, width), mode='nearest') > 0
 
         # overlay = mask_ori[0,0].float().numpy()[:,:,None] * np.array([0,255,0])
         # x = image_ori
@@ -211,7 +214,7 @@ def interactive_infer_image(model, audio_model, image, tasks, refimg=None, reftx
     res = demo.get_image()
     torch.cuda.empty_cache()
     # return Image.fromarray(res), stroke_inimg, stroke_refimg
-    return Image.fromarray(res), None
+    return Image.fromarray(res), pred_masks_pos if return_masks else None
 
 def interactive_infer_video(model, audio_model, image, tasks, refimg=None, reftxt=None, audio_pth=None, video_pth=None):
     if 'Video' in tasks:

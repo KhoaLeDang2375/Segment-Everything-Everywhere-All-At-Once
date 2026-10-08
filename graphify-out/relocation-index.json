@@ -1,0 +1,794 @@
+{
+  "generated_at": "2026-10-08T14:24:12.038057+00:00",
+  "seem_revision": "069cc4f24d06f9680206729ff351bf99fdcb2a3a",
+  "brushnet_revision": "0f9d9e54ca85c40a11a8f0504b4b5b2e7e8fd14d",
+  "provenance": "AST declarations/imports + explicit reviewed integration links; existing Graphify semantic graph retained",
+  "files": {
+    "demo_relocation.py": {
+      "sha256": "6dbfff8aad9b77e6310d0c3751d8375f6bb81181be6ea57141a5fd1e0612793f",
+      "symbols": [
+        {
+          "name": "parse_args",
+          "line": 9,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "preflight",
+          "line": 24,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "main",
+          "line": 51,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        "argparse",
+        "os",
+        "pathlib",
+        "relocation.config",
+        "relocation.ui",
+        "subprocess",
+        "sys"
+      ]
+    },
+    "demo_v1.py": {
+      "sha256": "a2bbde2bb70ade50e6d7fdf2e34cd3dfc63589a98332651b4a22a606a2d3b268",
+      "symbols": [
+        {
+          "name": "parse_args",
+          "line": 29,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "validate_checkpoints",
+          "line": 67,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "load_model",
+          "line": 82,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_gradio_ui",
+          "line": 113,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_gradio_ui.inference",
+          "line": 118,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_gradio_ui.inference.to_pil_dict",
+          "line": 125,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_gradio_ui.ImageMask",
+          "line": 160,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "main",
+          "line": 228,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        "PIL",
+        "argparse",
+        "demo.seem.tasks",
+        "gradio",
+        "modeling",
+        "modeling.BaseModel",
+        "numpy",
+        "os",
+        "torch",
+        "utils.arguments",
+        "utils.constants",
+        "utils.distributed",
+        "warnings",
+        "whisper"
+      ]
+    },
+    "demo/seem/tasks/interactive.py": {
+      "sha256": "c20b314419ca5d0ea5b9c039981ef3d2a663d041e3f97e24bc7a663dd5d0b469",
+      "symbols": [
+        {
+          "name": "_stroke_hw1",
+          "line": 35,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "interactive_infer_image",
+          "line": 53,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "interactive_infer_video",
+          "line": 219,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        "PIL",
+        "cv2",
+        "detectron2.data",
+        "detectron2.data.datasets.builtin_meta",
+        "detectron2.structures",
+        "detectron2.utils.colormap",
+        "glob",
+        "modeling.language.loss",
+        "numpy",
+        "os",
+        "random",
+        "subprocess",
+        "torch",
+        "torch.nn.functional",
+        "torchvision",
+        "utils.constants",
+        "utils.visualizer"
+      ]
+    },
+    "modeling/architectures/seem_model_v1.py": {
+      "sha256": "c263cfcab17d3934c86103734ca3de875b5c67ea8c07373cb8bc03fba3e557d3",
+      "symbols": [
+        {
+          "name": "GeneralizedSEEM",
+          "line": 32,
+          "kind": "ClassDef"
+        },
+        {
+          "name": "GeneralizedSEEM.__init__",
+          "line": 35,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.from_config",
+          "line": 125,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.device",
+          "line": 263,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.forward",
+          "line": 266,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.forward_seg",
+          "line": 321,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.evaluate_demo",
+          "line": 378,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.evaluate",
+          "line": 466,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.evaluate_interactive",
+          "line": 527,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.evaluate_interactive_single",
+          "line": 603,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.evaluate_interactive_grounding",
+          "line": 637,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.evaluate_referring_image",
+          "line": 751,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.evaluate_grounding",
+          "line": 782,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.evaluate_grounding_sptial",
+          "line": 879,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.prepare_targets",
+          "line": 985,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.prepare_next_spaital_mask",
+          "line": 1051,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.semantic_inference",
+          "line": 1102,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.panoptic_inference",
+          "line": 1108,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.instance_inference",
+          "line": 1166,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "GeneralizedSEEM.prepare_targets4query",
+          "line": 1214,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "get_seem_model",
+          "line": 1249,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        "..body",
+        "..language",
+        "..language.loss",
+        "..modules",
+        "..utils",
+        "..vision.backbone",
+        ".build",
+        "detectron2.data",
+        "detectron2.structures",
+        "detectron2.utils.memory",
+        "kornia.contrib",
+        "numpy",
+        "random",
+        "torch",
+        "torch.nn",
+        "typing",
+        "utils.constants",
+        "utils.prompt_engineering"
+      ]
+    },
+    "relocation/__init__.py": {
+      "sha256": "1e2d9342700520a174beaa92468e19943ab136f8174468b49f702a4d819b707d",
+      "symbols": [],
+      "imports": []
+    },
+    "relocation/adapters.py": {
+      "sha256": "870d2f695f1c160899a2a24e70159e2db1605dff717696be27fb7fcaf01be80d",
+      "symbols": [
+        {
+          "name": "SeemAdapter",
+          "line": 14,
+          "kind": "ClassDef"
+        },
+        {
+          "name": "SeemAdapter.__init__",
+          "line": 15,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "SeemAdapter.segment",
+          "line": 19,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "SeemAdapter.segment.fit_mask",
+          "line": 50,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "SeemAdapter.release_gpu",
+          "line": 78,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "run_worker",
+          "line": 86,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "repo_revision",
+          "line": 110,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        ".config",
+        ".geometry",
+        "PIL",
+        "argparse",
+        "demo.seem.tasks.interactive",
+        "demo_v1",
+        "gc",
+        "json",
+        "numpy",
+        "os",
+        "pathlib",
+        "subprocess",
+        "torch"
+      ]
+    },
+    "relocation/config.py": {
+      "sha256": "3eafa31f8d34287ec690db253b3f0d84cfe2a6e1db6a2453716273f68c1b6c24",
+      "symbols": [
+        {
+          "name": "Settings",
+          "line": 11,
+          "kind": "ClassDef"
+        }
+      ],
+      "imports": [
+        "dataclasses",
+        "os",
+        "pathlib"
+      ]
+    },
+    "relocation/controller.py": {
+      "sha256": "485f9d922aa28fd8bba3b612bed47d96f7c7e21d3729058d38a8e2bbf50d5f9e",
+      "symbols": [
+        {
+          "name": "uploaded_image",
+          "line": 17,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "working_image",
+          "line": 26,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "Controller",
+          "line": 33,
+          "kind": "ClassDef"
+        },
+        {
+          "name": "Controller.__init__",
+          "line": 34,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "Controller.validate",
+          "line": 39,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "Controller.segment",
+          "line": 51,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "Controller.new_state",
+          "line": 73,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "Controller.import_mask",
+          "line": 82,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "Controller.estimate",
+          "line": 92,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "Controller.preview",
+          "line": 119,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "Controller.relocate",
+          "line": 126,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        ".adapters",
+        ".config",
+        ".geometry",
+        "PIL",
+        "dataclasses",
+        "datetime",
+        "json",
+        "numpy",
+        "pathlib",
+        "shutil",
+        "threading",
+        "uuid",
+        "zipfile"
+      ]
+    },
+    "relocation/geometry.py": {
+      "sha256": "f0b0afcb9177c36237dcab4df4f43f3ed5bbd920ca767cf4f05de6ef8e6f76af",
+      "symbols": [
+        {
+          "name": "image_hash",
+          "line": 7,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "ink",
+          "line": 12,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "mask_image",
+          "line": 27,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "resize_mask",
+          "line": 31,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "centroid",
+          "line": 35,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "dilate",
+          "line": 42,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "erode",
+          "line": 52,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "overlay",
+          "line": 56,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "arrow_preview",
+          "line": 63,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "transform_foreground",
+          "line": 83,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "transform_foreground.warp",
+          "line": 99,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "composite",
+          "line": 119,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "harmonization_mask",
+          "line": 124,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "blend_repair",
+          "line": 136,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "suggest_scale",
+          "line": 148,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "suggest_scale.stats",
+          "line": 170,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        "PIL",
+        "hashlib",
+        "numpy"
+      ]
+    },
+    "relocation/index_codebase.py": {
+      "sha256": "0f1ab07076aca8587a0b2497c0f0ff91c914368c39dfd86e41550c2b8dac7275",
+      "symbols": [
+        {
+          "name": "extend_html",
+          "line": 17,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "extend_html.array",
+          "line": 23,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "main",
+          "line": 67,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "main.visit",
+          "line": 90,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        ".adapters",
+        ".config",
+        "ast",
+        "datetime",
+        "hashlib",
+        "json",
+        "pathlib",
+        "re"
+      ]
+    },
+    "relocation/test_controller.py": {
+      "sha256": "f78c7149929b174190335c163bc1175f94cf07e612fca1a2c383059058e48acb",
+      "symbols": [
+        {
+          "name": "ControllerTests",
+          "line": 15,
+          "kind": "ClassDef"
+        },
+        {
+          "name": "ControllerTests.setUp",
+          "line": 16,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "ControllerTests.test_source_swap_is_rejected",
+          "line": 26,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "ControllerTests.test_empty_prompt_fails_before_loading_gpu_libraries",
+          "line": 32,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "ControllerTests.test_changed_scribble_is_rejected",
+          "line": 37,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "ControllerTests.test_large_upload_is_capped_and_mask_aligns",
+          "line": 43,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "ControllerTests.test_depth_cache_uses_raw_metric_values_and_recomputes_target_stats",
+          "line": 53,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "ControllerTests.test_depth_cache_uses_raw_metric_values_and_recomputes_target_stats.worker",
+          "line": 56,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "ControllerTests.test_relocation_exports_complete_archive_and_separate_attempts",
+          "line": 70,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "ControllerTests.test_relocation_exports_complete_archive_and_separate_attempts.worker",
+          "line": 73,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        ".config",
+        ".controller",
+        ".geometry",
+        "PIL",
+        "json",
+        "numpy",
+        "pathlib",
+        "tempfile",
+        "unittest",
+        "unittest.mock",
+        "zipfile"
+      ]
+    },
+    "relocation/test_geometry.py": {
+      "sha256": "f409fdbc14d52759882ffb48918e87c25e5a1715161c7d16d08571bb6312eff1",
+      "symbols": [
+        {
+          "name": "RelocationGeometryTests",
+          "line": 8,
+          "kind": "ClassDef"
+        },
+        {
+          "name": "RelocationGeometryTests.setUp",
+          "line": 9,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "RelocationGeometryTests.test_translation_preserves_rgb_and_maps_center",
+          "line": 15,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "RelocationGeometryTests.test_scale_changes_area_and_keeps_color_at_alpha_edges",
+          "line": 24,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "RelocationGeometryTests.test_clipping_requires_explicit_choice",
+          "line": 32,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "RelocationGeometryTests.test_repair_preserves_outside_pixels_and_object_core",
+          "line": 39,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "RelocationGeometryTests.test_metric_ratio_and_relative_map_fallback",
+          "line": 49,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "RelocationGeometryTests.test_invalid_depth_and_heterogeneous_target_fall_back",
+          "line": 56,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "RelocationGeometryTests.test_black_alpha_scribble_is_not_empty",
+          "line": 66,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "RelocationGeometryTests.test_empty_mask_rejected",
+          "line": 71,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        ".geometry",
+        "numpy",
+        "unittest"
+      ]
+    },
+    "relocation/ui.py": {
+      "sha256": "3f30df2cbda6148000ac19f3802d25e0f9b5ab6188f4b86e5b4aba175fb0859d",
+      "symbols": [
+        {
+          "name": "build_ui",
+          "line": 11,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.reset",
+          "line": 14,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.segment",
+          "line": 20,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.import_mask",
+          "line": 30,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.choose_target",
+          "line": 37,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.estimate",
+          "line": 48,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.preview",
+          "line": 56,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.run",
+          "line": 62,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        ".config",
+        ".controller",
+        ".geometry",
+        "PIL",
+        "gradio",
+        "json",
+        "numpy"
+      ]
+    },
+    "relocation/worker.py": {
+      "sha256": "1dd37b997436cb514cb62d0e6c940f60794445630b96bae3b551b98ca6baf32d",
+      "symbols": [
+        {
+          "name": "depth_job",
+          "line": 12,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "brushnet_job",
+          "line": 31,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "brushnet_job.inpaint",
+          "line": 66,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "main",
+          "line": 107,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        ".adapters",
+        ".geometry",
+        "PIL",
+        "diffusers",
+        "json",
+        "numpy",
+        "pathlib",
+        "sys",
+        "time",
+        "torch",
+        "transformers"
+      ]
+    }
+  },
+  "integration": [
+    [
+      "relocation/adapters.py",
+      "demo_v1.py",
+      "reuses load_model"
+    ],
+    [
+      "relocation/adapters.py",
+      "demo/seem/tasks/interactive.py",
+      "calls interactive_infer_image(return_masks=True)"
+    ],
+    [
+      "demo/seem/tasks/interactive.py",
+      "modeling/architectures/seem_model_v1.py",
+      "evaluate_demo -> prev_mask; negative_stroke"
+    ],
+    [
+      "relocation/controller.py",
+      "relocation/worker.py",
+      "isolated process; request JSON and PNG/NPY artifacts"
+    ],
+    [
+      "relocation/worker.py",
+      "../BrushNet/src/diffusers/pipelines/brushnet/pipeline_brushnet.py",
+      "two inpainting calls"
+    ],
+    [
+      "setup_relocation.sh",
+      "setup.sh",
+      "reuses working SEEM setup"
+    ]
+  ]
+}

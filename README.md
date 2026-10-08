@@ -1,5 +1,9 @@
 # 👀*SEEM:* Segment Everything Everywhere All at Once
 
+**Relocation demo:** This repository now includes a Gradio app combining SEEM v1,
+depth-guided object placement and two BrushNet inpainting passes. See
+[RELOCATION.md](RELOCATION.md) for RunPod setup and `demo_relocation.py` usage.
+
 :grapes: \[[Read our arXiv Paper](https://arxiv.org/pdf/2304.06718.pdf)\] &nbsp; :apple: \[[Try our Demo](http://semantic-sam.xyzou.net:6090/)\] 
 
 We introduce **SEEM** that can **S**egment **E**verything **E**verywhere with **M**ulti-modal prompts all at once. SEEM allows users to easily segment an image using prompts of different types including visual prompts (points, marks, boxes, scribbles and image segments) and language prompts (text and audio), etc. It can also work with any combination of prompts or generalize to custom prompts!

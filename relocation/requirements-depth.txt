@@ -1,0 +1,8 @@
+# Depth Anything V2 requires newer Transformers than SEEM's 4.34.
+numpy==1.26.4
+Pillow==9.5.0
+transformers==4.46.3
+tokenizers==0.20.3
+huggingface-hub==0.25.2
+accelerate==0.27.2
+safetensors==0.4.5

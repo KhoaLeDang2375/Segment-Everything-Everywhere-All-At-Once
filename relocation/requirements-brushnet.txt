@@ -1,0 +1,14 @@
+# Separate venv: these pins do not modify the working SEEM environment.
+numpy==1.26.4
+Pillow==9.5.0
+transformers==4.38.2
+tokenizers==0.15.2
+huggingface-hub==0.25.2
+accelerate==0.27.2
+safetensors==0.4.5
+scipy==1.11.4
+opencv-python==4.8.1.78
+importlib_metadata==7.2.1
+filelock==3.16.1
+requests==2.32.3
+regex==2024.9.11
