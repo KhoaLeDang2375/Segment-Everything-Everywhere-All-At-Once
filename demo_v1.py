@@ -157,15 +157,11 @@ def build_gradio_ui(model, audio_model):
                 )
                 return result, None
 
-    # Custom ImageMask component — trả về dict {'image':..., 'mask':...}
-    # để inference handler nhận được cả ảnh gốc lẫn nét vẽ scribble
-    class ImageMask(gr.components.Image):
-        is_template = True
-        def __init__(self, **kwargs):
-            # type="numpy" để Gradio trả dict thay vì PIL thuần
-            kwargs.pop('type', None)
-            super().__init__(source="upload", tool="sketch",
-                             type="numpy", interactive=True, **kwargs)
+    # Sử dụng hàm trả về gr.Image thay vì kế thừa class
+    # để tránh lỗi frontend Gradio không nhận dạng được tool="sketch"
+    def ImageMask(**kwargs):
+        kwargs.pop('type', None)
+        return gr.Image(source="upload", tool="sketch", type="numpy", interactive=True, **kwargs)
 
     title = "SEEM_v1 — Segment Everything Everywhere All at Once"
     description = """
