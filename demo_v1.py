@@ -145,17 +145,15 @@ def build_gradio_ui(model, audio_model):
 
         with torch.autocast(device_type='cuda', dtype=torch.float16):
             if 'Video' in tasks:
-                result = interactive_infer_video(
+                return interactive_infer_video(
                     model, audio_model, image_dict, tasks,
                     ref_image_dict, ref_text, audio_path, video_path
                 )
-                return None, result
             else:
-                result = interactive_infer_image(
+                return interactive_infer_image(
                     model, audio_model, image_dict, tasks,
                     ref_image_dict, ref_text, audio_path, video_path
                 )
-                return result, None
 
     # Sử dụng hàm trả về gr.Image thay vì kế thừa class
     # để tránh lỗi frontend Gradio không nhận dạng được tool="sketch"
