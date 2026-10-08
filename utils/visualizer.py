@@ -886,7 +886,8 @@ class Visualizer:
             font_size = self._default_font_size
 
         # since the text background is dark, we don't want the text to be dark
-        color = np.maximum(list(mplc.to_rgb(color)), 0.2)
+        c_rgb = np.clip(list(mplc.to_rgb(color)), 0.0, 1.0)
+        color = np.maximum(c_rgb, 0.2)
         color[np.argmax(color)] = max(0.8, np.max(color))
 
         x, y = position
@@ -1212,7 +1213,7 @@ class Visualizer:
         modified_lightness = 0.0 if modified_lightness < 0.0 else modified_lightness
         modified_lightness = 1.0 if modified_lightness > 1.0 else modified_lightness
         modified_color = colorsys.hls_to_rgb(polygon_color[0], modified_lightness, polygon_color[2])
-        return modified_color
+        return tuple(np.clip(modified_color, 0.0, 1.0))
 
     def _convert_boxes(self, boxes):
         """
