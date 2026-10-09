@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 from .geometry import (mask_image, dilate, transform_foreground, composite,
-                       harmonization_mask, blend_repair)
+                       harmonization_mask, blend_repair, bounding_removal_mask)
 
 
 def gpu_stats(torch):
@@ -32,7 +32,8 @@ def lama_job(request):
         raise FileNotFoundError(f'Thiếu Big-LaMa TorchScript: {checkpoint}. Chạy setup_relocation.sh --skip-seem.')
     original = np.array(Image.open(job / 'source.png').convert('RGB'))
     mask = np.array(Image.open(job / 'source_mask.png').convert('L')) > 127
-    region = dilate(mask, request['removal_margin'])
+    region = (np.array(Image.open(job / 'removal_mask.png').convert('L')) > 127
+              if (job / 'removal_mask.png').is_file() else bounding_removal_mask(mask, request['removal_margin']))
     mask_image(region).save(job / 'removal_mask.png')
     h, w = original.shape[:2]
     factor = min(1, request['max_side'] / max(h, w))
@@ -100,22 +101,26 @@ def brushnet_job(request):
     job = Path(request['job_dir'])
     image = np.array(Image.open(job / 'source.png').convert('RGB'))
     mask = np.array(Image.open(job / 'source_mask.png').convert('L')) > 127
-    rgb, alpha, transform = transform_foreground(image, mask, request['target'],
-        request['scale'], request['allow_clipping'])
-    mode = request.get('mode', 'generate')
-    if mode == 'generate':
-        repair_target = dilate(alpha > .01, request['target_margin'])
-        protected_core = np.zeros(mask.shape, dtype=bool)
-    elif mode == 'preserve':
-        repair_target, protected_core = harmonization_mask(alpha, request['target_margin'])
-    else:
-        raise ValueError(f'Unknown target mode: {mode}')
-    mask_image(repair_target).save(job / 'harmonization_mask.png')
-    mask_image(repair_target).save(job / 'generation_mask.png')
-    Image.fromarray((alpha * 255).astype(np.uint8)).save(job / 'target_mask.png')
-    cutout = np.dstack([image, mask.astype(np.uint8) * 255])
-    Image.fromarray(cutout).save(job / 'source_cutout.png')
-    Image.fromarray(np.dstack([rgb, (alpha * 255).astype(np.uint8)])).save(job / 'target_cutout.png')
+    task = request.get('task', 'target')
+    if task not in {'removal', 'target'}:
+        raise ValueError(f'Unknown BrushNet task: {task}')
+    if task == 'target':
+        rgb, alpha, transform = transform_foreground(image, mask, request['target'],
+            request['scale'], request['allow_clipping'])
+        mode = request.get('mode', 'generate')
+        if mode == 'generate':
+            repair_target = dilate(alpha > .01, request['target_margin'])
+            protected_core = np.zeros(mask.shape, dtype=bool)
+        elif mode == 'preserve':
+            repair_target, protected_core = harmonization_mask(alpha, request['target_margin'])
+        else:
+            raise ValueError(f'Unknown target mode: {mode}')
+        mask_image(repair_target).save(job / 'harmonization_mask.png')
+        mask_image(repair_target).save(job / 'generation_mask.png')
+        Image.fromarray((alpha * 255).astype(np.uint8)).save(job / 'target_mask.png')
+        cutout = np.dstack([image, mask.astype(np.uint8) * 255])
+        Image.fromarray(cutout).save(job / 'source_cutout.png')
+        Image.fromarray(np.dstack([rgb, (alpha * 255).astype(np.uint8)])).save(job / 'target_cutout.png')
 
     brushnet = BrushNetModel.from_pretrained(request['brushnet_checkpoint'], torch_dtype=torch.float16)
     pipe = StableDiffusionBrushNetPipeline.from_pretrained(request['base_model'],
@@ -144,9 +149,24 @@ def brushnet_job(request):
             brushnet_conditioning_scale=float(request['conditioning'])).images[0]
         return np.array(out.resize((w, h), Image.Resampling.LANCZOS))
 
+    if task == 'removal':
+        region = np.array(Image.open(job / 'removal_mask.png').convert('L')) > 127
+        print('BrushNet source removal: padded bounding rectangle', flush=True)
+        raw = inpaint(image, region, request['background_prompt'], request['negative_prompt'], request['seed'])
+        Image.fromarray(raw).save(job / 'removal_raw.png')
+        background = blend_repair(image, raw, region, feather=2)
+        background[mask] = raw[mask]
+        Image.fromarray(background).save(job / 'background.png')
+        metadata = dict(seconds=time.time()-started, inference_size=list(work_size), task=task,
+            mask_shape=request['mask_shape'], torch_version=torch.__version__,
+            diffusers_version=diffusers.__version__, brushnet_revision=repo_revision(request['brushnet_repo']),
+            **gpu_stats(torch))
+        (job / 'brushnet_result.json').write_text(json.dumps(metadata, indent=2), encoding='utf-8')
+        return
+
     background = np.array(Image.open(job / 'background.png').convert('RGB'))
     if background.shape != image.shape:
-        raise ValueError('Nền LaMa phải cùng kích thước với ảnh nguồn.')
+        raise ValueError('Nền sau xóa phải cùng kích thước với ảnh nguồn.')
     pasted = composite(background, rgb, alpha)
     Image.fromarray(pasted).save(job / 'pasted.png')
     print(f'BrushNet target pass: {mode}', flush=True)

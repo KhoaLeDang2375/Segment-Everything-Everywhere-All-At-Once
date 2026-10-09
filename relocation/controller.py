@@ -11,7 +11,7 @@ from PIL import Image
 from .config import REPO, DEPTH_MODELS
 from .adapters import SeemAdapter, run_worker, repo_revision
 from .geometry import (ink, image_hash, mask_image, resize_mask, centroid,
-                       suggest_scale, transform_foreground, composite)
+                       suggest_scale, transform_foreground, composite, bounding_removal_mask)
 
 
 def uploaded_image(value):
@@ -136,30 +136,53 @@ class Controller:
             background = np.array(Image.open(Path(state['removal']['job']) / 'background.png').convert('RGB'))
         return Image.fromarray(composite(background, rgb, alpha)), Image.fromarray((alpha*255).astype(np.uint8))
 
-    def remove(self, canvas, state, removal_margin):
-        """Preview/cache LaMa removal independently of target geometry/prompts."""
+    def remove(self, canvas, state, removal_margin, backend='lama', background_prompt='',
+               removal_negative='', steps=30, guidance=7.5, conditioning=1, seed=1234):
+        """Cache each removal backend/settings independently for visual comparison."""
         self.validate(canvas, state)
+        if backend not in {'lama', 'brushnet'}:
+            raise ValueError('Chọn backend xóa nguồn: lama hoặc brushnet.')
         margin = int(removal_margin)
-        cached = state.get('removal')
-        if cached and cached['margin'] == margin and cached['checkpoint'] == self.settings.lama_checkpoint and Path(cached['job'], 'background.png').is_file():
-            return state, Image.open(Path(cached['job']) / 'background.png').copy()
+        region = bounding_removal_mask(state['mask'], margin)
+        checkpoint = self.settings.lama_checkpoint if backend == 'lama' else self.settings.brushnet_checkpoint
+        parameters = {'backend': backend, 'checkpoint': checkpoint, 'padding': margin,
+                      'mask_shape': 'padded bounding rectangle', 'max_side': self.settings.max_side}
+        if backend == 'brushnet':
+            if not background_prompt.strip():
+                raise ValueError('Nhập positive prompt nền cho lượt xóa BrushNet.')
+            parameters.update(background_prompt=background_prompt.strip(), negative_prompt=removal_negative.strip(),
+                steps=int(steps), guidance=float(guidance), conditioning=float(conditioning), seed=int(seed),
+                base_model=self.settings.base_model, brushnet_repo=self.settings.brushnet_repo)
+        key = json.dumps(parameters, sort_keys=True)
+        cache = dict(state.get('removal_cache', {}))
+        cached = cache.get(key)
+        if cached and Path(cached['job'], 'background.png').is_file():
+            return dict(state, removal=cached), Image.open(Path(cached['job']) / 'background.png').copy()
         job = Path(state['job']) / ('removal_' + uuid.uuid4().hex[:10])
         job.mkdir()
         import shutil
         for name in ['source.png', 'source_mask.png']:
             shutil.copy2(Path(state['job']) / name, job / name)
+        mask_image(region).save(job / 'removal_mask.png')
         request = {'job_dir': str(job), 'checkpoint': self.settings.lama_checkpoint,
-                   'removal_margin': margin, 'max_side': self.settings.max_side}
+                   'removal_margin': margin, 'max_side': self.settings.max_side, 'mask_shape': parameters['mask_shape']}
+        if backend == 'brushnet':
+            request.update(parameters, brushnet_checkpoint=checkpoint, task='removal')
         with self.gpu_lock:
             self.seem.release_gpu()
-            run_worker(self.settings, 'lama', request, job)
-        state = dict(state, removal={'job': str(job), 'margin': margin,
-                                   'checkpoint': self.settings.lama_checkpoint})
+            run_worker(self.settings, backend, request, job)
+        result_file = job / ('lama_result.json' if backend == 'lama' else 'brushnet_result.json')
+        result = json.loads(result_file.read_text(encoding='utf-8'))
+        result.update(parameters)
+        (job / 'removal_result.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
+        record = dict(parameters, job=str(job))
+        cache[key] = record
+        state = dict(state, removal=record, removal_cache=cache)
         return state, Image.open(job / 'background.png').copy()
 
     def relocate(self, canvas, state, target, scale, text, background_prompt, target_prompt,
                  negative_prompt, steps, guidance, conditioning, seed, removal_margin, target_margin, allow_clipping,
-                 mode='generate'):
+                 mode='generate', removal_backend='lama', removal_negative=''):
         self.validate(canvas, state)
         if target is None:
             raise ValueError('Chọn tâm đích trước.')
@@ -169,7 +192,8 @@ class Controller:
             raise ValueError('Chọn chế độ sinh đích hợp lệ.')
         # Validate geometry before allocating/loading the diffusion model.
         transform_foreground(state['image'], state['mask'], target, scale, allow_clipping)
-        state, _ = self.remove(canvas, state, removal_margin)
+        state, _ = self.remove(canvas, state, removal_margin, removal_backend, background_prompt,
+                               removal_negative, steps, guidance, conditioning, seed)
         parent = Path(state['job'])
         job = parent / ('run_' + uuid.uuid4().hex[:10])
         job.mkdir()
@@ -178,8 +202,13 @@ class Controller:
                 import shutil
                 shutil.copy2(parent / name, job / name)
         import shutil
-        for name in ['background.png', 'removal_mask.png', 'removal_raw.png', 'lama_result.json', 'lama_request.json']:
+        for name in ['background.png', 'removal_mask.png', 'removal_raw.png', 'removal_result.json']:
             shutil.copy2(Path(state['removal']['job']) / name, job / name)
+        # Prefix worker provenance so target BrushNet files cannot overwrite it.
+        for suffix in ['request.json', 'result.json']:
+            source = Path(state['removal']['job']) / f'{removal_backend}_{suffix}'
+            if source.is_file():
+                shutil.copy2(source, job / f'removal_{removal_backend}_{suffix}')
         prompt = target_prompt.strip() or f'{text.strip()}, naturally integrated with the surrounding scene, coherent lighting and texture.'
         request = {'job_dir': str(job), 'brushnet_repo': self.settings.brushnet_repo,
             'base_model': self.settings.base_model, 'brushnet_checkpoint': self.settings.brushnet_checkpoint,
@@ -197,7 +226,7 @@ class Controller:
             'seem_revision': repo_revision(REPO), 'settings': asdict(self.settings),
             'input_hash': state['image_hash'], 'segmentation_mode': state['segmentation_mode'],
             'depth_estimate': depth_info, 'seem_metrics': state.get('seem_metrics'),
-            'removal': json.loads((job / 'lama_result.json').read_text(encoding='utf-8')),
+            'removal': json.loads((job / 'removal_result.json').read_text(encoding='utf-8')),
             'object_text': text, 'request': request, 'result': result_info}
         (job / 'metadata.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding='utf-8')
         archive = job / 'relocation.zip'

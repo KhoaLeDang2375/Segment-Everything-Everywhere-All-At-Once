@@ -15,10 +15,16 @@
    preprocessing; empty negative strokes skip source comparison and active
    strokes use dimension/content checks with browser round-trip tolerance.
 9. Update RunPod instructions and the existing Graphify AST supplement.
+10. Restore BrushNet source removal as an alternative to LaMa. Both use a padded
+    bounding rectangle without object silhouette; exact mask stays for target.
+11. Add side-by-side removal comparison, independent removal/target prompts,
+    backend/settings-specific caches and prefixed worker provenance in ZIPs.
+12. Provide Vietnamese flow and deployment commands in FLOW_RUNPOD.md.
 
 ## Validation still required on RunPod
 
 * Real LaMa checkpoint inference and background quality for the uploaded sheep.
+* LaMa vs BrushNet source removal with the same rectangular mask and padding.
 * Full target generation vs preserve; inspect artifacts and exact effective prompts.
 * Empty positive/negative strokes, text-only, active negative strokes, stale image.
 * Target clicks, overlapping source/target, scaling and clipping at boundaries.

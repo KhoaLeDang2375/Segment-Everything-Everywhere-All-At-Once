@@ -39,6 +39,21 @@ def centroid(mask):
     return float(x.mean()), float(y.mean())
 
 
+def bounding_removal_mask(mask, padding):
+    """Hide object silhouette with a filled, padded axis-aligned rectangle."""
+    padding = int(padding)
+    if not 0 <= padding <= 64:
+        raise ValueError('Padding vùng xóa phải trong khoảng 0–64 pixel.')
+    y, x = np.nonzero(mask)
+    if not len(x):
+        raise ValueError('Mask nguồn rỗng.')
+    h, w = mask.shape
+    region = np.zeros((h, w), dtype=bool)
+    region[max(0, y.min()-padding):min(h, y.max()+padding+1),
+           max(0, x.min()-padding):min(w, x.max()+padding+1)] = True
+    return region
+
+
 def dilate(mask, radius):
     radius = int(radius)
     if not 0 <= radius <= 64:

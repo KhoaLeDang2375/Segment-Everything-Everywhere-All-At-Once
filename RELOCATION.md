@@ -2,7 +2,11 @@
 
 Default pipeline: SEEM source segmentation → optional metric depth scale →
 Big-LaMa source removal → transformed target mask → BrushNet target generation.
+BrushNet source removal is also available for side-by-side comparison, using
+the same padded bounding rectangle as LaMa. The precise source silhouette is
+retained separately for placement at the destination.
 Gradio remains pinned to 3.50.2 to reuse the working SEEM environment.
+Vietnamese flow and deployment guide: [FLOW_RUNPOD.md](FLOW_RUNPOD.md).
 
 ## Upgrade an existing RunPod
 
@@ -77,8 +81,10 @@ verification. Supply a compatible trusted TorchScript export if overriding it.
    grounding. With strokes, SEEM uses spatial prompting. Optional negative
    scribbles exclude pixels; they are distinct from BrushNet negative text.
 3. Segment; inspect the source mask or upload a corrected white-object mask.
-4. Click LaMa removal. Default source dilation is 8 working-image pixels.
-   Inspect background.png; adjust margin and rerun if object edges remain.
+4. Select lama/brushnet removal or compare both side by side. Both use a filled
+   bounding rectangle with 8 working-image pixels of padding by default.
+   BrushNet removal has its own background positive and removal negative text.
+   Inspect background.png; adjust padding and rerun if object edges remain.
 5. Click the target image to place the mask centroid. Orientation stays fixed.
 6. Select Indoor/Outdoor depth correctly (Outdoor is the default), or manually
    choose scale. Inspect the transformed mask/geometry preview.
@@ -133,9 +139,13 @@ to Gradio 4 would require migrating sketch APIs; no upgrade is needed here.
 
 ## Artifacts, validation and codebase index
 
-Each attempt keeps requests, logs, raw results, masks and metadata. LaMa removal
-previews are cached per source session and margin/checkpoint, then copied into
+Each attempt keeps requests, logs, raw results, masks and metadata. Removal
+previews are cached per source session/backend/settings (BrushNet includes prompt,
+negative, seed and diffusion parameters), then copied into
 independent result jobs. Images/JSON/NPY are included in the downloadable ZIP.
+Removal provenance is prefixed removal_lama_* or removal_brushnet_* to avoid
+being overwritten by the target BrushNet worker. removal_result.json summarizes
+backend/mask shape/checkpoint/timing/memory; target_mask retains the silhouette.
 Failed workers preserve requests/logs for diagnosis. Outputs require manual
 cleanup and persistent storage if they must survive Pod replacement.
 

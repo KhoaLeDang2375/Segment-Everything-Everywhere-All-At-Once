@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-08T23:58:24.542837+00:00",
-  "seem_revision": "1a50b1a883ebff3ef23735c5829f41bf9a54f759",
+  "generated_at": "2026-10-09T00:35:25.884917+00:00",
+  "seem_revision": "2fec3c7ac250116826bbffe81ccd57fff706dc94",
   "brushnet_revision": "0f9d9e54ca85c40a11a8f0504b4b5b2e7e8fd14d",
   "provenance": "AST declarations/imports + explicit reviewed integration links; existing Graphify semantic graph retained",
   "files": {
@@ -350,7 +350,7 @@
       ]
     },
     "relocation/controller.py": {
-      "sha256": "014a48d7665e4fd7cd8bc8e28f8f35188a9cd08a16bacbc4f29a9595453e729c",
+      "sha256": "a14b33094b4275a242fea9b5117d13a0626505dfe1a455c6f3b019e9b3e9169e",
       "symbols": [
         {
           "name": "uploaded_image",
@@ -409,7 +409,7 @@
         },
         {
           "name": "Controller.relocate",
-          "line": 160,
+          "line": 183,
           "kind": "FunctionDef"
         }
       ],
@@ -430,7 +430,7 @@
       ]
     },
     "relocation/geometry.py": {
-      "sha256": "f0b0afcb9177c36237dcab4df4f43f3ed5bbd920ca767cf4f05de6ef8e6f76af",
+      "sha256": "68703fa0a2f6ead6f1ee235b5a31918e827df0f7db0c9cd7368fa3eb8c19969c",
       "symbols": [
         {
           "name": "image_hash",
@@ -458,58 +458,63 @@
           "kind": "FunctionDef"
         },
         {
-          "name": "dilate",
+          "name": "bounding_removal_mask",
           "line": 42,
           "kind": "FunctionDef"
         },
         {
+          "name": "dilate",
+          "line": 57,
+          "kind": "FunctionDef"
+        },
+        {
           "name": "erode",
-          "line": 52,
+          "line": 67,
           "kind": "FunctionDef"
         },
         {
           "name": "overlay",
-          "line": 56,
+          "line": 71,
           "kind": "FunctionDef"
         },
         {
           "name": "arrow_preview",
-          "line": 63,
+          "line": 78,
           "kind": "FunctionDef"
         },
         {
           "name": "transform_foreground",
-          "line": 83,
+          "line": 98,
           "kind": "FunctionDef"
         },
         {
           "name": "transform_foreground.warp",
-          "line": 99,
+          "line": 114,
           "kind": "FunctionDef"
         },
         {
           "name": "composite",
-          "line": 119,
+          "line": 134,
           "kind": "FunctionDef"
         },
         {
           "name": "harmonization_mask",
-          "line": 124,
+          "line": 139,
           "kind": "FunctionDef"
         },
         {
           "name": "blend_repair",
-          "line": 136,
+          "line": 151,
           "kind": "FunctionDef"
         },
         {
           "name": "suggest_scale",
-          "line": 148,
+          "line": 163,
           "kind": "FunctionDef"
         },
         {
           "name": "suggest_scale.stats",
-          "line": 170,
+          "line": 185,
           "kind": "FunctionDef"
         }
       ],
@@ -520,7 +525,7 @@
       ]
     },
     "relocation/index_codebase.py": {
-      "sha256": "be184290aa68ca1c4c691237a914f6fc8daaee2c7baf5cc40cb09523ef6d2cdd",
+      "sha256": "4a2050f35bc5a55a54322fffc0379672553640085f586e668446c6ebc598c385",
       "symbols": [
         {
           "name": "extend_html",
@@ -683,76 +688,81 @@
       ]
     },
     "relocation/ui.py": {
-      "sha256": "b0aa64840001db74558f70490155a7340d079d1c3f6dca39b02a00455ecb910a",
+      "sha256": "7cc5c46ce52f046ec0896c0805cbcb476ff7a3cc318fe386bedae03f0c199528",
       "symbols": [
         {
           "name": "SketchImage",
-          "line": 11,
+          "line": 12,
           "kind": "ClassDef"
         },
         {
           "name": "SketchImage.get_block_name",
-          "line": 13,
+          "line": 14,
           "kind": "FunctionDef"
         },
         {
           "name": "SketchImage.preprocess",
-          "line": 16,
+          "line": 17,
           "kind": "FunctionDef"
         },
         {
           "name": "target_point",
-          "line": 28,
+          "line": 29,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui",
-          "line": 42,
+          "line": 43,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.reset",
-          "line": 45,
+          "line": 46,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.segment",
-          "line": 51,
+          "line": 52,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.import_mask",
-          "line": 61,
+          "line": 62,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.choose_target",
-          "line": 68,
+          "line": 69,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.estimate",
-          "line": 77,
+          "line": 78,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.preview",
-          "line": 85,
+          "line": 86,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.remove",
-          "line": 91,
+          "line": 92,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.compare",
+          "line": 100,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.prompts",
-          "line": 99,
+          "line": 111,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.run",
-          "line": 103,
+          "line": 116,
           "kind": "FunctionDef"
         }
       ],
@@ -767,7 +777,7 @@
       ]
     },
     "relocation/worker.py": {
-      "sha256": "3ca05dd8a8b414e3555276b1a7a3be89899a42dd0b913c1aa506918e73be7c40",
+      "sha256": "9229f6883d33786afd16021db9cc6e36034c57b0892d4bb0bc80482c2f1ce47c",
       "symbols": [
         {
           "name": "gpu_stats",
@@ -781,22 +791,22 @@
         },
         {
           "name": "depth_job",
-          "line": 64,
+          "line": 65,
           "kind": "FunctionDef"
         },
         {
           "name": "brushnet_job",
-          "line": 86,
+          "line": 87,
           "kind": "FunctionDef"
         },
         {
           "name": "brushnet_job.inpaint",
-          "line": 130,
+          "line": 135,
           "kind": "FunctionDef"
         },
         {
           "name": "main",
-          "line": 169,
+          "line": 189,
           "kind": "FunctionDef"
         }
       ],
@@ -839,7 +849,7 @@
     [
       "relocation/worker.py",
       "../BrushNet/src/diffusers/pipelines/brushnet/pipeline_brushnet.py",
-      "one target generation or boundary repair call after LaMa"
+      "source removal with rectangle or target generation/boundary repair in separate workers"
     ],
     [
       "setup_relocation.sh",

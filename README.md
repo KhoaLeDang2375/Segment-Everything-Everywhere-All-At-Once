@@ -1,8 +1,9 @@
 # 👀*SEEM:* Segment Everything Everywhere All at Once
 
 **Relocation demo:** This repository now includes a Gradio app combining SEEM v1,
-depth-guided object placement, LaMa source removal and BrushNet target generation. See
+depth-guided object placement, LaMa/BrushNet source-removal comparison and BrushNet target generation. See
 [RELOCATION.md](RELOCATION.md) for RunPod setup and `demo_relocation.py` usage.
+See [FLOW_RUNPOD.md](FLOW_RUNPOD.md) for the Vietnamese flow and complete RunPod commands.
 
 :grapes: \[[Read our arXiv Paper](https://arxiv.org/pdf/2304.06718.pdf)\] &nbsp; :apple: \[[Try our Demo](http://semantic-sam.xyzou.net:6090/)\] 
 
