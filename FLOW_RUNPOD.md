@@ -278,10 +278,13 @@ bạn cần trỏ tới thư mục model đã tải hoặc tự đặt model ở
 ### VRAM và cách so sánh
 
 Code lazy-load SEEM, chuyển SEEM/embedding về CPU sau segmentation;
-BrushNet chạy FP16 + model CPU offload, các worker chạy tuần tự rồi thoát.
+BrushNet chạy FP16, mặc định `cuda` giữ toàn bộ pipeline trên GPU trong mỗi
+lượt. `--brushnet-device cpu-offload` bật lại CPU offload. Các worker vẫn chạy
+tuần tự rồi thoát.
 Quan sát dưới 5 GB phù hợp chiến lược này, nhưng đọc `nvidia-smi` sau khi
 worker thoát có thể bỏ qua peak. IP-Adapter thêm encoder ảnh FP16 và attention
-vào UNet; encoder tham gia chuỗi CPU offload trước UNet. Không cộng tất cả
+vào UNet; encoder nằm trên GPU trong chế độ cuda, hoặc tham gia chuỗi CPU
+offload trước UNet khi chọn cpu-offload. Không cộng tất cả
 checkpoint như thể chúng cùng nằm trên GPU. 16 GB là cấu hình hợp lý để bắt đầu
 ở 512, cần đo lại peak khi bật adapter; chưa có chạy GPU xác nhận bản cập nhật.
 Giữ RAM host ít nhất 32 GB vì SEEM và các trọng số offload vẫn nằm trên CPU.
@@ -298,3 +301,42 @@ IP-Adapter hỗ trợ diện mạo; không bảo đảm bản sao vật thể ho
 xác. Output được ghép theo vùng sửa nên vùng ngoài mask giữ nguyên, nhưng vật
 thể sinh lớn hơn mask có thể bị cắt. Khi đó giảm strength/guidance hoặc tăng
 margin đích nhẹ; preserve giữ RGB lõi nếu cần độ trung thành cao.
+
+
+## 11. RTX 4000 Ada 20 GB: chạy toàn bộ pipeline trên GPU
+
+Dừng Gradio, cập nhật code và chạy bằng Python SEEM hiện có. Nếu đã tải
+BrushNetX/IP-Adapter ở mục 10 thì không cần cài hoặc tải model lại:
+
+```bash
+cd /workspace/Segment-Everything-Everywhere-All-At-Once
+git pull --ff-only origin exp_v1
+python demo_relocation.py --brushnet-device cuda --max-side 512 --port 7860
+```
+
+`cuda` là mặc định mới, có thể đặt `BRUSHNET_DEVICE=cuda`. Sau khi nạp FP16,
+code gọi `pipe.to('cuda')`: UNet, BrushNet, VAE, text encoder, CLIP image encoder
+và IP-Adapter ở trên GPU trong suốt inference. Không bật hook CPU offload.
+LaMa/depth vốn đã chạy CUDA. SEEM vẫn chuyển về CPU sau segmentation để dành
+bộ nhớ cho diffusion; không giữ mọi model cùng lúc trên GPU.
+
+Mục đích là giảm truyền CPU–GPU khi diffusion chạy. Worker vẫn thoát sau mỗi
+request, do đó lượt sau vẫn nạp lại model; chưa có cache pipeline thường trú.
+Nền sau xóa có cache theo thông số, nên có thể bỏ qua lượt xóa khi so sánh đích.
+VAE slicing được giữ; với batch một ảnh không cần bật thêm attention slicing
+vì nó có thể giảm tốc. Không thay scheduler, số bước hay precision để tăng tốc.
+
+Bắt đầu ở 512 trên 20 GB, sau đó có thể thử `--max-side 768` nếu peak đủ thấp.
+Tăng resolution làm tăng chi phí và có thể OOM; chưa đo GPU bản cuda mới.
+Trong JSON mỗi worker xem `brushnet_device`, `load_seconds`, `inference_seconds`,
+`seconds`, `peak_allocated_gib` và `peak_reserved_gib`. Peak PyTorch thuộc worker
+đó; tổng GPU còn bao gồm driver/CUDA và tiến trình khác. So sánh thời gian với
+cùng seed, mask, prompt, resolution và steps; chưa có số liệu tăng tốc thực tế.
+
+Nếu hết VRAM, dừng và khởi động lại với:
+
+```bash
+python demo_relocation.py --brushnet-device cpu-offload --max-side 512 --port 7860
+```
+
+Code báo gợi ý này khi worker BrushNet OOM, không tự đổi chế độ âm thầm.

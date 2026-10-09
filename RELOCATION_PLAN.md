@@ -25,11 +25,16 @@
 14. Separate removal BrushNetX checkpoint from segmentation checkpoint at target;
     provide grass background prompt preset and preserve LaMa comparison.
 15. Add optional target-only IP-Adapter Plus SD1.5 with masked square reference,
-    strength control, FP16 encoder, existing CPU offload and ZIP provenance.
+    strength control, FP16 encoder, optional CPU offload and ZIP provenance.
 16. Add --only-brushnet upgrade/download path; keep existing worker versions.
+
+17. Default BrushNet to full FP16 CUDA for RTX 4000 Ada 20 GB; keep CLI/env
+    cpu-offload option, per-stage timings and actionable OOM messages. Workers
+    remain short-lived and GPU operations stay serialized.
 
 ## Validation still required on RunPod
 
+* Full CUDA vs CPU offload timings/peaks on RTX 4000 Ada 20 GB at 512.
 * Real LaMa checkpoint inference and background quality for the uploaded sheep.
 * LaMa vs BrushNet source removal with the same rectangular mask and padding.
 * BrushNetX background quality and IP-Adapter Plus integration/identity with

@@ -14,6 +14,8 @@ def parse_args():
                  'removal_brushnet_checkpoint', 'ip_adapter_dir', 'output_dir']:
         parser.add_argument('--' + name.replace('_', '-'), default=getattr(defaults, name))
     parser.add_argument('--max-side', type=int, choices=[512, 768, 1024], default=512)
+    parser.add_argument('--brushnet-device', choices=['cuda', 'cpu-offload'], default=defaults.brushnet_device,
+                        help='cuda keeps the full FP16 pipeline on GPU during each worker job; cpu-offload saves VRAM')
     parser.add_argument('--worker-timeout', type=int, default=1800)
     parser.add_argument('--port', type=int, default=7860)
     parser.add_argument('--server-name', default='0.0.0.0')

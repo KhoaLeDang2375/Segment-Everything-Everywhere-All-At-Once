@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-10-09T12:45:00.124474+00:00",
-  "seem_revision": "d5cde7e4ec4b2abd6d44ed126389e9c6fa0e2b74",
+  "generated_at": "2026-10-09T13:13:39.848340+00:00",
+  "seem_revision": "2c14d1fb9686eba8f3abee19e628f0e88097f0cd",
   "brushnet_revision": "0f9d9e54ca85c40a11a8f0504b4b5b2e7e8fd14d",
   "provenance": "AST declarations/imports + explicit reviewed integration links; existing Graphify semantic graph retained",
   "files": {
     "demo_relocation.py": {
-      "sha256": "31b3ee6622e89c4a7c67f293aba592628819b432d4387bb53d5616019b8b3128",
+      "sha256": "40a8176a5d5086f512dd19ddbf1a2a76fa385210c4e45a1ee3744ffa9bba0d38",
       "symbols": [
         {
           "name": "parse_args",
@@ -14,12 +14,12 @@
         },
         {
           "name": "preflight",
-          "line": 25,
+          "line": 27,
           "kind": "FunctionDef"
         },
         {
           "name": "main",
-          "line": 57,
+          "line": 59,
           "kind": "FunctionDef"
         }
       ],
@@ -335,12 +335,17 @@
       ]
     },
     "relocation/config.py": {
-      "sha256": "ae934fb253626c89580d2db335894b188a33dd93e0681912f13bba9dfedad80e",
+      "sha256": "bf1c697b3249a1cf1768f3874e1b3c6b06addc884c34d5f0e07f2caba5b13cde",
       "symbols": [
         {
           "name": "Settings",
           "line": 11,
           "kind": "ClassDef"
+        },
+        {
+          "name": "Settings.__post_init__",
+          "line": 29,
+          "kind": "FunctionDef"
         }
       ],
       "imports": [
@@ -350,7 +355,7 @@
       ]
     },
     "relocation/controller.py": {
-      "sha256": "870a26b481f7b7858c8fc752eca6f810d254839eaba2cc63e3cbe8d8be63c9ec",
+      "sha256": "f25a780081886371993dff5eb79bd4f2a30c3c002b356636f6c7f08756e1e544",
       "symbols": [
         {
           "name": "uploaded_image",
@@ -409,7 +414,7 @@
         },
         {
           "name": "Controller.relocate",
-          "line": 195,
+          "line": 196,
           "kind": "FunctionDef"
         }
       ],
@@ -707,7 +712,7 @@
       ]
     },
     "relocation/ui.py": {
-      "sha256": "d42322b03ad4c856734a8b777284e3db4295c754cf08fe416cb52aee7c3b5eab",
+      "sha256": "34a3973b043075a60068eece931e2021fcd7e233bedc2868148b926a96120729",
       "symbols": [
         {
           "name": "SketchImage",
@@ -806,7 +811,7 @@
       ]
     },
     "relocation/worker.py": {
-      "sha256": "5773265a93697d312b7d88828ecb309bf43385f80f92a7f53ea85907185d98d4",
+      "sha256": "d543d8b1f93b206cab5c12dc8a868ba7b29391fb001501216e5eb15ff65fcc94",
       "symbols": [
         {
           "name": "gpu_stats",
@@ -830,12 +835,12 @@
         },
         {
           "name": "brushnet_job.inpaint",
-          "line": 150,
+          "line": 163,
           "kind": "FunctionDef"
         },
         {
           "name": "main",
-          "line": 209,
+          "line": 229,
           "kind": "FunctionDef"
         }
       ],

@@ -160,6 +160,7 @@ def build_ui(settings):
             raise gr.Error(str(error)) from error
 
     with gr.Blocks(title='SEEM + LaMa + BrushNet Relocation') as app:
+        gr.Markdown(f'BrushNet device: **{settings.brushnet_device}** · FP16 · các bước GPU chạy tuần tự.')
         gr.Markdown('# Di chuyển vật thể · SEEM + LaMa / BrushNet\nUpload → lấy mask → so sánh xóa nguồn → chọn tâm và scale → BrushNet sinh tại đích. Mask xóa là chữ nhật; mask đích giữ hình vật thể. Generate có thể tạo vật thể khác với vật thể gốc.')
         state = gr.State(None)
         target = gr.State(None)

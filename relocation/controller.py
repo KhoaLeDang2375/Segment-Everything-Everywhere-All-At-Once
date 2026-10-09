@@ -164,7 +164,8 @@ class Controller:
                 raise ValueError('Nhập positive prompt nền cho lượt xóa BrushNet.')
             parameters.update(background_prompt=background_prompt.strip(), negative_prompt=removal_negative.strip(),
                 steps=int(steps), guidance=float(guidance), conditioning=float(conditioning), seed=int(seed),
-                base_model=self.settings.base_model, brushnet_repo=self.settings.brushnet_repo)
+                base_model=self.settings.base_model, brushnet_repo=self.settings.brushnet_repo,
+                brushnet_device=self.settings.brushnet_device)
         key = json.dumps(parameters, sort_keys=True)
         cache = dict(state.get('removal_cache', {}))
         cached = cache.get(key)
@@ -238,6 +239,7 @@ class Controller:
             'steps': int(steps), 'guidance': float(guidance), 'conditioning': float(conditioning),
             'seed': int(seed), 'removal_margin': int(removal_margin), 'target_margin': int(target_margin),
             'max_side': self.settings.max_side, 'mode': mode,
+            'brushnet_device': self.settings.brushnet_device,
             'use_ip_adapter': use_ip_adapter, 'ip_adapter_scale': float(ip_adapter_scale),
             'ip_adapter_dir': self.settings.ip_adapter_dir}
         with self.gpu_lock:

@@ -63,7 +63,9 @@ LAMA_CHECKPOINT/LAMA_PYTHON environment variables are also supported.
 
 GPU operations are serialized. SEEM and its language embedding cache are moved
 back to CPU after segmentation. Workers exit before the next GPU task.
-BrushNet uses FP16, model CPU offload and VAE slicing. 16 GB is a candidate for
+BrushNet uses FP16 and VAE slicing. Default device mode is `cuda` (the full
+pipeline stays on GPU during each job); `--brushnet-device cpu-offload` enables
+model CPU offload. 16 GB is a candidate for
 512 inference, not a measured guarantee. Adequate CPU RAM is needed for offload.
 LaMa/depth/BrushNet report peak allocated/reserved GiB and timings; these are
 PyTorch process measurements, not total nvidia-smi device usage.
@@ -191,7 +193,26 @@ Its masked object reference is cropped and square padded on neutral gray;
 the source background is excluded. It is passed separately to the UNet image
 conditioning, never used for source removal. Toggle it off for an ablation.
 Use `IP_ADAPTER_DIR` / `--ip-adapter-dir` for alternative local paths.
-FP16 CLIP encoder joins the existing model CPU offload sequence. The custom
+FP16 CLIP encoder stays on GPU in cuda mode; in cpu-offload mode it joins
+the model CPU offload sequence. The custom
 Diffusers fork already exposes IPAdapterMixin and `ip_adapter_image`; no stock
 Diffusers upgrade is installed. GPU execution/quality/peak memory still requires
 validation on RunPod. See FLOW_RUNPOD.md section 10 for commands and details.
+
+
+## RTX 4000 Ada 20 GB: direct GPU mode
+
+```bash
+git pull --ff-only origin exp_v1
+python demo_relocation.py --brushnet-device cuda --max-side 512 --port 7860
+```
+
+No reinstall is needed if the preceding model setup is complete. `cuda` is now
+also the default, overridable with `BRUSHNET_DEVICE`. It calls `pipe.to('cuda')`
+after loading all FP16 modules and optional IP-Adapter; no offload hooks are
+installed. Other GPU tasks are still serialized, and SEEM releases GPU memory.
+Workers still exit per job and reload next time: this change saves inference
+transfers, not cold model loading. Worker metadata separates `load_seconds`
+from `inference_seconds`; compare the same inputs/settings across modes.
+For OOM, restart with `--brushnet-device cpu-offload --max-side 512`.
+No GPU timing or memory measurements for direct GPU mode have been performed.

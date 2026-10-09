@@ -122,6 +122,10 @@ def brushnet_job(request):
         Image.fromarray(cutout).save(job / 'source_cutout.png')
         Image.fromarray(np.dstack([rgb, (alpha * 255).astype(np.uint8)])).save(job / 'target_cutout.png')
 
+    load_started = time.time()
+    device_mode = request.get('brushnet_device', 'cuda')
+    if device_mode not in {'cuda', 'cpu-offload'}:
+        raise ValueError('brushnet_device phải là cuda hoặc cpu-offload.')
     brushnet = BrushNetModel.from_pretrained(request['brushnet_checkpoint'], torch_dtype=torch.float16)
     pipe = StableDiffusionBrushNetPipeline.from_pretrained(request['base_model'],
         brushnet=brushnet, torch_dtype=torch.float16, low_cpu_mem_usage=False)
@@ -141,13 +145,23 @@ def brushnet_job(request):
         pipe.set_ip_adapter_scale(float(request['ip_adapter_scale']))
         reference = object_reference(image, mask)
         reference.save(job / 'ip_adapter_reference.png')
-    pipe.enable_model_cpu_offload()
+    if device_mode == 'cuda':
+        # Includes BrushNet, UNet, VAE, text encoder and optional CLIP/IP-Adapter.
+        # No Accelerate offload hooks are installed in this mode.
+        pipe.to('cuda')
+    else:
+        pipe.enable_model_cpu_offload()
     pipe.enable_vae_slicing()
+    torch.cuda.synchronize()
+    load_seconds = time.time() - load_started
+    print(f'BrushNet device mode: {device_mode}; model load {load_seconds:.2f}s', flush=True)
+    inference_seconds = 0.0
     h, w = image.shape[:2]
     factor = min(1, request['max_side'] / max(w, h))
     work_size = (max(64, int(w * factor) // 8 * 8), max(64, int(h * factor) // 8 * 8))
 
     def inpaint(img, region, prompt, negative, seed):
+        nonlocal inference_seconds
         if not region.any():
             return img.copy()
         cond = Image.fromarray(img).resize(work_size, Image.Resampling.LANCZOS)
@@ -157,12 +171,16 @@ def brushnet_job(request):
         cond_array = np.asarray(cond).copy()
         cond_array[np.asarray(region_work) > 127] = 0
         extra = {'ip_adapter_image': reference} if use_ip_adapter else {}
+        torch.cuda.synchronize()
+        inference_started = time.time()
         out = pipe(prompt=prompt, negative_prompt=negative or None,
             image=Image.fromarray(cond_array), mask=region_work.convert('RGB'),
             width=work_size[0], height=work_size[1],
             generator=torch.Generator('cuda').manual_seed(int(seed)),
             num_inference_steps=int(request['steps']), guidance_scale=float(request['guidance']),
             brushnet_conditioning_scale=float(request['conditioning']), **extra).images[0]
+        torch.cuda.synchronize()
+        inference_seconds += time.time() - inference_started
         return np.array(out.resize((w, h), Image.Resampling.LANCZOS))
 
     if task == 'removal':
@@ -174,6 +192,7 @@ def brushnet_job(request):
         background[mask] = raw[mask]
         Image.fromarray(background).save(job / 'background.png')
         metadata = dict(seconds=time.time()-started, inference_size=list(work_size), task=task,
+            brushnet_device=device_mode, load_seconds=load_seconds, inference_seconds=inference_seconds,
             mask_shape=request['mask_shape'], checkpoint=request['brushnet_checkpoint'],
             use_ip_adapter=False, torch_version=torch.__version__,
             diffusers_version=diffusers.__version__, brushnet_revision=repo_revision(request['brushnet_repo']),
@@ -197,6 +216,7 @@ def brushnet_job(request):
         final[protected_core] = pasted[protected_core]
     Image.fromarray(final).save(job / 'result.png')
     transform.update(seconds=time.time()-started, inference_size=list(work_size),
+        brushnet_device=device_mode, load_seconds=load_seconds, inference_seconds=inference_seconds,
         brushnet_revision=repo_revision(request['brushnet_repo']),
         torch_version=torch.__version__, diffusers_version=diffusers.__version__,
         mode=mode, checkpoint=request['brushnet_checkpoint'], use_ip_adapter=use_ip_adapter,
@@ -210,7 +230,14 @@ def main():
     if len(sys.argv) != 3 or sys.argv[1] not in {'depth', 'lama', 'brushnet'}:
         raise SystemExit('Usage: python -m relocation.worker {depth|lama|brushnet} request.json')
     request = json.loads(Path(sys.argv[2]).read_text(encoding='utf-8'))
-    {'depth': depth_job, 'lama': lama_job, 'brushnet': brushnet_job}[sys.argv[1]](request)
+    try:
+        {'depth': depth_job, 'lama': lama_job, 'brushnet': brushnet_job}[sys.argv[1]](request)
+    except Exception as error:
+        import torch
+        if sys.argv[1] == 'brushnet' and isinstance(error, torch.cuda.OutOfMemoryError):
+            raise RuntimeError('BrushNet hết VRAM. Khởi động demo với --brushnet-device cpu-offload '
+                               'hoặc giảm --max-side xuống 512. Worker đã dừng; không tự đổi chế độ.') from error
+        raise
 
 
 if __name__ == '__main__':
