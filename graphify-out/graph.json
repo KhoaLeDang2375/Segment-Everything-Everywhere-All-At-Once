@@ -3,7 +3,7 @@
   "multigraph": false,
   "graph": {
     "relocation_index": "relocation-index.json",
-    "relocation_indexed_at": "2026-10-09T00:35:25.884917+00:00"
+    "relocation_indexed_at": "2026-10-09T01:35:11.046495+00:00"
   },
   "nodes": [
     {
@@ -17819,7 +17819,7 @@
       "id": "relocation-index:relocation/controller.py:Controller.remove",
       "label": "Controller.remove",
       "source_file": "relocation/controller.py",
-      "source_location": "L139",
+      "source_location": "L149",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -17829,7 +17829,7 @@
       "id": "relocation-index:relocation/controller.py:Controller.relocate",
       "label": "Controller.relocate",
       "source_file": "relocation/controller.py",
-      "source_location": "L183",
+      "source_location": "L193",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -17965,10 +17965,20 @@
       "community": 100
     },
     {
+      "id": "relocation-index:relocation/geometry.py:scale_to_fit",
+      "label": "scale_to_fit",
+      "source_file": "relocation/geometry.py",
+      "source_location": "L134",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
       "id": "relocation-index:relocation/geometry.py:composite",
       "label": "composite",
       "source_file": "relocation/geometry.py",
-      "source_location": "L134",
+      "source_location": "L156",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -17978,7 +17988,7 @@
       "id": "relocation-index:relocation/geometry.py:harmonization_mask",
       "label": "harmonization_mask",
       "source_file": "relocation/geometry.py",
-      "source_location": "L139",
+      "source_location": "L161",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -17988,7 +17998,7 @@
       "id": "relocation-index:relocation/geometry.py:blend_repair",
       "label": "blend_repair",
       "source_file": "relocation/geometry.py",
-      "source_location": "L151",
+      "source_location": "L173",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -17998,7 +18008,7 @@
       "id": "relocation-index:relocation/geometry.py:suggest_scale",
       "label": "suggest_scale",
       "source_file": "relocation/geometry.py",
-      "source_location": "L163",
+      "source_location": "L185",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -18008,7 +18018,7 @@
       "id": "relocation-index:relocation/geometry.py:suggest_scale.stats",
       "label": "suggest_scale.stats",
       "source_file": "relocation/geometry.py",
-      "source_location": "L185",
+      "source_location": "L207",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -18401,10 +18411,20 @@
       "community": 100
     },
     {
+      "id": "relocation-index:relocation/ui.py:build_ui.fit",
+      "label": "build_ui.fit",
+      "source_file": "relocation/ui.py",
+      "source_location": "L103",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
       "id": "relocation-index:relocation/ui.py:build_ui.remove",
       "label": "build_ui.remove",
       "source_file": "relocation/ui.py",
-      "source_location": "L92",
+      "source_location": "L116",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -18414,7 +18434,7 @@
       "id": "relocation-index:relocation/ui.py:build_ui.compare",
       "label": "build_ui.compare",
       "source_file": "relocation/ui.py",
-      "source_location": "L100",
+      "source_location": "L124",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -18424,7 +18444,7 @@
       "id": "relocation-index:relocation/ui.py:build_ui.prompts",
       "label": "build_ui.prompts",
       "source_file": "relocation/ui.py",
-      "source_location": "L111",
+      "source_location": "L135",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -18434,7 +18454,7 @@
       "id": "relocation-index:relocation/ui.py:build_ui.run",
       "label": "build_ui.run",
       "source_file": "relocation/ui.py",
-      "source_location": "L116",
+      "source_location": "L140",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -62807,6 +62827,13 @@
     },
     {
       "source": "relocation-index:relocation/geometry.py",
+      "target": "relocation-index:relocation/geometry.py:scale_to_fit",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/geometry.py",
       "target": "relocation-index:relocation/geometry.py:composite",
       "relation": "contains",
       "weight": 1,
@@ -63081,6 +63108,13 @@
     {
       "source": "relocation-index:relocation/ui.py",
       "target": "relocation-index:relocation/ui.py:build_ui.preview",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/ui.py",
+      "target": "relocation-index:relocation/ui.py:build_ui.fit",
       "relation": "contains",
       "weight": 1,
       "_origin": "ast"

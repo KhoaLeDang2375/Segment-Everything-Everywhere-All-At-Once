@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-09T00:35:25.884917+00:00",
-  "seem_revision": "2fec3c7ac250116826bbffe81ccd57fff706dc94",
+  "generated_at": "2026-10-09T01:35:11.046495+00:00",
+  "seem_revision": "daddf37dd7b5a9b468fdf65d14b84be26513dfb2",
   "brushnet_revision": "0f9d9e54ca85c40a11a8f0504b4b5b2e7e8fd14d",
   "provenance": "AST declarations/imports + explicit reviewed integration links; existing Graphify semantic graph retained",
   "files": {
@@ -350,7 +350,7 @@
       ]
     },
     "relocation/controller.py": {
-      "sha256": "a14b33094b4275a242fea9b5117d13a0626505dfe1a455c6f3b019e9b3e9169e",
+      "sha256": "4520444ef4984e4a91ffa363754ff6937d656411dee0c878bee9f06a9bc844fb",
       "symbols": [
         {
           "name": "uploaded_image",
@@ -404,12 +404,12 @@
         },
         {
           "name": "Controller.remove",
-          "line": 139,
+          "line": 149,
           "kind": "FunctionDef"
         },
         {
           "name": "Controller.relocate",
-          "line": 183,
+          "line": 193,
           "kind": "FunctionDef"
         }
       ],
@@ -430,7 +430,7 @@
       ]
     },
     "relocation/geometry.py": {
-      "sha256": "68703fa0a2f6ead6f1ee235b5a31918e827df0f7db0c9cd7368fa3eb8c19969c",
+      "sha256": "9a4155306e3c62131483007df560c9d9d4a5628579287e3546a02ad9291e1be1",
       "symbols": [
         {
           "name": "image_hash",
@@ -493,28 +493,33 @@
           "kind": "FunctionDef"
         },
         {
-          "name": "composite",
+          "name": "scale_to_fit",
           "line": 134,
           "kind": "FunctionDef"
         },
         {
+          "name": "composite",
+          "line": 156,
+          "kind": "FunctionDef"
+        },
+        {
           "name": "harmonization_mask",
-          "line": 139,
+          "line": 161,
           "kind": "FunctionDef"
         },
         {
           "name": "blend_repair",
-          "line": 151,
+          "line": 173,
           "kind": "FunctionDef"
         },
         {
           "name": "suggest_scale",
-          "line": 163,
+          "line": 185,
           "kind": "FunctionDef"
         },
         {
           "name": "suggest_scale.stats",
-          "line": 185,
+          "line": 207,
           "kind": "FunctionDef"
         }
       ],
@@ -688,7 +693,7 @@
       ]
     },
     "relocation/ui.py": {
-      "sha256": "7cc5c46ce52f046ec0896c0805cbcb476ff7a3cc318fe386bedae03f0c199528",
+      "sha256": "e621d69999556444d10dab5ea111ace3e1bd6d1f4b76bb16df790d9c4426c839",
       "symbols": [
         {
           "name": "SketchImage",
@@ -746,23 +751,28 @@
           "kind": "FunctionDef"
         },
         {
+          "name": "build_ui.fit",
+          "line": 103,
+          "kind": "FunctionDef"
+        },
+        {
           "name": "build_ui.remove",
-          "line": 92,
+          "line": 116,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.compare",
-          "line": 100,
+          "line": 124,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.prompts",
-          "line": 111,
+          "line": 135,
           "kind": "FunctionDef"
         },
         {
           "name": "build_ui.run",
-          "line": 116,
+          "line": 140,
           "kind": "FunctionDef"
         }
       ],

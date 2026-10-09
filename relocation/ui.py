@@ -6,7 +6,7 @@ from PIL import Image
 from .controller import Controller, working_image
 from .geometry import overlay, arrow_preview, centroid
 from .config import DEPTH_MODELS
-from .geometry import bounding_removal_mask, mask_image
+from .geometry import bounding_removal_mask, mask_image, scale_to_fit
 
 
 class SketchImage(gr.Image):
@@ -85,7 +85,31 @@ def build_ui(settings):
 
     def preview(canvas, state, target, scale, clipping):
         try:
-            return control.preview(canvas, state, target, scale, clipping)
+            pasted, mask, info = control.preview(canvas, state, target, scale, clipping, return_info=True)
+            if not info['clipped']:
+                message = f'Preview hợp lệ · scale {scale:.3f}, toàn bộ vật thể nằm trong ảnh.'
+            elif clipping:
+                message = f'Preview bị cắt ở biên · scale {scale:.3f}. Bạn đã bật cho phép cắt biên; có thể chạy với phần mask còn trong ảnh.'
+            elif info['fit_scale'] is not None:
+                message = f'Preview cho thấy vật thể vượt biên. Bấm “Thu nhỏ để vừa ảnh” (scale khoảng {info["fit_scale"]:.3f}), đổi tâm hoặc bật cho phép cắt biên trước khi chạy.'
+            else:
+                message = 'Tâm quá sát biên: chọn tâm xa biên hơn hoặc bật cho phép cắt biên. Preview chỉ hiển thị phần nằm trong ảnh.'
+            return pasted, mask, message
+        except ValueError as error:
+            return None, None, str(error)
+        except Exception as error:
+            raise gr.Error(str(error)) from error
+
+    def fit(canvas, state, target, scale, clipping):
+        try:
+            control.validate(canvas, state)
+            if target is None:
+                raise ValueError('Chọn tâm đích trước.')
+            fitted = scale_to_fit(state['mask'], target, scale)
+            pasted, mask, _ = control.preview(canvas, state, target, fitted, clipping, return_info=True)
+            return fitted, pasted, mask, f'Đã chỉnh scale từ {scale:.3f} xuống {fitted:.3f} để vừa ảnh. Tâm đích được giữ nguyên; có thể chạy tiếp.'
+        except ValueError as error:
+            return gr.update(), gr.update(), gr.update(), str(error)
         except Exception as error:
             raise gr.Error(str(error)) from error
 
@@ -122,6 +146,8 @@ def build_ui(settings):
                 bg, prompt, negative, steps, guidance, conditioning, seed, removal_margin, target_margin, clipping, mode, backend, removal_negative)
             progress(1, desc='Hoàn tất')
             return final, gallery, archive, f'Đã lưu kết quả và metadata: {job}'
+        except ValueError as error:
+            return gr.update(), gr.update(), gr.update(), str(error)
         except Exception as error:
             raise gr.Error(str(error)) from error
 
@@ -168,6 +194,7 @@ def build_ui(settings):
         scale = gr.Slider(.2, 3, value=1, step=.01, label='Scale cuối · tâm mask được đặt tại điểm đích')
         clipping = gr.Checkbox(value=False, label='Cho phép vật thể bị cắt ở biên ảnh')
         preview_button = gr.Button('4. Xem trước vị trí / scale')
+        fit_button = gr.Button('Thu nhỏ để vừa ảnh · giữ nguyên tâm đích')
         with gr.Row():
             pasted_preview = gr.Image(type='pil', label='Preview hình học · mốc cắt–dán, chưa phải kết quả generate')
             target_mask = gr.Image(type='pil', label='Mask sau scale và dịch chuyển')
@@ -204,7 +231,8 @@ def build_ui(settings):
         prompt_button.click(prompts, [text, prompt, negative, mode, backend, bg, removal_negative], [prompt_info])
         target_view.select(choose_target, [canvas, state], [target, target_view, depth_info, status])
         depth_button.click(estimate, [canvas, state, target, depth_mode], [state, depth_preview, scale, depth_info])
-        preview_button.click(preview, [canvas, state, target, scale, clipping], [pasted_preview, target_mask])
+        preview_button.click(preview, [canvas, state, target, scale, clipping], [pasted_preview, target_mask, status])
+        fit_button.click(fit, [canvas, state, target, scale, clipping], [scale, pasted_preview, target_mask, status])
         run_button.click(run, [canvas, state, target, scale, text, bg, prompt, negative, steps,
             guidance, conditioning, seed, removal_margin, target_margin, clipping, mode, backend, removal_negative], [final, gallery, archive, status])
     return app

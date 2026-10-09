@@ -11,7 +11,7 @@ from PIL import Image
 from .config import REPO, DEPTH_MODELS
 from .adapters import SeemAdapter, run_worker, repo_revision
 from .geometry import (ink, image_hash, mask_image, resize_mask, centroid,
-                       suggest_scale, transform_foreground, composite, bounding_removal_mask)
+                       suggest_scale, transform_foreground, composite, bounding_removal_mask, scale_to_fit)
 
 
 def uploaded_image(value):
@@ -126,15 +126,25 @@ class Controller:
         Image.fromarray((displayed * 255).astype(np.uint8)).save(job / 'depth_preview.png')
         return state, info, Image.open(job / 'depth_preview.png').copy()
 
-    def preview(self, canvas, state, target, scale, allow_clipping):
+    def preview(self, canvas, state, target, scale, allow_clipping, return_info=False):
         self.validate(canvas, state)
         if target is None:
             raise ValueError('Chọn tâm đích trước.')
-        rgb, alpha, _ = transform_foreground(state['image'], state['mask'], target, scale, allow_clipping)
+        # A preview should show actual edge clipping rather than fail before
+        # the user can decide whether to shrink or accept the crop.
+        rgb, alpha, info = transform_foreground(state['image'], state['mask'], target, scale, True)
         background = state['image']
         if state.get('removal'):
             background = np.array(Image.open(Path(state['removal']['job']) / 'background.png').convert('RGB'))
-        return Image.fromarray(composite(background, rgb, alpha)), Image.fromarray((alpha*255).astype(np.uint8))
+        outputs = (Image.fromarray(composite(background, rgb, alpha)), Image.fromarray((alpha*255).astype(np.uint8)))
+        if return_info:
+            try:
+                info['fit_scale'] = scale_to_fit(state['mask'], target, scale)
+            except ValueError:
+                info['fit_scale'] = None
+            info['clipping_accepted'] = bool(allow_clipping)
+            return (*outputs, info)
+        return outputs
 
     def remove(self, canvas, state, removal_margin, backend='lama', background_prompt='',
                removal_negative='', steps=30, guidance=7.5, conditioning=1, seed=1234):

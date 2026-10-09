@@ -180,6 +180,10 @@ Giữ Gradio 3.50.2; notice nâng cấp hoặc gợi ý share=True không phải
 5. Chọn backend dùng cho đích. Bấm nút xóa backend đã chọn để cập nhật preview;
    khi chạy cuối, code luôn kiểm tra cache theo backend và tham số hiện tại.
 6. Chọn tâm đích, chọn Indoor/Outdoor depth đúng cảnh hoặc chỉnh scale thủ công.
+   Nếu vật thể vượt biên, preview vẫn hiển thị phần bị cắt và hướng dẫn ở ô trạng
+   thái. Bấm **Thu nhỏ để vừa ảnh** để giảm scale, giữ nguyên tâm đã chọn; hoặc
+   bật cho phép cắt biên. Chạy thật vẫn yêu cầu một trong hai lựa chọn này.
+   Tâm sát biên đến mức scale 0.2 không vừa thì phải đổi tâm hoặc chấp nhận cắt.
 7. Giữ cùng scale, tâm đích, prompt đích, seed và tham số khi so sánh kết quả cuối.
 8. Chạy generate hoặc preserve; tải ZIP mỗi lần để lưu thí nghiệm.
 

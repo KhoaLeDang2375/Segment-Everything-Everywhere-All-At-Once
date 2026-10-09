@@ -131,6 +131,28 @@ def transform_foreground(image, mask, target, scale, allow_clipping=False):
     return rgb.astype(np.uint8), moved_alpha, {'source_center': [cx, cy], 'target_center': [tx, ty], 'scale': float(scale), 'clipped': bool(clipped), 'target_bounds': bounds}
 
 
+def scale_to_fit(mask, target, requested_scale):
+    """Shrink to fit the canvas while keeping the selected centroid fixed."""
+    h, w = mask.shape
+    tx, ty = map(float, target)
+    if not (0 <= tx < w and 0 <= ty < h):
+        raise ValueError('Điểm đích phải nằm trong ảnh.')
+    if not np.isfinite(requested_scale) or not .2 <= requested_scale <= 3:
+        raise ValueError('Scale phải nằm trong khoảng 0.2–3.0.')
+    cx, cy = centroid(mask)
+    yy, xx = np.nonzero(mask)
+    limits = [3.0]
+    for available, extent in [(tx, cx-xx.min()), (w-1-tx, xx.max()-cx),
+                              (ty, cy-yy.min()), (h-1-ty, yy.max()-cy)]:
+        if extent > 0:
+            limits.append(available/extent)
+    maximum = min(limits)
+    if maximum < .2:
+        raise ValueError('Tâm đích quá sát biên để giữ toàn bộ vật thể ở scale tối thiểu 0.2. Chọn tâm xa biên hơn hoặc bật cho phép cắt biên.')
+    # Small inward margin avoids floating-point roundoff at the exact boundary.
+    return float(min(requested_scale, max(.2, maximum*.999)))
+
+
 def composite(background, foreground, alpha):
     alpha = np.asarray(alpha, dtype=np.float32)[..., None]
     return np.clip(np.asarray(background) * (1 - alpha) + np.asarray(foreground) * alpha, 0, 255).astype(np.uint8)

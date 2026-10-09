@@ -114,6 +114,10 @@ RGB/alpha are transformed together in premultiplied alpha space for previews
 and preserve mode. The target is the mask centroid, not the foot contact point.
 Clipping requires explicit opt-in. Shadows, occlusion and 3D orientation are
 not automatically solved by the 2D transform.
+Preview always shows clipped geometry with a status message rather than throwing
+an edge-overflow exception. "Thu nhỏ để vừa ảnh" shrinks scale at the fixed
+target center. Actual inference still rejects unapproved clipping before model
+loading. If scale 0.2 cannot fit at that center, move the center or allow clipping.
 
 Depth is saved as raw float32 NPY. Scale proposal is median source depth divided
 by a visible-background depth patch around target, bounded to 0.5–2.0; relative

@@ -20,6 +20,8 @@
 11. Add side-by-side removal comparison, independent removal/target prompts,
     backend/settings-specific caches and prefixed worker provenance in ZIPs.
 12. Provide Vietnamese flow and deployment commands in FLOW_RUNPOD.md.
+13. Show clipped previews without exceptions, offer shrink-to-fit at the fixed
+    center, and report geometry validation in UI status before inference.
 
 ## Validation still required on RunPod
 
