@@ -137,13 +137,21 @@ def build_ui(settings):
         removal = 'LaMa: không dùng text prompt.' if backend == 'lama' else f'BrushNet xóa — Positive: {bg.strip()}\nNegative xóa: {removal_negative.strip()}'
         return f'{removal}\nChế độ đích: {mode}\nPositive đích: {actual}\nNegative đích: {negative.strip()}'
 
+    def background_preset(choice):
+        if choice == 'Cỏ / bãi cỏ':
+            return ('A continuous green lawn, dense natural grass matching the surrounding texture, lighting and perspective, an empty grassy area.',
+                    'animal, sheep, dog, tiger, person, body, head, legs, fur, wall, concrete, building, panel, frame, cage, basket, artifacts')
+        return gr.update(), gr.update()
+
     def run(canvas, state, target, scale, text, bg, prompt, negative, steps,
-            guidance, conditioning, seed, removal_margin, target_margin, clipping, mode, backend, removal_negative, progress=gr.Progress()):
+            guidance, conditioning, seed, removal_margin, target_margin, clipping, mode, backend, removal_negative,
+            use_ip_adapter, ip_adapter_scale, progress=gr.Progress()):
         try:
             progress(.05, desc='Chuẩn bị relocation...')
             progress(.2, desc=f'{backend} xóa nguồn, sau đó BrushNet xử lý đích. Lần nạp model đầu có thể mất vài phút.')
             final, gallery, archive, job = control.relocate(canvas, state, target, scale, text,
-                bg, prompt, negative, steps, guidance, conditioning, seed, removal_margin, target_margin, clipping, mode, backend, removal_negative)
+                bg, prompt, negative, steps, guidance, conditioning, seed, removal_margin, target_margin, clipping, mode, backend, removal_negative,
+                use_ip_adapter, ip_adapter_scale)
             progress(1, desc='Hoàn tất')
             return final, gallery, archive, f'Đã lưu kết quả và metadata: {job}'
         except ValueError as error:
@@ -178,6 +186,7 @@ def build_ui(settings):
         removal_margin = gr.Slider(0, 64, value=8, step=1, label='Padding chữ nhật bao vật thể (pixel ảnh làm việc)')
         bg = gr.Textbox(value='A seamless continuation of the surrounding background, matching the existing surface, texture, lighting and perspective.', label='Positive prompt nền · chỉ dùng khi BrushNet xóa nguồn', placeholder='A continuous green lawn matching the surrounding grass.')
         removal_negative = gr.Textbox(value='animal, person, body, head, legs, fur, duplicate objects, artifacts', label='Negative prompt XÓA · tách riêng với negative prompt đích')
+        bg_preset = gr.Dropdown(['Tự nhập', 'Cỏ / bãi cỏ'], value='Tự nhập', label='Gợi ý prompt xóa theo nền · chọn đúng cảnh, rồi có thể sửa text')
         remove_button = gr.Button('2. Xóa nguồn bằng backend đã chọn')
         compare_button = gr.Button('So sánh LaMa và BrushNet cạnh nhau')
         removal_mask_view = gr.Image(type='pil', label='Mask xóa chung · chữ nhật có padding, không dùng silhouette')
@@ -199,6 +208,10 @@ def build_ui(settings):
             pasted_preview = gr.Image(type='pil', label='Preview hình học · mốc cắt–dán, chưa phải kết quả generate')
             target_mask = gr.Image(type='pil', label='Mask sau scale và dịch chuyển')
         mode = gr.Radio(['generate', 'preserve'], value='generate', label='generate: sinh toàn bộ mask đích · preserve: cắt–dán và sửa viền để so sánh')
+        with gr.Row():
+            use_ip_adapter = gr.Checkbox(value=True, label='IP-Adapter Plus · dùng ảnh vật thể nguồn khi sinh đích')
+            ip_adapter_scale = gr.Slider(0, 1, value=.6, step=.05, label='Độ ảnh hưởng ảnh tham chiếu · bắt đầu 0.6')
+        gr.Markdown('IP-Adapter hỗ trợ giữ diện mạo, không đảm bảo giống từng chi tiết hay đúng silhouette tuyệt đối. Chỉ áp dụng tại đích. Lượt xóa BrushNet dùng checkpoint BrushNetX riêng; hãy mô tả đúng nền trong prompt xóa.')
         prompt = gr.Textbox(label='Positive prompt sinh đích (English, để trống sẽ dùng mô tả vật thể)', placeholder='A sheep standing naturally on green grass.')
         negative = gr.Textbox(value='frame, cage, basket, rope, duplicate objects, artifacts, blurry edges, distorted shapes', label='Negative prompt · chỉ nhập nội dung cần tránh, không nhập kết quả mong muốn')
         prompt_button = gr.Button('Xem prompt thực tế trước khi chạy')
@@ -226,6 +239,7 @@ def build_ui(settings):
         mask_button.click(import_mask, [canvas, uploaded_mask, target],
             [state, segmented, source_mask, target_view, status, removal_preview, comparison_lama, comparison_brushnet, removal_mask_view])
         removal_inputs = [canvas, state, removal_margin, backend, bg, removal_negative, steps, guidance, conditioning, seed]
+        bg_preset.change(background_preset, [bg_preset], [bg, removal_negative])
         remove_button.click(remove, removal_inputs, [state, removal_preview, removal_mask_view, status])
         compare_button.click(compare, removal_inputs, [state, removal_preview, comparison_lama, comparison_brushnet, removal_mask_view, status])
         prompt_button.click(prompts, [text, prompt, negative, mode, backend, bg, removal_negative], [prompt_info])
@@ -234,5 +248,6 @@ def build_ui(settings):
         preview_button.click(preview, [canvas, state, target, scale, clipping], [pasted_preview, target_mask, status])
         fit_button.click(fit, [canvas, state, target, scale, clipping], [scale, pasted_preview, target_mask, status])
         run_button.click(run, [canvas, state, target, scale, text, bg, prompt, negative, steps,
-            guidance, conditioning, seed, removal_margin, target_margin, clipping, mode, backend, removal_negative], [final, gallery, archive, status])
+            guidance, conditioning, seed, removal_margin, target_margin, clipping, mode, backend, removal_negative,
+            use_ip_adapter, ip_adapter_scale], [final, gallery, archive, status])
     return app

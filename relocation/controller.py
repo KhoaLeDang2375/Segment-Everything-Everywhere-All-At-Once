@@ -154,7 +154,9 @@ class Controller:
             raise ValueError('Chọn backend xóa nguồn: lama hoặc brushnet.')
         margin = int(removal_margin)
         region = bounding_removal_mask(state['mask'], margin)
-        checkpoint = self.settings.lama_checkpoint if backend == 'lama' else self.settings.brushnet_checkpoint
+        checkpoint = self.settings.lama_checkpoint if backend == 'lama' else self.settings.removal_brushnet_checkpoint
+        if backend == 'brushnet' and not (Path(checkpoint) / 'config.json').is_file():
+            raise ValueError('Thiếu checkpoint BrushNet xóa nguồn. Chạy bash setup_relocation.sh --only-brushnet; hoặc chọn LaMa.')
         parameters = {'backend': backend, 'checkpoint': checkpoint, 'padding': margin,
                       'mask_shape': 'padded bounding rectangle', 'max_side': self.settings.max_side}
         if backend == 'brushnet':
@@ -192,7 +194,7 @@ class Controller:
 
     def relocate(self, canvas, state, target, scale, text, background_prompt, target_prompt,
                  negative_prompt, steps, guidance, conditioning, seed, removal_margin, target_margin, allow_clipping,
-                 mode='generate', removal_backend='lama', removal_negative=''):
+                 mode='generate', removal_backend='lama', removal_negative='', use_ip_adapter=False, ip_adapter_scale=.6):
         self.validate(canvas, state)
         if target is None:
             raise ValueError('Chọn tâm đích trước.')
@@ -200,6 +202,14 @@ class Controller:
             raise ValueError('Nhập tên/mô tả vật thể để tạo prompt phù hợp.')
         if mode not in {'generate', 'preserve'}:
             raise ValueError('Chọn chế độ sinh đích hợp lệ.')
+        if not np.isfinite(ip_adapter_scale) or not 0 <= ip_adapter_scale <= 1:
+            raise ValueError('IP-Adapter strength phải từ 0 đến 1.')
+        use_ip_adapter = bool(use_ip_adapter and ip_adapter_scale > 0)
+        if use_ip_adapter:
+            for name in ['models/ip-adapter-plus_sd15.safetensors', 'models/image_encoder/config.json',
+                         'models/image_encoder/model.safetensors']:
+                if not (Path(self.settings.ip_adapter_dir) / name).is_file():
+                    raise ValueError('Thiếu IP-Adapter Plus. Chạy bash setup_relocation.sh --only-brushnet hoặc tắt IP-Adapter.')
         # Validate geometry before allocating/loading the diffusion model.
         transform_foreground(state['image'], state['mask'], target, scale, allow_clipping)
         state, _ = self.remove(canvas, state, removal_margin, removal_backend, background_prompt,
@@ -227,7 +237,9 @@ class Controller:
             'negative_prompt': negative_prompt.strip(),
             'steps': int(steps), 'guidance': float(guidance), 'conditioning': float(conditioning),
             'seed': int(seed), 'removal_margin': int(removal_margin), 'target_margin': int(target_margin),
-            'max_side': self.settings.max_side, 'mode': mode}
+            'max_side': self.settings.max_side, 'mode': mode,
+            'use_ip_adapter': use_ip_adapter, 'ip_adapter_scale': float(ip_adapter_scale),
+            'ip_adapter_dir': self.settings.ip_adapter_dir}
         with self.gpu_lock:
             run_worker(self.settings, 'brushnet', request, job)
         result_info = json.loads((job / 'brushnet_result.json').read_text(encoding='utf-8'))
@@ -249,4 +261,6 @@ class Controller:
             ('background.png', 'Nền sau xóa'), ('target_cutout.png', 'Cutout đích'),
             ('pasted.png', 'Mốc so sánh cắt–dán'), ('target_mask.png', 'Mask đích'),
             ('generation_mask.png', 'Vùng BrushNet sinh lại'), ('harmonization_raw.png', 'BrushNet raw')]]
+        if (job / 'ip_adapter_reference.png').is_file():
+            gallery.append((Image.open(job / 'ip_adapter_reference.png').copy(), 'Ảnh tham chiếu IP-Adapter'))
         return Image.open(job / 'result.png').copy(), gallery, str(archive), str(job)

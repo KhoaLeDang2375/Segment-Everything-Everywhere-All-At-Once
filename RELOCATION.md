@@ -166,3 +166,32 @@ python -m relocation.index_codebase
 This refreshes the existing Graphify JSON/HTML with AST symbols/imports and
 reviewed integration links. It preserves prior semantic graph provenance;
 no Graphify semantic analyzer is installed/run in this workspace.
+
+
+## BrushNetX source removal and IP-Adapter Plus destination reference
+
+Update an existing pod without reinstalling SEEM/LaMa/depth:
+
+```bash
+git pull --ff-only origin exp_v1
+bash setup_relocation.sh --only-brushnet
+python demo_relocation.py --preflight
+python demo_relocation.py --port 7860
+```
+
+Source removal uses official TencentARC/BrushEdit `brushnetX` (revision
+0d6ac4a), independent from the existing target segmentation checkpoint.
+Override via `--removal-brushnet-checkpoint` or `REMOVAL_BRUSHNET_CHECKPOINT`.
+LaMa remains the default removal backend. BrushNetX is generative and may
+still invent objects: describe the actual background. The grass preset adds
+explicit grass positive text and wall/concrete negatives for the sheep example.
+
+Target-only IP-Adapter Plus SD1.5 is enabled by default in the UI, strength 0.6.
+Its masked object reference is cropped and square padded on neutral gray;
+the source background is excluded. It is passed separately to the UNet image
+conditioning, never used for source removal. Toggle it off for an ablation.
+Use `IP_ADAPTER_DIR` / `--ip-adapter-dir` for alternative local paths.
+FP16 CLIP encoder joins the existing model CPU offload sequence. The custom
+Diffusers fork already exposes IPAdapterMixin and `ip_adapter_image`; no stock
+Diffusers upgrade is installed. GPU execution/quality/peak memory still requires
+validation on RunPod. See FLOW_RUNPOD.md section 10 for commands and details.

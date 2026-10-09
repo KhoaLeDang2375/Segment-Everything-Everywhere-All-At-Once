@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-10-09T01:35:11.046495+00:00",
-  "seem_revision": "daddf37dd7b5a9b468fdf65d14b84be26513dfb2",
+  "generated_at": "2026-10-09T12:45:00.124474+00:00",
+  "seem_revision": "d5cde7e4ec4b2abd6d44ed126389e9c6fa0e2b74",
   "brushnet_revision": "0f9d9e54ca85c40a11a8f0504b4b5b2e7e8fd14d",
   "provenance": "AST declarations/imports + explicit reviewed integration links; existing Graphify semantic graph retained",
   "files": {
     "demo_relocation.py": {
-      "sha256": "66bc60084db7b2918324fa244b2f30d4dea8c68eec4bf588799f19219c1cfea5",
+      "sha256": "31b3ee6622e89c4a7c67f293aba592628819b432d4387bb53d5616019b8b3128",
       "symbols": [
         {
           "name": "parse_args",
@@ -14,12 +14,12 @@
         },
         {
           "name": "preflight",
-          "line": 24,
+          "line": 25,
           "kind": "FunctionDef"
         },
         {
           "name": "main",
-          "line": 53,
+          "line": 57,
           "kind": "FunctionDef"
         }
       ],
@@ -335,7 +335,7 @@
       ]
     },
     "relocation/config.py": {
-      "sha256": "5ae1d43d46a2d5ad8e54db736b1c6d3d810ae98ec0c194e0248d48dc231f8b49",
+      "sha256": "ae934fb253626c89580d2db335894b188a33dd93e0681912f13bba9dfedad80e",
       "symbols": [
         {
           "name": "Settings",
@@ -350,7 +350,7 @@
       ]
     },
     "relocation/controller.py": {
-      "sha256": "4520444ef4984e4a91ffa363754ff6937d656411dee0c878bee9f06a9bc844fb",
+      "sha256": "870a26b481f7b7858c8fc752eca6f810d254839eaba2cc63e3cbe8d8be63c9ec",
       "symbols": [
         {
           "name": "uploaded_image",
@@ -409,7 +409,7 @@
         },
         {
           "name": "Controller.relocate",
-          "line": 193,
+          "line": 195,
           "kind": "FunctionDef"
         }
       ],
@@ -530,7 +530,7 @@
       ]
     },
     "relocation/index_codebase.py": {
-      "sha256": "4a2050f35bc5a55a54322fffc0379672553640085f586e668446c6ebc598c385",
+      "sha256": "d4219beb32ced6d01bbd21b6ced0f55273c1cfb4348dd0d6130d817e10e0a5ba",
       "symbols": [
         {
           "name": "extend_html",
@@ -549,7 +549,7 @@
         },
         {
           "name": "main.visit",
-          "line": 90,
+          "line": 91,
           "kind": "FunctionDef"
         }
       ],
@@ -562,6 +562,20 @@
         "json",
         "pathlib",
         "re"
+      ]
+    },
+    "relocation/reference.py": {
+      "sha256": "31e795b6bdde5f4baf508260ff839cf0c3fa5ee4042390f979cb210b0c2679bd",
+      "symbols": [
+        {
+          "name": "object_reference",
+          "line": 6,
+          "kind": "FunctionDef"
+        }
+      ],
+      "imports": [
+        "PIL",
+        "numpy"
       ]
     },
     "relocation/test_controller.py": {
@@ -693,7 +707,7 @@
       ]
     },
     "relocation/ui.py": {
-      "sha256": "e621d69999556444d10dab5ea111ace3e1bd6d1f4b76bb16df790d9c4426c839",
+      "sha256": "d42322b03ad4c856734a8b777284e3db4295c754cf08fe416cb52aee7c3b5eab",
       "symbols": [
         {
           "name": "SketchImage",
@@ -771,8 +785,13 @@
           "kind": "FunctionDef"
         },
         {
-          "name": "build_ui.run",
+          "name": "build_ui.background_preset",
           "line": 140,
+          "kind": "FunctionDef"
+        },
+        {
+          "name": "build_ui.run",
+          "line": 146,
           "kind": "FunctionDef"
         }
       ],
@@ -787,7 +806,7 @@
       ]
     },
     "relocation/worker.py": {
-      "sha256": "9229f6883d33786afd16021db9cc6e36034c57b0892d4bb0bc80482c2f1ce47c",
+      "sha256": "5773265a93697d312b7d88828ecb309bf43385f80f92a7f53ea85907185d98d4",
       "symbols": [
         {
           "name": "gpu_stats",
@@ -811,18 +830,19 @@
         },
         {
           "name": "brushnet_job.inpaint",
-          "line": 135,
+          "line": 150,
           "kind": "FunctionDef"
         },
         {
           "name": "main",
-          "line": 189,
+          "line": 209,
           "kind": "FunctionDef"
         }
       ],
       "imports": [
         ".adapters",
         ".geometry",
+        ".reference",
         "PIL",
         "diffusers",
         "json",
@@ -860,6 +880,11 @@
       "relocation/worker.py",
       "../BrushNet/src/diffusers/pipelines/brushnet/pipeline_brushnet.py",
       "source removal with rectangle or target generation/boundary repair in separate workers"
+    ],
+    [
+      "relocation/worker.py",
+      "relocation/reference.py",
+      "masked square object reference for target-only IP-Adapter Plus"
     ],
     [
       "setup_relocation.sh",

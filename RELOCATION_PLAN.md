@@ -22,11 +22,18 @@
 12. Provide Vietnamese flow and deployment commands in FLOW_RUNPOD.md.
 13. Show clipped previews without exceptions, offer shrink-to-fit at the fixed
     center, and report geometry validation in UI status before inference.
+14. Separate removal BrushNetX checkpoint from segmentation checkpoint at target;
+    provide grass background prompt preset and preserve LaMa comparison.
+15. Add optional target-only IP-Adapter Plus SD1.5 with masked square reference,
+    strength control, FP16 encoder, existing CPU offload and ZIP provenance.
+16. Add --only-brushnet upgrade/download path; keep existing worker versions.
 
 ## Validation still required on RunPod
 
 * Real LaMa checkpoint inference and background quality for the uploaded sheep.
 * LaMa vs BrushNet source removal with the same rectangular mask and padding.
+* BrushNetX background quality and IP-Adapter Plus integration/identity with
+  the custom Diffusers fork; compare adapter on/off at fixed seed and inspect peaks.
 * Full target generation vs preserve; inspect artifacts and exact effective prompts.
 * Empty positive/negative strokes, text-only, active negative strokes, stale image.
 * Target clicks, overlapping source/target, scaling and clipping at boundaries.
@@ -35,6 +42,5 @@
 
 ## Deferred
 
-Reference-image conditioning to preserve source identity in generate mode;
 3D occlusion, ground-contact reasoning, shadows and orientation changes.
 The mask constrains editable pixels, not exact generated silhouette or identity.

@@ -26,6 +26,10 @@ flowchart TD
     C --> G[BrushNet tại vùng đích]
     T --> G
     P[Positive và negative prompt đích] --> G
+    I --> A[Crop vật thể nguồn theo mask, nền xám, pad vuông]
+    S --> A
+    A --> IP[IP-Adapter Plus SD1.5: ảnh tham chiếu]
+    IP --> G
     G --> O[Kết quả + ảnh trung gian + metadata ZIP]
 ```
 
@@ -62,11 +66,14 @@ BrushNet vẫn có thể sinh vật thể ngoài ý muốn; đổi mask không p
 
 ### BrushNet
 
-* Dùng pipeline SD 1.5 và checkpoint BrushNet hiện có.
+* Dùng pipeline SD 1.5; lượt xóa dùng **BrushNetX** chính thức từ TencentARC/BrushEdit.
 * Mask xóa là hình chữ nhật giống LaMa; RGB vùng đó được đặt về đen khi inference.
 * Positive prompt chỉ mô tả nền cần nối lại.
 * Negative prompt xóa độc lập với negative prompt đích.
-* Không tự chuyển sang checkpoint random-mask; checkpoint hiện tại được tái sử dụng.
+* Lượt đích giữ `segmentation_mask_brushnet_ckpt`. Hai checkpoint có đường dẫn riêng;
+  `--removal-brushnet-checkpoint` cho phép đối chiếu với checkpoint cũ.
+* BrushNetX có cấu hình BrushNetModel / cross-attention 768 tương thích pipeline
+  SD1.5 hiện tại. Đây vẫn là mô hình sinh ảnh, không bảo đảm chỉ tạo background.
 
 Ví dụ cho ảnh con cừu trên cỏ:
 
@@ -75,17 +82,25 @@ Positive prompt nền:
 A continuous green lawn, dense grass matching the surrounding texture, lighting and perspective.
 
 Negative prompt XÓA:
-animal, sheep, dog, tiger, person, body, head, legs, fur, duplicate objects, artifacts
+animal, sheep, dog, tiger, person, body, head, legs, fur, wall, concrete, building, panel, frame, cage, basket, artifacts
 ```
 
 Không dùng câu mô tả kết quả mong muốn làm negative prompt.
+Trong UI chọn preset **Cỏ / bãi cỏ** cho ảnh ví dụ. Prompt nền chung chung có thể
+khiến diffusion tạo tường hoặc vật thể mới dù mask đã là chữ nhật. Preset này
+không phù hợp với ảnh có nền bê tông thật; sửa prompt theo cảnh đang dùng.
 
 ## 5. Tại vị trí đích
 
 ### generate — mặc định
 
 BrushNet nhận nền đã xóa + toàn bộ mask đích nới nhẹ + text. Nó sinh lại vật thể
-trong vùng đó. Không dùng RGB nguồn làm conditioning ảnh tham chiếu.
+trong vùng đó. **IP-Adapter Plus SD1.5** mặc định bật trong UI: crop RGB vật thể
+nguồn theo mask, thay nền bằng xám và pad vuông để CLIP không cắt mất tai/chân.
+Ảnh này được truyền riêng qua `ip_adapter_image`, không dán vào input generate.
+Strength bắt đầu **0.6**, thử 0.4–0.8; quá cao có thể giảm khả năng hòa nhập cảnh.
+Tắt checkbox để đối chiếu cùng seed. IP-Adapter chỉ dùng tại đích, không dùng
+khi xóa vì ảnh tham chiếu sẽ khuyến khích tái tạo vật thể cần loại bỏ.
 Mask quy định vùng sửa; chưa bắt buộc đúng silhouette và nhận dạng vật thể nguồn.
 
 ```text
@@ -221,3 +236,65 @@ khi generate. Nên xác nhận nền sạch rồi mới đánh giá bước sinh
 
 Tham khảo code chi tiết và dependency isolation: [RELOCATION.md](RELOCATION.md).
 Kế hoạch revision: [RELOCATION_PLAN.md](RELOCATION_PLAN.md).
+
+
+## 10. Cập nhật BrushNetX + IP-Adapter trên pod đang chạy
+
+Dừng Gradio bằng Ctrl+C. Dùng môi trường Python 3.10 đã chạy SEEM:
+
+```bash
+cd /workspace/Segment-Everything-Everywhere-All-At-Once
+git pull --ff-only origin exp_v1
+bash setup_relocation.sh --only-brushnet
+python demo_relocation.py --preflight
+python demo_relocation.py --port 7860
+```
+
+Nếu tạo pod từ đầu, làm các bước cài ở mục 7 rồi chạy setup đầy đủ như trước;
+setup đầy đủ hiện tải thêm BrushNetX và IP-Adapter. `--only-brushnet` chỉ cài
+worker BrushNet và tải các model của nó, không cài SEEM/LaMa/depth.
+
+Checkpoint nguồn: `checkpoints/brushnet/brushnetX` (TencentARC/BrushEdit,
+revision `0d6ac4a`). Checkpoint đích: segmentation SD1.5 đang dùng.
+IP-Adapter: `checkpoints/ip-adapter/models/ip-adapter-plus_sd15.safetensors`
+và CLIP ViT-H trong `models/image_encoder` (h94/IP-Adapter, revision `018e402774aeeddd60609b4ecdb7e298259dc729`).
+Tải một bản encoder safetensors, không tải thêm bản `.bin` trùng nội dung.
+Dung lượng tải thêm khoảng 5.1 GB; đây là dung lượng đĩa, không phải VRAM.
+Nguồn chính thức: [BrushNetX](https://huggingface.co/TencentARC/BrushEdit/tree/main/brushnetX)
+và [IP-Adapter](https://huggingface.co/h94/IP-Adapter/tree/main/models).
+
+Đối chiếu checkpoint xóa cũ nếu cần:
+
+```bash
+python demo_relocation.py --port 7860 \
+  --removal-brushnet-checkpoint checkpoints/brushnet/segmentation_mask_brushnet_ckpt
+```
+
+Đổi đường dẫn qua `REMOVAL_BRUSHNET_CHECKPOINT`, `IP_ADAPTER_DIR`, hoặc
+CLI `--removal-brushnet-checkpoint`, `--ip-adapter-dir`. Setup đặt BrushNetX
+trong `BRUSHNET_MODEL_DIR/brushnetX`; nếu override đường dẫn removal riêng,
+bạn cần trỏ tới thư mục model đã tải hoặc tự đặt model ở đó.
+
+### VRAM và cách so sánh
+
+Code lazy-load SEEM, chuyển SEEM/embedding về CPU sau segmentation;
+BrushNet chạy FP16 + model CPU offload, các worker chạy tuần tự rồi thoát.
+Quan sát dưới 5 GB phù hợp chiến lược này, nhưng đọc `nvidia-smi` sau khi
+worker thoát có thể bỏ qua peak. IP-Adapter thêm encoder ảnh FP16 và attention
+vào UNet; encoder tham gia chuỗi CPU offload trước UNet. Không cộng tất cả
+checkpoint như thể chúng cùng nằm trên GPU. 16 GB là cấu hình hợp lý để bắt đầu
+ở 512, cần đo lại peak khi bật adapter; chưa có chạy GPU xác nhận bản cập nhật.
+Giữ RAM host ít nhất 32 GB vì SEEM và các trọng số offload vẫn nằm trên CPU.
+
+1. Chọn preset **Cỏ / bãi cỏ**, padding 8; so sánh LaMa và BrushNetX.
+2. Chỉ tiếp tục khi nền sau xóa chấp nhận được; LaMa vẫn mặc định cho xóa.
+3. Chế độ generate, bật IP-Adapter, strength 0.6, margin đích 3.
+4. So sánh tắt/bật adapter với cùng seed, mask, prompt và scale.
+5. Kiểm tra `ip_adapter_reference.png`, `removal_result.json`,
+   `brushnet_result.json` và `metadata.json` trong ZIP. Peak worker là số đo
+   tiến trình đó, không tính CUDA của tiến trình khác.
+
+IP-Adapter hỗ trợ diện mạo; không bảo đảm bản sao vật thể hoặc silhouette chính
+xác. Output được ghép theo vùng sửa nên vùng ngoài mask giữ nguyên, nhưng vật
+thể sinh lớn hơn mask có thể bị cắt. Khi đó giảm strength/guidance hoặc tăng
+margin đích nhẹ; preserve giữ RGB lõi nếu cần độ trung thành cao.

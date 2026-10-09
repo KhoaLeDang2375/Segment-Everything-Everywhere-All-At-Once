@@ -19,6 +19,8 @@ class Settings:
     lama_checkpoint: str = os.getenv('LAMA_CHECKPOINT', str(REPO / 'checkpoints/lama/big-lama.pt'))
     base_model: str = os.getenv('BRUSHNET_BASE_MODEL', str(MODEL_DIR / 'realisticVisionV60B1_v51VAE'))
     brushnet_checkpoint: str = os.getenv('BRUSHNET_CHECKPOINT', str(MODEL_DIR / 'segmentation_mask_brushnet_ckpt'))
+    removal_brushnet_checkpoint: str = os.getenv('REMOVAL_BRUSHNET_CHECKPOINT', str(MODEL_DIR / 'brushnetX'))
+    ip_adapter_dir: str = os.getenv('IP_ADAPTER_DIR', str(REPO / 'checkpoints/ip-adapter'))
     output_dir: str = os.getenv('RELOCATION_OUTPUT_DIR', str(REPO / 'relocation_outputs'))
     max_side: int = 512
     worker_timeout: int = 1800

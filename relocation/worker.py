@@ -126,6 +126,21 @@ def brushnet_job(request):
     pipe = StableDiffusionBrushNetPipeline.from_pretrained(request['base_model'],
         brushnet=brushnet, torch_dtype=torch.float16, low_cpu_mem_usage=False)
     pipe.scheduler = UniPCMultistepScheduler.from_config(pipe.scheduler.config)
+    # Image reference belongs only to destination generation, never removal.
+    use_ip_adapter = task == 'target' and bool(request.get('use_ip_adapter', False)) and float(request.get('ip_adapter_scale', .6)) > 0
+    reference = None
+    if use_ip_adapter:
+        from transformers import CLIPVisionModelWithProjection
+        from .reference import object_reference
+        adapter_dir = Path(request['ip_adapter_dir'])
+        encoder = CLIPVisionModelWithProjection.from_pretrained(
+            str(adapter_dir / 'models/image_encoder'), torch_dtype=torch.float16, local_files_only=True)
+        pipe.register_modules(image_encoder=encoder)
+        pipe.load_ip_adapter(str(adapter_dir), subfolder='models',
+            weight_name='ip-adapter-plus_sd15.safetensors', image_encoder_folder=None, local_files_only=True)
+        pipe.set_ip_adapter_scale(float(request['ip_adapter_scale']))
+        reference = object_reference(image, mask)
+        reference.save(job / 'ip_adapter_reference.png')
     pipe.enable_model_cpu_offload()
     pipe.enable_vae_slicing()
     h, w = image.shape[:2]
@@ -141,12 +156,13 @@ def brushnet_job(request):
             raise ValueError('Mask quá nhỏ ở độ phân giải inference. Tăng inference size hoặc mask margin.')
         cond_array = np.asarray(cond).copy()
         cond_array[np.asarray(region_work) > 127] = 0
+        extra = {'ip_adapter_image': reference} if use_ip_adapter else {}
         out = pipe(prompt=prompt, negative_prompt=negative or None,
             image=Image.fromarray(cond_array), mask=region_work.convert('RGB'),
             width=work_size[0], height=work_size[1],
             generator=torch.Generator('cuda').manual_seed(int(seed)),
             num_inference_steps=int(request['steps']), guidance_scale=float(request['guidance']),
-            brushnet_conditioning_scale=float(request['conditioning'])).images[0]
+            brushnet_conditioning_scale=float(request['conditioning']), **extra).images[0]
         return np.array(out.resize((w, h), Image.Resampling.LANCZOS))
 
     if task == 'removal':
@@ -158,7 +174,8 @@ def brushnet_job(request):
         background[mask] = raw[mask]
         Image.fromarray(background).save(job / 'background.png')
         metadata = dict(seconds=time.time()-started, inference_size=list(work_size), task=task,
-            mask_shape=request['mask_shape'], torch_version=torch.__version__,
+            mask_shape=request['mask_shape'], checkpoint=request['brushnet_checkpoint'],
+            use_ip_adapter=False, torch_version=torch.__version__,
             diffusers_version=diffusers.__version__, brushnet_revision=repo_revision(request['brushnet_repo']),
             **gpu_stats(torch))
         (job / 'brushnet_result.json').write_text(json.dumps(metadata, indent=2), encoding='utf-8')
@@ -182,7 +199,10 @@ def brushnet_job(request):
     transform.update(seconds=time.time()-started, inference_size=list(work_size),
         brushnet_revision=repo_revision(request['brushnet_repo']),
         torch_version=torch.__version__, diffusers_version=diffusers.__version__,
-        mode=mode, **gpu_stats(torch))
+        mode=mode, checkpoint=request['brushnet_checkpoint'], use_ip_adapter=use_ip_adapter,
+        ip_adapter_scale=float(request.get('ip_adapter_scale', .6)) if use_ip_adapter else 0,
+        ip_adapter_model='ip-adapter-plus_sd15' if use_ip_adapter else None,
+        **gpu_stats(torch))
     (job / 'brushnet_result.json').write_text(json.dumps(transform, ensure_ascii=False, indent=2), encoding='utf-8')
 
 

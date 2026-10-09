@@ -3,7 +3,7 @@
   "multigraph": false,
   "graph": {
     "relocation_index": "relocation-index.json",
-    "relocation_indexed_at": "2026-10-09T01:35:11.046495+00:00"
+    "relocation_indexed_at": "2026-10-09T12:45:00.124474+00:00"
   },
   "nodes": [
     {
@@ -17216,7 +17216,7 @@
       "id": "relocation-index:demo_relocation.py:preflight",
       "label": "preflight",
       "source_file": "demo_relocation.py",
-      "source_location": "L24",
+      "source_location": "L25",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -17226,7 +17226,7 @@
       "id": "relocation-index:demo_relocation.py:main",
       "label": "main",
       "source_file": "demo_relocation.py",
-      "source_location": "L53",
+      "source_location": "L57",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -17829,7 +17829,7 @@
       "id": "relocation-index:relocation/controller.py:Controller.relocate",
       "label": "Controller.relocate",
       "source_file": "relocation/controller.py",
-      "source_location": "L193",
+      "source_location": "L195",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -18067,7 +18067,26 @@
       "id": "relocation-index:relocation/index_codebase.py:main.visit",
       "label": "main.visit",
       "source_file": "relocation/index_codebase.py",
-      "source_location": "L90",
+      "source_location": "L91",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/reference.py",
+      "label": "relocation/reference.py",
+      "source_file": "relocation/reference.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "file_type": "code",
+      "community": 100
+    },
+    {
+      "id": "relocation-index:relocation/reference.py:object_reference",
+      "label": "object_reference",
+      "source_file": "relocation/reference.py",
+      "source_location": "L6",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -18451,10 +18470,20 @@
       "community": 100
     },
     {
+      "id": "relocation-index:relocation/ui.py:build_ui.background_preset",
+      "label": "build_ui.background_preset",
+      "source_file": "relocation/ui.py",
+      "source_location": "L140",
+      "_origin": "ast",
+      "_callable": true,
+      "file_type": "code",
+      "community": 100
+    },
+    {
       "id": "relocation-index:relocation/ui.py:build_ui.run",
       "label": "build_ui.run",
       "source_file": "relocation/ui.py",
-      "source_location": "L140",
+      "source_location": "L146",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -18513,7 +18542,7 @@
       "id": "relocation-index:relocation/worker.py:brushnet_job.inpaint",
       "label": "brushnet_job.inpaint",
       "source_file": "relocation/worker.py",
-      "source_location": "L135",
+      "source_location": "L150",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -18523,7 +18552,7 @@
       "id": "relocation-index:relocation/worker.py:main",
       "label": "main",
       "source_file": "relocation/worker.py",
-      "source_location": "L189",
+      "source_location": "L209",
       "_origin": "ast",
       "_callable": true,
       "file_type": "code",
@@ -62896,6 +62925,13 @@
       "_origin": "ast"
     },
     {
+      "source": "relocation-index:relocation/reference.py",
+      "target": "relocation-index:relocation/reference.py:object_reference",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
       "source": "relocation-index:relocation/test_controller.py",
       "target": "relocation-index:relocation/test_controller.py:ControllerTests",
       "relation": "contains",
@@ -63142,6 +63178,13 @@
     },
     {
       "source": "relocation-index:relocation/ui.py",
+      "target": "relocation-index:relocation/ui.py:build_ui.background_preset",
+      "relation": "contains",
+      "weight": 1,
+      "_origin": "ast"
+    },
+    {
+      "source": "relocation-index:relocation/ui.py",
       "target": "relocation-index:relocation/ui.py:build_ui.run",
       "relation": "contains",
       "weight": 1,
@@ -63221,6 +63264,13 @@
       "source": "relocation-index:relocation/worker.py",
       "target": "relocation-index:../BrushNet/src/diffusers/pipelines/brushnet/pipeline_brushnet.py",
       "relation": "source removal with rectangle or target generation/boundary repair in separate workers",
+      "weight": 1,
+      "_origin": "reviewed integration"
+    },
+    {
+      "source": "relocation-index:relocation/worker.py",
+      "target": "relocation-index:relocation/reference.py",
+      "relation": "masked square object reference for target-only IP-Adapter Plus",
       "weight": 1,
       "_origin": "reviewed integration"
     },

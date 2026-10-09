@@ -6,14 +6,19 @@ cd "$RELOCATION_ROOT"
 SKIP_SEEM=0
 SKIP_DOWNLOAD=0
 ONLY_LAMA=0
+ONLY_BRUSHNET=0
 for argument in "$@"; do
     case "$argument" in
         --skip-seem) SKIP_SEEM=1 ;;
         --skip-download) SKIP_DOWNLOAD=1 ;;
         --only-lama) SKIP_SEEM=1; ONLY_LAMA=1 ;;
-        *) echo "Usage: bash setup_relocation.sh [--skip-seem] [--skip-download] [--only-lama]"; exit 2 ;;
+        --only-brushnet) SKIP_SEEM=1; ONLY_BRUSHNET=1 ;;
+        *) echo "Usage: bash setup_relocation.sh [--skip-seem] [--skip-download] [--only-lama|--only-brushnet]"; exit 2 ;;
     esac
 done
+if [[ "$ONLY_LAMA" == 1 && "$ONLY_BRUSHNET" == 1 ]]; then
+    echo 'Choose either --only-lama or --only-brushnet.'; exit 2
+fi
 python3 -c 'import sys; assert sys.version_info[:2] in [(3,9),(3,10),(3,11)], "Use Python 3.9–3.11 (recommended: existing SEEM Python 3.10)"'
 if [[ "$SKIP_SEEM" == 0 ]]; then
     bash setup.sh
@@ -24,6 +29,7 @@ if [[ ! -f "$BRUSHNET_REPO/src/diffusers/models/brushnet.py" ]]; then
 fi
 workers='brushnet depth lama'
 if [[ "$ONLY_LAMA" == 1 ]]; then workers='lama'; fi
+if [[ "$ONLY_BRUSHNET" == 1 ]]; then workers='brushnet'; fi
 for worker in $workers; do
     worker_env="$RELOCATION_ROOT/.venv-$worker"
     if [[ ! -x "$worker_env/bin/python" ]]; then
@@ -65,13 +71,34 @@ for name in pending:
     else:
         shutil.move(str(source), str(target))
     (target / '.download_complete').touch()
+# Official BrushNetX uses BrushNetModel / SD1.5, a separate source-removal checkpoint.
+snapshot_download(repo_id='TencentARC/BrushEdit', revision='0d6ac4a',
+    allow_patterns=['brushnetX/config.json', 'brushnetX/diffusion_pytorch_model.safetensors'],
+    local_dir=str(destination), local_dir_use_symlinks=False)
+import json
+configuration = json.loads((destination / 'brushnetX/config.json').read_text())
+if configuration.get('_class_name') != 'BrushNetModel' or configuration.get('cross_attention_dim') != 768:
+    raise RuntimeError('BrushNetX checkpoint is not compatible with the SD1.5 pipeline.')
+adapter_destination = Path(os.getenv('IP_ADAPTER_DIR', 'checkpoints/ip-adapter'))
+snapshot_download(repo_id='h94/IP-Adapter', revision='018e402774aeeddd60609b4ecdb7e298259dc729',
+    allow_patterns=['models/ip-adapter-plus_sd15.safetensors',
+                    'models/image_encoder/config.json', 'models/image_encoder/model.safetensors'],
+    local_dir=str(adapter_destination), local_dir_use_symlinks=False)
+for root, names in [(destination, ['brushnetX/diffusion_pytorch_model.safetensors']),
+                    (adapter_destination, ['models/ip-adapter-plus_sd15.safetensors',
+                                           'models/image_encoder/config.json', 'models/image_encoder/model.safetensors'])]:
+    for name in names:
+        if not (root / name).is_file():
+            raise RuntimeError(f'Download did not produce {root / name}')
 PY
+    if [[ "$ONLY_BRUSHNET" == 0 ]]; then
     .venv-depth/bin/python - <<'PY'
 from huggingface_hub import snapshot_download
 snapshot_download('depth-anything/Depth-Anything-V2-Metric-Outdoor-Base-hf')
 PY
+    fi
 fi
-if [[ "$SKIP_DOWNLOAD" == 0 ]]; then
+if [[ "$SKIP_DOWNLOAD" == 0 && "$ONLY_BRUSHNET" == 0 ]]; then
     .venv-lama/bin/python - <<'PY'
 from pathlib import Path
 import os

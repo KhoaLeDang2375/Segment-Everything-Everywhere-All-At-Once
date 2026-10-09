@@ -80,6 +80,7 @@ def main():
             ['demo/seem/tasks/interactive.py', 'modeling/architectures/seem_model_v1.py', 'evaluate_demo -> prev_mask; negative_stroke'],
             ['relocation/controller.py', 'relocation/worker.py', 'isolated process; request JSON and PNG/NPY artifacts'],
             ['relocation/worker.py', '../BrushNet/src/diffusers/pipelines/brushnet/pipeline_brushnet.py', 'source removal with rectangle or target generation/boundary repair in separate workers'],
+            ['relocation/worker.py', 'relocation/reference.py', 'masked square object reference for target-only IP-Adapter Plus'],
             ['setup_relocation.sh', 'setup.sh', 'reuses working SEEM setup'],
         ]}
     for file in sources:
